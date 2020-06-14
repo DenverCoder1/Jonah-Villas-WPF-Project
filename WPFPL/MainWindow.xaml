@@ -1,0 +1,166 @@
+﻿<Window x:Class="Project01_3693_dotNet5780.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d"
+		xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"    
+		TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+		TextElement.FontWeight="Regular"
+		TextElement.FontSize="13"
+		TextOptions.TextFormattingMode="Ideal"
+		TextOptions.TextRenderingMode="Auto"
+		Background="{DynamicResource MaterialDesignPaper}"
+		FontFamily="{DynamicResource MaterialDesignFont}"
+		Title="Jonah's Rentals"
+		Height="600" 
+		Width="1080" 
+		WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid Height="60" VerticalAlignment="Top" Background="#673ab7">
+			<StackPanel Orientation="Horizontal" 
+						HorizontalAlignment="Center">
+				<materialDesign:PackIcon Kind="HotelOutline" 
+										 Foreground="White"
+										 Height="22px"
+										 Width="22px"
+										 Margin="4px 20px"/>
+				<TextBlock Text="Welcome to Jonah's Rentals!" 
+						   Foreground="White"
+						   HorizontalAlignment="Center" 
+						   VerticalAlignment="Center" 
+						   FontSize="22" 
+						   FontFamily="{StaticResource OpenSans}"
+						   FontWeight="Light"/>
+			</StackPanel>
+			<!--<Button HorizontalAlignment="Right" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}">
+				<materialDesign:PackIcon Kind="Close"/>
+			</Button>-->
+		</Grid>
+		<Grid Margin="0 60 0 0">
+			<dragablz:TabablzControl Grid.ColumnSpan="2" 
+									 FixedHeaderCount="4"
+									 x:Name="MainTabControl">
+				<dragablz:TabablzControl.InterTabController>
+					<dragablz:InterTabController/>
+				</dragablz:TabablzControl.InterTabController>
+				<TabItem Header="HOME">
+					<materialDesign:Card Padding="32" Margin="16">
+						<StackPanel>
+							<TextBlock FontFamily="{StaticResource OpenSans}"
+									   FontWeight="Light"
+									   FontSize="22px"
+									   Margin="0px 0px 0px 10px">
+								Welcome to Jonah's Rentals!
+							</TextBlock>
+							<TextBlock FontFamily="{StaticResource OpenSans}"
+									   FontWeight="Normal"
+									   FontSize="16px"
+									   Margin="0px 0px 0px 10px">
+								Click a button below to begin
+							</TextBlock>
+							<Grid HorizontalAlignment="Left"
+								  Margin="0 0 0 0"
+								  Width="540">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition/>
+									<ColumnDefinition/>
+									<ColumnDefinition/>
+								</Grid.ColumnDefinitions>
+								<StackPanel Grid.Column="0" 
+											VerticalAlignment="Center"
+											HorizontalAlignment="Left">
+									<TextBlock FontFamily="{StaticResource OpenSans}"
+											   FontWeight="Bold"
+											   FontSize="14px"
+											   Margin="0 20 0 10">
+										CUSTOMERS
+									</TextBlock>
+									<Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+											Width="165px"
+											HorizontalAlignment="Left"
+											Click="ChangeTab"
+											Tag="1">
+										MAKE A REQUEST 🡆
+									</Button>
+								</StackPanel>
+								<StackPanel Grid.Column="1" 
+											VerticalAlignment="Center"
+											HorizontalAlignment="Left">
+									<TextBlock FontFamily="{StaticResource OpenSans}"
+											   FontWeight="Bold"
+											   FontSize="14px"
+											   Margin="0 20 0 10">
+										HOSTS
+									</TextBlock>
+									<Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+											Width="165px"
+											HorizontalAlignment="Left"
+											Click="ChangeTab"
+											Tag="2">
+										HOSTING AREA 🡆
+									</Button>
+								</StackPanel>
+								<StackPanel Grid.Column="2" 
+											VerticalAlignment="Center"
+											HorizontalAlignment="Left">
+									<TextBlock FontFamily="{StaticResource OpenSans}"
+											   FontWeight="Bold"
+											   FontSize="14px"
+											   Margin="0 20 0 10">
+										ADMIN
+									</TextBlock>
+									<Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+											Width="165px"
+											HorizontalAlignment="Left"
+											Click="ChangeTab"
+											Tag="3">
+										ADMIN PANEL 🡆
+									</Button>
+								</StackPanel>
+							</Grid>
+							<ScrollViewer Height="239" VerticalScrollBarVisibility="Auto">
+								 <TextBox FontFamily="Consolas" FontSize="12px"
+										 Margin="0 10"
+										 x:Name="DebugLog"
+										 Foreground="Black"
+										 ScrollViewer.CanContentScroll="True"
+										 Width="Auto"
+										 TextWrapping="Wrap"
+										 AcceptsReturn="True"/>
+							</ScrollViewer>
+						</StackPanel>
+					</materialDesign:Card>
+				</TabItem>
+				<TabItem Header="MAKE A REQUEST">
+					<materialDesign:Card Padding="32" Margin="16">
+						<TextBlock FontFamily="{StaticResource OpenSans}"
+								   FontWeight="Light"
+								   FontSize="22px">
+							Welcome, guest!
+						</TextBlock>
+					</materialDesign:Card>
+				</TabItem>
+				<TabItem Header="HOSTING">
+					<materialDesign:Card Padding="32" Margin="16">
+						<TextBlock FontFamily="{StaticResource OpenSans}"
+								   FontWeight="Light"
+								   FontSize="22px">
+							Welcome, host!
+						</TextBlock>
+					</materialDesign:Card>
+				</TabItem>
+				<TabItem Header="ADMIN">
+					<materialDesign:Card Padding="32" Margin="16">
+						<TextBlock FontFamily="{StaticResource OpenSans}"
+								   FontWeight="Light"
+								   FontSize="22px">
+							Welcome, admin!
+						</TextBlock>
+					</materialDesign:Card>
+				</TabItem>
+			</dragablz:TabablzControl>
+		</Grid>
+	</Grid>
+</Window>
