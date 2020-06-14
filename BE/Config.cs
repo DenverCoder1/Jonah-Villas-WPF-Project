@@ -14,6 +14,9 @@ namespace BE
         public static long INITIAL_HOSTING_UNIT_KEY = 1;
         public static long INITIAL_GUEST_REQUEST_KEY = 1;
 
+        // UI
+        public static int CONTROL_WIDTH = 160;
+
         // get string from district
         public static Dictionary<District, string> DistrictNames = new Dictionary<District, string>
         {

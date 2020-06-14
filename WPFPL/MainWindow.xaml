@@ -73,11 +73,13 @@
 		<Grid Margin="0 60 0 0">
 			<dragablz:TabablzControl Grid.ColumnSpan="2" 
 									 FixedHeaderCount="4"
-									 x:Name="MainTabControl">
+									 x:Name="MainTabControl"
+                                     SelectionChanged="TabControl_SelectionChanged">
 				<dragablz:TabablzControl.InterTabController>
 					<dragablz:InterTabController/>
 				</dragablz:TabablzControl.InterTabController>
-				<TabItem Header="HOME">
+				<TabItem Header="HOME"
+                         x:Name="Tab0">
 					<materialDesign:Card Padding="32" Margin="16">
 						<StackPanel>
 							<TextBlock FontFamily="{StaticResource OpenSans}"
@@ -152,7 +154,7 @@
 									</Button>
 								</StackPanel>
 							</Grid>
-							<ScrollViewer Height="239" VerticalScrollBarVisibility="Auto">
+							<!--<ScrollViewer Height="239" VerticalScrollBarVisibility="Auto">
 								 <TextBox FontFamily="Consolas" FontSize="12px"
 										 Margin="0 10"
 										 x:Name="DebugLog"
@@ -161,214 +163,245 @@
 										 Width="Auto"
 										 TextWrapping="Wrap"
 										 AcceptsReturn="True"/>
-							</ScrollViewer>
+							</ScrollViewer>-->
 						</StackPanel>
 					</materialDesign:Card>
 				</TabItem>
-				<TabItem Header="MAKE A REQUEST">
+				<TabItem Header="MAKE A REQUEST"
+                         x:Name="Tab1">
 					<materialDesign:Card Padding="32" Margin="16">
                         <StackPanel>
-						    <TextBlock FontFamily="{StaticResource OpenSans}"
-								       FontWeight="Light"
-								       FontSize="22px">
+                            <TextBlock FontFamily="{StaticResource OpenSans}"
+                                       FontWeight="Light"
+                                       FontSize="22px">
 							    Welcome, guest!
-						    </TextBlock>
-                            <Grid x:Name="guestForm"
-                                  HorizontalAlignment="Left"
-                                  Margin="0 20 0 0"
-                                  VerticalAlignment="Top"
-                                  Width="320">
+                            </TextBlock>
+                            <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <Label Content="First Name:"
-                                       Grid.Row="0"
-                                       Grid.Column="0"
-                                       Margin="0 4"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center" />
-                                <TextBox x:Name="FirstName"
-                                         Text="{Binding GuestRequest.FirstName, Mode=TwoWay, ValidatesOnExceptions=true}"
-                                         Grid.Row="0"
-                                         Grid.Column="1"
-                                         HorizontalAlignment="Left"
-                                         Height="24"
-                                         Margin="0 4"
-                                         VerticalAlignment="Center"
-                                         Width="110" />
-                                <Label Content="Last Name:"
-                                       Grid.Row="1"
-                                       Grid.Column="0"
-                                       Margin="0 4"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center" />
-                                <TextBox x:Name="LastName"
-                                         Text="{Binding GuestRequest.LastName, Mode=TwoWay, ValidatesOnExceptions=true}"
-                                         Grid.Row="1"
-                                         Grid.Column="1"
-                                         HorizontalAlignment="Left"
-                                         Height="24"
-                                         Margin="0 4"
-                                         VerticalAlignment="Center"
-                                         Width="110" />
-                                <Label Content="Email address:"
-                                       Grid.Row="2"
-                                       Grid.Column="0"
-                                       Margin="0 4"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center" />
-                                <TextBox x:Name="Email"
-                                         Text="{Binding GuestRequest.Email, Mode=TwoWay, ValidatesOnExceptions=true}"
-                                         Grid.Row="2"
-                                         Grid.Column="1"
-                                         HorizontalAlignment="Left"
-                                         Height="24"
-                                         Margin="0 4"
-                                         VerticalAlignment="Center"
-                                         Width="110" />
-                                <Label Content="Date of Entry:"
-                                       Grid.Row="3"
-                                       Grid.Column="0"
-                                       Margin="0 4"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center" />
-                                <DatePicker x:Name="EntryDate"
-                                            SelectedDate="{Binding GuestRequest.EntryDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-                                            Grid.Row="3"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            Height="24"
-                                            Margin="0 4"
-                                            VerticalAlignment="Center"
-                                            Width="110" />
-                                <Label Content="Date of Departure:"
-                                       Grid.Row="4"
-                                       Grid.Column="0"
-                                       Margin="0 4"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center" />
-                                <DatePicker x:Name="ReleaseDate"
-                                            SelectedDate="{Binding GuestRequest.ReleaseDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-                                            Grid.Row="4"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            Height="24"
-                                            Margin="0 4"
-                                            VerticalAlignment="Center"
-                                            Width="110" />
-                                <Label Content="Vacation District:"
-                                       Grid.Row="5"
-                                       Grid.Column="0"
-                                       Margin="0 4"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center" />
-                                <ComboBox x:Name="PrefDistrict"
-                                          ItemsSource="{Binding Source={StaticResource District }}"
-                                          SelectedItem="{Binding GuestRequest.PrefDistrict}"
-                                          Grid.Row="5"
-                                          Grid.Column="1"
-                                          HorizontalAlignment="Left"
-                                          Height="Auto"
-                                          Margin="0 4"
-                                          VerticalAlignment="Center"
-                                          Width="110"
-                                          SelectionChanged="UpdateCityList">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                                <Label Content="Vacation City:"
-                                       Grid.Row="6"
-                                       Grid.Column="0"
-                                       Margin="0 4"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center" />
-                                <ComboBox x:Name="PrefCity"
-                                          ItemsSource="{Binding CityList}"
-                                          SelectedItem="{Binding GuestRequest.PrefCity}"
-                                          Grid.Row="6"
-                                          Grid.Column="1"
-                                          HorizontalAlignment="Left"
-                                          Height="Auto"
-                                          Margin="0 4"
-                                          VerticalAlignment="Center"
-                                          Width="110">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                                <Label Content="Number of Adults:"
-                                       Grid.Row="7"
-                                       Grid.Column="0"
-                                       Margin="0 4"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center" />
-                                <ComboBox x:Name="NumAdults"
-                                          SelectedItem="{Binding GuestRequest.NumAdults}"
-                                          Grid.Row="7"
-                                          Grid.Column="1"
-                                          HorizontalAlignment="Left"
-                                          Height="Auto"
-                                          Margin="0 4"
-                                          VerticalAlignment="Center"
-                                          Width="110">
-                                    <ComboBoxItem>1</ComboBoxItem>
-                                    <ComboBoxItem>2</ComboBoxItem>
-                                    <ComboBoxItem>3</ComboBoxItem>
-                                    <ComboBoxItem>4</ComboBoxItem>
-                                    <ComboBoxItem>5</ComboBoxItem>
-                                    <ComboBoxItem>6</ComboBoxItem>
-                                    <ComboBoxItem>7</ComboBoxItem>
-                                    <ComboBoxItem>8</ComboBoxItem>
-                                </ComboBox>
-                                <Label Content="Number of Children:"
-                                       Grid.Row="8"
-                                       Grid.Column="0"
-                                       Margin="0 4"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center" />
-                                <ComboBox x:Name="NumChildren"
-                                          SelectedItem="{Binding GuestRequest.NumChildren}"
-                                          Grid.Row="8"
-                                          Grid.Column="1"
-                                          HorizontalAlignment="Left"
-                                          Height="Auto"
-                                          Margin="0 4"
-                                          VerticalAlignment="Center"
-                                          Width="110">
-                                    <ComboBoxItem>1</ComboBoxItem>
-                                    <ComboBoxItem>2</ComboBoxItem>
-                                    <ComboBoxItem>3</ComboBoxItem>
-                                    <ComboBoxItem>4</ComboBoxItem>
-                                    <ComboBoxItem>5</ComboBoxItem>
-                                    <ComboBoxItem>6</ComboBoxItem>
-                                    <ComboBoxItem>7</ComboBoxItem>
-                                    <ComboBoxItem>8</ComboBoxItem>
-                                </ComboBox>
+
+                                <Grid x:Name="guestForm"
+                                      HorizontalAlignment="Left"
+                                      Margin="0 20 0 0"
+                                      VerticalAlignment="Top"
+                                      Width="320"
+                                      Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label Content="First Name:"
+                                           Grid.Row="0"
+                                           Grid.Column="0"
+                                           Margin="0 4"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                    <TextBox x:Name="gFirstName"
+                                             Text="{Binding GuestRequest.FirstName, Mode=TwoWay, ValidatesOnExceptions=true}"
+                                             Grid.Row="0"
+                                             Grid.Column="1"
+                                             HorizontalAlignment="Left"
+                                             Height="24"
+                                             Margin="0 4"
+                                             VerticalAlignment="Center" />
+                                    <Label Content="Last Name:"
+                                           Grid.Row="1"
+                                           Grid.Column="0"
+                                           Margin="0 4"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                    <TextBox x:Name="gLastName"
+                                             Text="{Binding GuestRequest.LastName, Mode=TwoWay, ValidatesOnExceptions=true}"
+                                             Grid.Row="1"
+                                             Grid.Column="1"
+                                             HorizontalAlignment="Left"
+                                             Height="24"
+                                             Margin="0 4"
+                                             VerticalAlignment="Center" />
+                                    <Label Content="Email address:"
+                                           Grid.Row="2"
+                                           Grid.Column="0"
+                                           Margin="0 4"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                    <TextBox x:Name="gEmail"
+                                             Text="{Binding GuestRequest.Email, Mode=TwoWay, ValidatesOnExceptions=true}"
+                                             Grid.Row="2"
+                                             Grid.Column="1"
+                                             HorizontalAlignment="Left"
+                                             Height="24"
+                                             Margin="0 4"
+                                             VerticalAlignment="Center" />
+                                    <Label Content="Date of Entry:"
+                                           Grid.Row="3"
+                                           Grid.Column="0"
+                                           Margin="0 4"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                    <DatePicker x:Name="gEntryDate"
+                                                SelectedDate="{Binding GuestRequest.EntryDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                                                Grid.Row="3"
+                                                Grid.Column="1"
+                                                HorizontalAlignment="Left"
+                                                Height="24"
+                                                Margin="0 4"
+                                                VerticalAlignment="Center" />
+                                    <Label Content="Date of Departure:"
+                                           Grid.Row="4"
+                                           Grid.Column="0"
+                                           Margin="0 4"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                    <DatePicker x:Name="gReleaseDate"
+                                                SelectedDate="{Binding GuestRequest.ReleaseDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                                                Grid.Row="4"
+                                                Grid.Column="1"
+                                                HorizontalAlignment="Left"
+                                                Height="24"
+                                                Margin="0 4"
+                                                VerticalAlignment="Center" />
+                                    <Label Content="Vacation District:"
+                                           Grid.Row="5"
+                                           Grid.Column="0"
+                                           Margin="0 4"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                    <ComboBox x:Name="gPrefDistrict"
+                                              ItemsSource="{Binding Source={StaticResource District }}"
+                                              SelectedItem="{Binding GuestRequest.PrefDistrict}"
+                                              Grid.Row="5"
+                                              Grid.Column="1"
+                                              HorizontalAlignment="Left"
+                                              Height="Auto"
+                                              Margin="0 4"
+                                              VerticalAlignment="Center"
+                                              SelectionChanged="UpdateCityList">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Label Content="Vacation City:"
+                                           Grid.Row="6"
+                                           Grid.Column="0"
+                                           Margin="0 4"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                    <ComboBox x:Name="gPrefCity"
+                                              ItemsSource="{Binding CityList}"
+                                              SelectedItem="{Binding GuestRequest.PrefCity}"
+                                              Grid.Row="6"
+                                              Grid.Column="1"
+                                              HorizontalAlignment="Left"
+                                              Height="Auto"
+                                              Margin="0 4"
+                                              VerticalAlignment="Center">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Label Content="Number of Adults:"
+                                           Grid.Row="7"
+                                           Grid.Column="0"
+                                           Margin="0 4"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                    <ComboBox x:Name="gNumAdults"
+                                              SelectedItem="{Binding GuestRequest.NumAdults}"
+                                              Grid.Row="7"
+                                              Grid.Column="1"
+                                              HorizontalAlignment="Left"
+                                              Height="Auto"
+                                              Margin="0 4"
+                                              VerticalAlignment="Center">
+                                        <ComboBoxItem>1</ComboBoxItem>
+                                        <ComboBoxItem>2</ComboBoxItem>
+                                        <ComboBoxItem>3</ComboBoxItem>
+                                        <ComboBoxItem>4</ComboBoxItem>
+                                        <ComboBoxItem>5</ComboBoxItem>
+                                        <ComboBoxItem>6</ComboBoxItem>
+                                        <ComboBoxItem>7</ComboBoxItem>
+                                        <ComboBoxItem>8</ComboBoxItem>
+                                    </ComboBox>
+                                    <Label Content="Number of Children:"
+                                           Grid.Row="8"
+                                           Grid.Column="0"
+                                           Margin="0 4"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                    <ComboBox x:Name="gNumChildren"
+                                              SelectedItem="{Binding GuestRequest.NumChildren}"
+                                              Grid.Row="8"
+                                              Grid.Column="1"
+                                              HorizontalAlignment="Left"
+                                              Height="Auto"
+                                              Margin="0 4"
+                                              VerticalAlignment="Center">
+                                        <ComboBoxItem>1</ComboBoxItem>
+                                        <ComboBoxItem>2</ComboBoxItem>
+                                        <ComboBoxItem>3</ComboBoxItem>
+                                        <ComboBoxItem>4</ComboBoxItem>
+                                        <ComboBoxItem>5</ComboBoxItem>
+                                        <ComboBoxItem>6</ComboBoxItem>
+                                        <ComboBoxItem>7</ComboBoxItem>
+                                        <ComboBoxItem>8</ComboBoxItem>
+                                    </ComboBox>
+                                </Grid>
+                                <StackPanel Grid.Column="1">
+                                    <Label Content="Which amenities are important to you? (you may select multiple):"
+                                           Grid.Row="8"
+                                           Grid.Column="0"
+                                           Margin="0 24 0 6"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                    <ListBox x:Name="gAmenities"
+                                             Width="400"
+                                             Height="270"
+                                             SelectionMode="Multiple"
+                                             BorderBrush="#f6f6f6"
+                                             BorderThickness="1"
+                                             ItemsSource="{Binding Source={StaticResource Amenity }}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
                             </Grid>
+                            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                                    Width="Auto"
+                                    HorizontalAlignment="Left"
+                                    Margin="0 20 0 0">
+                                SUBMIT REQUEST
+                            </Button>
                         </StackPanel>
                     </materialDesign:Card>
 				</TabItem>
-				<TabItem Header="HOSTING">
+				<TabItem Header="HOSTING"
+                         x:Name="Tab2">
 					<materialDesign:Card Padding="32" Margin="16">
 						<TextBlock FontFamily="{StaticResource OpenSans}"
 								   FontWeight="Light"
@@ -377,7 +410,8 @@
 						</TextBlock>
 					</materialDesign:Card>
 				</TabItem>
-				<TabItem Header="ADMIN">
+				<TabItem Header="ADMIN"
+                         x:Name="Tab3">
 					<materialDesign:Card Padding="32" Margin="16">
 						<TextBlock FontFamily="{StaticResource OpenSans}"
 								   FontWeight="Light"

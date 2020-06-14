@@ -12,13 +12,9 @@ namespace WPFPL
     {
         public static string Convert(object value)
         {
-            if (value != null)
-            {
-                string enumString = value.ToString();
-                string Converted = Regex.Replace(enumString, "([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))", "$1 ");
-                return Converted;
-            }
-            return "error";
+            string enumString = value.ToString();
+            string Converted = Regex.Replace(enumString, "([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))", "$1 ");
+            return Converted;
         }
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

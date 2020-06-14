@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xaml;
 using BE;
 using BL;
 
@@ -30,7 +31,9 @@ namespace Project01_3693_dotNet5780
 
         public GuestRequest myGuestRequest { get; set; }
 
-        public ObservableCollection<string> ObsCityList { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> ObsCityList { get; set; } = new ObservableCollection<string> { "Select a district." };
+
+        public static List<Control> Tab1Controls;
 
         /// <summary>
         /// Startup function
@@ -38,6 +41,21 @@ namespace Project01_3693_dotNet5780
         public MainWindow()
         {
             InitializeComponent();
+
+            gPrefCity.ItemsSource = ObsCityList;
+
+            Tab1Controls = new List<Control>{
+                gFirstName,
+                gLastName,
+                gEmail,
+                gEntryDate,
+                gReleaseDate,
+                gPrefDistrict,
+                gPrefCity,
+                gNumAdults,
+                gNumChildren
+            };
+
             Loaded += MainWindow_Loaded;
         }
 
@@ -47,7 +65,7 @@ namespace Project01_3693_dotNet5780
         /// <param name="text">Text to log</param>
         private void Log(string text)
         {
-            if (DEBUG_MODE) DebugLog.Text += text + "\n";
+            //if (DEBUG_MODE) DebugLog.Text += text + "\n";
         }
 
         /// <summary>
@@ -67,8 +85,38 @@ namespace Project01_3693_dotNet5780
         {
             Dispatcher.BeginInvoke((Action)(() =>
                 MainTabControl.SelectedIndex =
-                    int.Parse(((Button) sender).Tag.ToString()))
+                    int.Parse(((Button)sender).Tag.ToString()))
             );
+        }
+
+        private void SetTab1ControlsVisibility(bool visible)
+        {
+            foreach (Control ctrl in Tab1Controls)
+            {
+                ctrl.Width = visible ? Config.CONTROL_WIDTH : 0;
+                ctrl.BorderThickness = visible ? new Thickness(0, 0, 0, 1) : new Thickness(0);
+            }
+        }
+
+        
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Tab0.IsSelected) {
+                SetTab1ControlsVisibility(false);
+            }
+            else if (Tab1.IsSelected)
+            {
+                SetTab1ControlsVisibility(true);
+            }
+            else if (Tab2.IsSelected)
+            {
+                SetTab1ControlsVisibility(false);
+            }
+            else if (Tab3.IsSelected)
+            {
+                SetTab1ControlsVisibility(false);
+            }
         }
 
         /// <summary>
@@ -91,7 +139,10 @@ namespace Project01_3693_dotNet5780
                     break;
                 }
             }
-            PrefCity.ItemsSource = ObsCityList;
+            if (ObsCityList.Count == 0)
+            {
+                ObsCityList.Add("Select a district.");
+            }
             return;
         }
     }

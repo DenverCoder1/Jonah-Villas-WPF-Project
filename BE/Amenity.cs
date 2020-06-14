@@ -4,13 +4,23 @@
     {
         Pool,
         HotTub,
-        Garden,
-        ChildrensAttractions,
         Kitchen,
         Wifi,
         TV,
-        Washer,
-        Dryer,
-        Workspace
+        Laundry,
+        AirConditioning,
+        Heating,
+        Towels,
+        Shampoo,
+        Workspace,
+        Breakfast,
+        PrivateBathroom,
+        FreeParking,
+        Gym,
+        ChildrensAttractions,
+        Garden,
+        Hangers,
+        Fireplace,
+        SmokeAlarm
     }
 }
