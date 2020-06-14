@@ -33,6 +33,7 @@ namespace BE
             Status = OrderStatus.NotYetHandled;
         }
 
+        // deep copy (clone)
         public Order Clone()
         {
             Order Clone = new Order

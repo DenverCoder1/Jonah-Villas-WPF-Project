@@ -45,19 +45,25 @@ namespace BE
             string email,
             District region,
             City city,
+            int numAdults,
+            int numChildren,
             Dictionary<Amenity, PrefLevel> amenities)
         {
+            GuestRequestKey = ++stGuestRequestKey;
+            Status = GuestStatus.Open;
             EntryDate = entry;
             ReleaseDate = release;
-            Status = GuestStatus.Open;
             FirstName = fname;
             LastName = lname;
             Email = email;
             PrefDistrict = region;
             PrefCity = city;
+            NumAdults = numAdults;
+            NumChildren = numChildren;
             PrefAmenities = amenities;
         }
 
+        // deep copy (clone)
         public GuestRequest Clone()
         {
             GuestRequest Clone = new GuestRequest
@@ -79,8 +85,12 @@ namespace BE
                 PrefDistrict = this.PrefDistrict,
                 PrefCity = this.PrefCity,
                 PrefType = this.PrefType,
-                PrefAmenities = this.PrefAmenities
+                PrefAmenities = new Dictionary<Amenity, PrefLevel>()
             };
+            foreach (KeyValuePair<Amenity,PrefLevel> item in this.PrefAmenities)
+            {
+                Clone.PrefAmenities[item.Key] = item.Value;
+            }
             return Clone;
         }
 

@@ -25,6 +25,7 @@ namespace BE
             BranchCity = city;
         }
 
+        // deep copy (clone)
         public BankBranch Clone()
         {
             BankBranch Clone = new BankBranch

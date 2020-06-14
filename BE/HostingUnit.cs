@@ -35,6 +35,7 @@ namespace BE
             UnitName = name;
         }
 
+        // deep copy (clone)
         public HostingUnit Clone()
         {
             HostingUnit Clone = new HostingUnit

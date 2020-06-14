@@ -27,7 +27,7 @@ namespace ConsolePL
                 [Amenity.Kitchen] = PrefLevel.Required
             };
 
-            GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, region, city, amenities);
+            GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, region, city, 6, 8, amenities);
 
             MyBL.CreateGuestRequest(guest);
 
