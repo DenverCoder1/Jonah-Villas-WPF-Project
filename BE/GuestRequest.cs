@@ -16,8 +16,8 @@ namespace BE
         public DateTime EntryDate { get; set; }
         public DateTime ReleaseDate { get; set; }
         public GuestStatus Status { get; set; }
-        public int numAdults { get; set; }
-        public int numChildren { get; set; }
+        public int NumAdults { get; set; }
+        public int NumChildren { get; set; }
 
         // Guest info
         public string FirstName { get; set; }
@@ -25,7 +25,7 @@ namespace BE
         public string Email { get; set; }
 
         // preferences
-        public District PrefRegion { get; set; }
+        public District PrefDistrict { get; set; }
         public City PrefCity { get; set; }
         public Type PrefType { get; set; }
         public Dictionary<Amenity, PrefLevel> PrefAmenities { get; set; }
@@ -53,7 +53,7 @@ namespace BE
             FirstName = fname;
             LastName = lname;
             Email = email;
-            PrefRegion = region;
+            PrefDistrict = region;
             PrefCity = city;
             PrefAmenities = amenities;
         }
@@ -67,8 +67,8 @@ namespace BE
                 EntryDate = this.EntryDate,
                 ReleaseDate = this.ReleaseDate,
                 Status = this.Status,
-                numAdults = this.numAdults,
-                numChildren = this.numChildren,
+                NumAdults = this.NumAdults,
+                NumChildren = this.NumChildren,
 
                 // Guest info
                 FirstName = this.FirstName,
@@ -76,7 +76,7 @@ namespace BE
                 Email = this.Email,
 
                 // preferences
-                PrefRegion = this.PrefRegion,
+                PrefDistrict = this.PrefDistrict,
                 PrefCity = this.PrefCity,
                 PrefType = this.PrefType,
                 PrefAmenities = this.PrefAmenities

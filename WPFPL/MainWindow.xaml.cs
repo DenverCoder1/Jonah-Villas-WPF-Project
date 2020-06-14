@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ using BL;
 
 namespace Project01_3693_dotNet5780
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -24,7 +26,11 @@ namespace Project01_3693_dotNet5780
     {
         const bool DEBUG_MODE = true;
 
-        private static IBL MyBL = BL_Imp.GetBL();
+        private static IBL MyBL;
+
+        public GuestRequest myGuestRequest { get; set; }
+
+        public ObservableCollection<string> ObsCityList { get; set; } = new ObservableCollection<string>();
 
         /// <summary>
         /// Startup function
@@ -49,7 +55,8 @@ namespace Project01_3693_dotNet5780
         /// </summary>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // Log($"Today is {DateTime.Now:yyyy/MM/dd}");
+            MyBL = BL_Imp.GetBL();
+            myGuestRequest = new GuestRequest();
         }
 
         /// <summary>
@@ -62,6 +69,30 @@ namespace Project01_3693_dotNet5780
                 MainTabControl.SelectedIndex =
                     int.Parse(((Button) sender).Tag.ToString()))
             );
+        }
+
+        /// <summary>
+        /// Update City List when District List changed
+        /// </summary>
+        private void UpdateCityList(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedDistrict = ((ComboBox)sender).SelectedItem.ToString();
+            foreach (KeyValuePair<District, string> item in Config.DistrictNames)
+            {
+                if (selectedDistrict == item.Key.ToString())
+                {
+                    List<string> update = Config.GetCities[item.Key].ConvertAll(c => Config.CityNames[c]);
+                    ObsCityList.Clear();
+
+                    foreach (var x in update)
+                    {
+                        ObsCityList.Add(x);
+                    }
+                    break;
+                }
+            }
+            PrefCity.ItemsSource = ObsCityList;
+            return;
         }
     }
 }
