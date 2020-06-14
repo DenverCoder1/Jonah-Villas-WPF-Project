@@ -8,15 +8,15 @@ namespace BE
 {
     public class HostingUnit
     {
-        // static counter for serial keys
+        // Static counter for serial keys
         private static long stHostingUnitKey = Config.INITIAL_HOSTING_UNIT_KEY;
-        // serial key
+        // Serial key
         public long HostingUnitKey { get; private set; }
-        // calendar
+        // Calendar
         public List<DateRange> Calendar { get; set; }
         // Owner
         public Host Owner { get; set; }
-        // Name
+        // Unit Name
         public string UnitName { get; set; }
 
         public HostingUnit()
