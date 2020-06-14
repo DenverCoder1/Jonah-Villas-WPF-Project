@@ -25,7 +25,7 @@ namespace BE
         public string Email { get; set; }
 
         // preferences
-        public Region PrefRegion { get; set; }
+        public District PrefRegion { get; set; }
         public City PrefCity { get; set; }
         public Type PrefType { get; set; }
         public Dictionary<Amenity, PrefLevel> PrefAmenities { get; set; }
@@ -43,7 +43,7 @@ namespace BE
             string fname, 
             string lname, 
             string email,
-            Region region,
+            District region,
             City city,
             Dictionary<Amenity, PrefLevel> amenities)
         {

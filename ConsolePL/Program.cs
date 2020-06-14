@@ -18,7 +18,7 @@ namespace ConsolePL
             string fname = "Jonah";
             string lname = "Lawrence";
             string email = "jonah@google.com";
-            Region region = Region.TelAviv;
+            District region = District.TelAviv;
             City city = City.BneiBrak;
             Dictionary<Amenity, PrefLevel> amenities = new Dictionary<Amenity, PrefLevel>
             {
@@ -35,7 +35,14 @@ namespace ConsolePL
 
             foreach (GuestRequest gr in list)
             {
-                Console.WriteLine(gr);
+                //Console.WriteLine(gr);
+            }
+
+            List<string> citiesInNorth = Config.GetCities[District.North].ConvertAll(c => Config.CityNames[c]);
+
+            foreach (string c in citiesInNorth)
+            {
+                Console.WriteLine(c);
             }
 
             Console.WriteLine("Press any key to exit...");

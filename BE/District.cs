@@ -1,6 +1,6 @@
 ﻿namespace BE
 {
-    public enum Region
+    public enum District
     {
         Jerusalem,
         TelAviv,
