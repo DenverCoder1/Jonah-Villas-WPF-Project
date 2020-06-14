@@ -24,7 +24,7 @@ namespace Project01_3693_dotNet5780
     {
         const bool DEBUG_MODE = true;
 
-        IBL BL = BL_Imp.GetBL();
+        private static IBL MyBL = BL_Imp.GetBL();
 
         /// <summary>
         /// Startup function

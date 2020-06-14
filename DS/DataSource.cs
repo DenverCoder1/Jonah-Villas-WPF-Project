@@ -12,8 +12,8 @@ namespace DS
     // to initialize the lists by several values in the code, for ease of work
     public class DataSource
     {
-        public static List<HostingUnit> HostingUnits;
-        public static List<GuestRequest> GuestRequests;
-        public static List<Order> Orders;
+        public static List<HostingUnit> HostingUnits = new List<HostingUnit>();
+        public static List<GuestRequest> GuestRequests = new List<GuestRequest>();
+        public static List<Order> Orders = new List<Order>();
     }
 }
