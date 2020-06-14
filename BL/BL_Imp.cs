@@ -384,7 +384,7 @@ namespace BL
 
         List<BankBranch> IBL.GetBankBranches()
         {
-            return DalInstance.GetBankBranches();
+            return DalInstance.GetBankBranches().ConvertAll(x => x.Clone());
         }
     }
 }

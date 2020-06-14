@@ -25,6 +25,19 @@ namespace BE
             BranchCity = city;
         }
 
+        public BankBranch Clone()
+        {
+            BankBranch Clone = new BankBranch
+            {
+                BankNumber = this.BankNumber,
+                BankName = this.BankName,
+                BranchNumber = this.BranchNumber,
+                BranchAddress = this.BranchAddress,
+                BranchCity = this.BranchCity
+            };
+            return Clone;
+        }
+
         public override string ToString()
         {
             // concatenate all info to a string

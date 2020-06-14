@@ -35,7 +35,7 @@ namespace ConsolePL
 
             foreach (GuestRequest gr in list)
             {
-                //Console.WriteLine(gr);
+                Console.WriteLine(gr);
             }
 
             List<string> citiesInNorth = Config.GetCities[District.North].ConvertAll(c => Config.CityNames[c]);
