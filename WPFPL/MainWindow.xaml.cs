@@ -25,13 +25,11 @@ namespace Project01_3693_dotNet5780
     /// </summary>
     public partial class MainWindow : Window
     {
-        const bool DEBUG_MODE = true;
-
         private static IBL MyBL;
 
-        public GuestRequest myGuestRequest { get; set; }
+        public GuestRequest guestReq { get; set; }
 
-        public ObservableCollection<string> ObsCityList { get; set; } = new ObservableCollection<string> { "Select a district." };
+        public ObservableCollection<string> DynamicCityList { get; set; } = new ObservableCollection<string> { "Select a district." };
 
         public static List<Control> Tab1Controls;
 
@@ -41,31 +39,7 @@ namespace Project01_3693_dotNet5780
         public MainWindow()
         {
             InitializeComponent();
-
-            gPrefCity.ItemsSource = ObsCityList;
-
-            Tab1Controls = new List<Control>{
-                gFirstName,
-                gLastName,
-                gEmail,
-                gEntryDate,
-                gReleaseDate,
-                gPrefDistrict,
-                gPrefCity,
-                gNumAdults,
-                gNumChildren
-            };
-
             Loaded += MainWindow_Loaded;
-        }
-
-        /// <summary>
-        /// Temporary function for using home page as log
-        /// </summary>
-        /// <param name="text">Text to log</param>
-        private void Log(string text)
-        {
-            //if (DEBUG_MODE) DebugLog.Text += text + "\n";
         }
 
         /// <summary>
@@ -73,8 +47,9 @@ namespace Project01_3693_dotNet5780
         /// </summary>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            gPrefCity.ItemsSource = DynamicCityList;
             MyBL = BL_Imp.GetBL();
-            myGuestRequest = new GuestRequest();
+            guestReq = new GuestRequest();
         }
 
         /// <summary>
@@ -89,33 +64,46 @@ namespace Project01_3693_dotNet5780
             );
         }
 
-        private void SetTab1ControlsVisibility(bool visible)
+        /// <summary>
+        /// Set all input control borders from a given tab
+        /// to be visible or not visible
+        /// </summary>
+        private void SetTabControlsVisibilityByTab(List<Control> TabControls, bool visible)
         {
-            foreach (Control ctrl in Tab1Controls)
+            foreach (Control ctrl in TabControls)
             {
                 ctrl.Width = visible ? Config.CONTROL_WIDTH : 0;
                 ctrl.BorderThickness = visible ? new Thickness(0, 0, 0, 1) : new Thickness(0);
             }
         }
 
-        
-
+        /// <summary>
+        /// Based on selected tab, hide borders of input controls
+        /// from other tabs that should not be visible
+        /// </summary>
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // List of input controls in Tab 1
+            Tab1Controls = new List<Control>{
+                gFirstName, gLastName, gEmail,
+                gEntryDate, gReleaseDate, gPrefDistrict,
+                gPrefCity, gNumAdults, gNumChildren
+            };
+
             if (Tab0.IsSelected) {
-                SetTab1ControlsVisibility(false);
+                SetTabControlsVisibilityByTab(Tab1Controls, false);
             }
             else if (Tab1.IsSelected)
             {
-                SetTab1ControlsVisibility(true);
+                SetTabControlsVisibilityByTab(Tab1Controls, true);
             }
             else if (Tab2.IsSelected)
             {
-                SetTab1ControlsVisibility(false);
+                SetTabControlsVisibilityByTab(Tab1Controls, false);
             }
             else if (Tab3.IsSelected)
             {
-                SetTab1ControlsVisibility(false);
+                SetTabControlsVisibilityByTab(Tab1Controls, false);
             }
         }
 
@@ -130,20 +118,25 @@ namespace Project01_3693_dotNet5780
                 if (selectedDistrict == item.Key.ToString())
                 {
                     List<string> update = Config.GetCities[item.Key].ConvertAll(c => Config.CityNames[c]);
-                    ObsCityList.Clear();
+                    DynamicCityList.Clear();
 
                     foreach (var x in update)
                     {
-                        ObsCityList.Add(x);
+                        DynamicCityList.Add(x);
                     }
                     break;
                 }
             }
-            if (ObsCityList.Count == 0)
+            if (DynamicCityList.Count == 0)
             {
-                ObsCityList.Add("Select a district.");
+                DynamicCityList.Add("Select a district.");
             }
             return;
+        }
+
+        private void Submit_Request_Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

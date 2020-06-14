@@ -370,7 +370,7 @@
                                     </ComboBox>
                                 </Grid>
                                 <StackPanel Grid.Column="1">
-                                    <Label Content="Which amenities are important to you? (you may select multiple):"
+                                    <Label Content="Which amenities are important to you? (you may select multiple)"
                                            Grid.Row="8"
                                            Grid.Column="0"
                                            Margin="0 24 0 6"
@@ -394,7 +394,8 @@
                             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                                     Width="Auto"
                                     HorizontalAlignment="Left"
-                                    Margin="0 20 0 0">
+                                    Margin="0 20 0 0"
+                                    Click="Submit_Request_Button_Click">
                                 SUBMIT REQUEST
                             </Button>
                         </StackPanel>
