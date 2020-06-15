@@ -333,9 +333,7 @@ namespace BL
                 // if one or more required field is missing
                 if (order.OrderKey == default ||
                     order.HostingUnitKey == default ||
-                    order.GuestRequestKey == default ||
-                    order.CreationDate == default ||
-                    order.Status == default)
+                    order.GuestRequestKey == default)
                 {
                     throw new ArgumentException("Order is missing one or more required field.");
                 }

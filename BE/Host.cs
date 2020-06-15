@@ -9,7 +9,7 @@ namespace BE
 {
     public class Host : IEnumerable
     {
-        public int HostKey { get; set; }
+        public long HostKey { get; set; }
         public List<HostingUnit> HostingUnitCollection { get; private set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -18,10 +18,10 @@ namespace BE
         public BankAccount BankDetails { get; set; }
         public bool BankClearance { get; set; }
 
-        public Host(int hk, int numUnits)
+        public Host(int numUnits)
         {
             // set host key
-            HostKey = hk;
+            HostKey = ++Config.stHostKey;
             // create collection and fill with new hosting units
             HostingUnitCollection = new List<HostingUnit>(numUnits);
             for (int i = 0; i < numUnits; ++i)

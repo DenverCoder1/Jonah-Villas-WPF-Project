@@ -32,8 +32,17 @@ namespace DAL
         /// <returns>True if successful</returns>
         bool IDAL.CreateGuestRequest(GuestRequest guestRequest)
         {
-            // add to list
-            DataSource.GuestRequests.Add(guestRequest.Clone());
+            // check if guest request is already in list
+            GuestRequest oldGuestRequest = instance.GetGuestRequests().Find((GuestRequest gr) =>
+                gr.GuestRequestKey == guestRequest.GuestRequestKey
+            );
+
+            // if not in list
+            if (oldGuestRequest == null)
+            {
+                // add to list
+                DataSource.GuestRequests.Add(guestRequest.Clone());
+            }
             return true;
         }
 
@@ -45,15 +54,21 @@ namespace DAL
         bool IDAL.UpdateGuestRequest(GuestRequest newGuestRequest)
         {
             // find guest request in list
-            GuestRequest oldGuestRequest = instance.GetGuestRequests().Find((GuestRequest gr) =>
-                gr.GuestRequestKey == newGuestRequest.GuestRequestKey
-            );
+            IEnumerable<GuestRequest> matches =
+                from GuestRequest item in instance.GetGuestRequests()
+                where item.GuestRequestKey == newGuestRequest.GuestRequestKey
+                select item;
 
-            if (oldGuestRequest == null)
-                throw new ArgumentException("No Guest Request was found with this key.");
+            // if not in list, add it to list
+            if (matches.ToList().Count == 0)
+                instance.CreateGuestRequest(newGuestRequest);
+
+            GuestRequest oldGuestRequest = matches.ToList()[0];
 
             // find index of old guest request
-            int index = DataSource.GuestRequests.IndexOf(oldGuestRequest);
+            int index = DataSource.GuestRequests.FindIndex(item =>
+                item.GuestRequestKey == oldGuestRequest.GuestRequestKey
+            );
             
             // replace with the new guest request
             DataSource.GuestRequests[index] = newGuestRequest.Clone();
@@ -77,8 +92,16 @@ namespace DAL
         /// <returns>True when successful</returns>
         bool IDAL.CreateHostingUnit(HostingUnit hostingUnit)
         {
-            // add Hosting Unit to list
-            DataSource.HostingUnits.Add(hostingUnit.Clone());
+            // check if hosting unit is already in list
+            HostingUnit oldHostingUnit = instance.GetHostingUnits().Find((HostingUnit hu) =>
+                hu.HostingUnitKey == hostingUnit.HostingUnitKey
+            );
+            // if not in list
+            if (oldHostingUnit == null)
+            {
+                // add Hosting Unit to list
+                DataSource.HostingUnits.Add(hostingUnit.Clone());
+            }
             return true;
         }
         /// <summary>
@@ -89,15 +112,21 @@ namespace DAL
         bool IDAL.DeleteHostingUnit(long hostingUnitKey)
         {
             // find hosting unit in list
-            HostingUnit oldHostingUnit = instance.GetHostingUnits().Find((HostingUnit hu) =>
-                hu.HostingUnitKey == hostingUnitKey
-            );
+            IEnumerable<HostingUnit> matches =
+                from HostingUnit item in instance.GetHostingUnits()
+                where item.HostingUnitKey == hostingUnitKey
+                select item;
 
-            if (oldHostingUnit == null)
+            // if not in list, can't delete
+            if (matches.ToList().Count == 0)
                 throw new ArgumentException("No Hosting Unit was found with this key.");
 
-            // find index of old hosting unit
-            int index = DataSource.HostingUnits.IndexOf(oldHostingUnit);
+            HostingUnit oldHostingUnit = matches.ToList()[0];
+
+            // find index of hosting unit
+            int index = DataSource.HostingUnits.FindIndex(item =>
+                item.HostingUnitKey == oldHostingUnit.HostingUnitKey
+            );
 
             // remove
             DataSource.HostingUnits.Remove(oldHostingUnit);
@@ -112,15 +141,21 @@ namespace DAL
         bool IDAL.UpdateHostingUnit(HostingUnit newHostingUnit)
         {
             // find hosting unit in list
-            HostingUnit oldHostingUnit = instance.GetHostingUnits().Find((HostingUnit hu) =>
-                hu.HostingUnitKey == newHostingUnit.HostingUnitKey
+            IEnumerable<HostingUnit> matches =
+                from HostingUnit item in instance.GetHostingUnits()
+                where item.HostingUnitKey == newHostingUnit.HostingUnitKey
+                select item;
+
+            // if not in list, add it to list
+            if (matches.ToList().Count == 0)
+                instance.CreateHostingUnit(newHostingUnit);
+
+            HostingUnit oldHostingUnit = matches.ToList()[0];
+
+            // find index of hosting unit
+            int index = DataSource.HostingUnits.FindIndex(item =>
+                item.HostingUnitKey == oldHostingUnit.HostingUnitKey
             );
-
-            if (oldHostingUnit == null)
-                throw new ArgumentException("No Hosting Unit was found with this key.");
-
-            // find index of old hosting unit
-            int index = DataSource.HostingUnits.IndexOf(oldHostingUnit);
 
             // replace with the new hosting unit
             DataSource.HostingUnits[index] = newHostingUnit.Clone();
@@ -144,8 +179,15 @@ namespace DAL
         /// <returns>True if successful</returns>
         bool IDAL.CreateOrder(Order order)
         {
-            // add Order to list
-            DataSource.Orders.Add(order.Clone());
+            // find order in list
+            Order oldOrder = instance.GetOrders().Find((Order o) =>
+                o.OrderKey == order.OrderKey
+            );
+
+            // if not in list
+            if (oldOrder == null)
+                // add Order to list
+                DataSource.Orders.Add(order.Clone());
             return true;
         }
 
@@ -157,15 +199,21 @@ namespace DAL
         bool IDAL.UpdateOrder(Order newOrder)
         {
             // find order in list
-            Order oldOrder = instance.GetOrders().Find((Order o) =>
-                o.OrderKey == newOrder.OrderKey
-            );
+            IEnumerable<Order> matches =
+                from Order item in instance.GetOrders()
+                where item.OrderKey == newOrder.OrderKey
+                select item;
 
-            if (oldOrder == null)
-                throw new ArgumentException("No order was found with this key.");
+            // if not in list, add it to list
+            if (matches.ToList().Count == 0)
+                instance.CreateOrder(newOrder);
+
+            Order oldOrder = matches.ToList()[0];
 
             // find index of old order
-            int index = DataSource.Orders.IndexOf(oldOrder);
+            int index = DataSource.Orders.FindIndex(o => 
+                o.OrderKey == oldOrder.OrderKey
+            );
 
             // replace with the new order
             DataSource.Orders[index] = newOrder.Clone();

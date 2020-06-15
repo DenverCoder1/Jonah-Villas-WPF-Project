@@ -13,6 +13,18 @@ namespace ConsolePL
         private static IBL MyBL = BL_Imp.GetBL();
         static void Main(string[] args)
         {
+            Order order = new Order(1, 2);
+
+            MyBL.CreateOrder(order);
+
+            order.Status = OrderStatus.NoResponse;
+
+            MyBL.UpdateOrder(order);
+
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey();
+
+
             DateTime entry = DateTime.Now.Date.AddDays(5);
             DateTime release = DateTime.Now.Date.AddDays(10);
             string fname = "Jonah";
