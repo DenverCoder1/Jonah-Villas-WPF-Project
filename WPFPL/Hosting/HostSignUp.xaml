@@ -38,28 +38,26 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Label Content="First Name:"
+                <Label Content="First name:"
                        Grid.Row="0"
                        Grid.Column="0"
                        Margin="0 4"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center" />
                 <TextBox x:Name="hFirstName"
-                         Text="{Binding Host.FirstName, Mode=TwoWay, ValidatesOnExceptions=true}"
                          Grid.Row="0"
                          Grid.Column="1"
                          HorizontalAlignment="Left"
                          Height="24"
                          Margin="0 4"
                          VerticalAlignment="Center" />
-                <Label Content="Last Name:"
+                <Label Content="Last name:"
                        Grid.Row="1"
                        Grid.Column="0"
                        Margin="0 4"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center" />
                 <TextBox x:Name="hLastName"
-                         Text="{Binding Host.LastName, Mode=TwoWay, ValidatesOnExceptions=true}"
                          Grid.Row="1"
                          Grid.Column="1"
                          HorizontalAlignment="Left"
@@ -73,35 +71,32 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center" />
                 <TextBox x:Name="hEmail"
-                         Text="{Binding Host.Email, Mode=TwoWay, ValidatesOnExceptions=true}"
                          Grid.Row="2"
                          Grid.Column="1"
                          HorizontalAlignment="Left"
                          Height="24"
                          Margin="0 4"
                          VerticalAlignment="Center" />
-                <Label Content="Phone Number:"
+                <Label Content="Phone number:"
                        Grid.Row="3"
                        Grid.Column="0"
                        Margin="0 4"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center" />
                 <TextBox x:Name="hPhone"
-                         Text="{Binding Host.PhoneNumber, Mode=TwoWay, ValidatesOnExceptions=true}"
                          Grid.Row="3"
                          Grid.Column="1"
                          HorizontalAlignment="Left"
                          Height="24"
                          Margin="0 4"
                          VerticalAlignment="Center" />
-                <Label Content="Bank Branch:"
+                <Label Content="Bank branch:"
                        Grid.Row="4"
                        Grid.Column="0"
                        Margin="0 4"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center" />
                 <TextBox x:Name="hBranch"
-                         Text="{Binding Host.BankDetails.Branch, Mode=TwoWay, ValidatesOnExceptions=true}"
                          Grid.Row="4"
                          Grid.Column="1"
                          HorizontalAlignment="Left"
@@ -115,7 +110,6 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center" />
                 <TextBox x:Name="hRoutingNumber"
-                         Text="{Binding Host.BankDetails.RoutingNumber, Mode=TwoWay, ValidatesOnExceptions=true}"
                          Grid.Row="5"
                          Grid.Column="1"
                          HorizontalAlignment="Left"

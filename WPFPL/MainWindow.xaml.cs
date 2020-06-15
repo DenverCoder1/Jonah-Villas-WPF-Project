@@ -54,6 +54,17 @@ namespace Project01_3693_dotNet5780
             GuestReq = new GuestRequest();
             HostingFrame.Navigate(new HostSignIn());
             AdminFrame.Navigate(new AdminMenu());
+            MyDialog.IsOpen = false;
+        }
+
+        /// <summary>
+        /// Open custom dialog box with custom text
+        /// </summary>
+        /// <param name="text">Text to insert into box</param>
+        private void Dialog(string text)
+        {
+            MyDialogText.Text = text;
+            MyDialog.IsOpen = true;
         }
 
         /// <summary>
@@ -149,56 +160,60 @@ namespace Project01_3693_dotNet5780
             }
         }
 
+        /// <summary>
+        /// Validate the information inputted to the guest request form
+        /// </summary>
+        /// <returns>True if valid, false if invalid.</returns>
         private bool ValidateGuestForm()
         {
             if (gFirstName.Text.ToString().Length < 2)
             {
-                MessageBox.Show("First name must contain at least 2 letters.");
+                Dialog("First name must contain at least 2 letters.");
                 return false;
             }
             else if (!gFirstName.Text.ToString().All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
             {
-                MessageBox.Show("First name must only contain letters and whitespace.");
+                Dialog("First name must only contain letters and whitespace.");
                 return false;
             }
             else if(gLastName.Text.ToString().Length < 2)
             {
-                MessageBox.Show("Last name must contain at least 2 letters.");
+                Dialog("Last name must contain at least 2 letters.");
                 return false;
             }
             else if (!gLastName.Text.ToString().All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
             {
-                MessageBox.Show("Last name must only contain letters and whitespace.");
+                Dialog("Last name must only contain letters and whitespace.");
                 return false;
             }
             else if (!IsValidEmail(gEmail.Text.ToString()))
             {
-                MessageBox.Show("Email address is not valid.");
+                Dialog("Email address is not valid.");
                 return false;
             }
             else if (!DateTime.TryParse(gEntryDate.SelectedDate.ToString(), out DateTime entry))
             {
-                MessageBox.Show("Entry date is not valid.");
+                Dialog("Entry date is not valid.");
                 return false;
             }
             else if (DateTime.Compare(entry.Date, DateTime.Now.Date) < 0)
             {
-                MessageBox.Show("Entry date must not be before today's date.");
+                Dialog("Entry date must not be before today's date.");
                 return false;
             }
             else if (!DateTime.TryParse(gReleaseDate.SelectedDate.ToString(), out DateTime release))
             {
-                MessageBox.Show("Departure date is not valid.");
+                Dialog("Departure date is not valid.");
                 return false;
             }
             else if (DateTime.Compare(entry.Date, release.Date) >= 0)
             {
-                MessageBox.Show("Entry date must be before departure date.");
+                Dialog("Entry date must be before departure date.");
                 return false;
             }
             else if (DateTime.Compare(release.Date, DateTime.Now.Date.AddMonths(11)) > 0)
             {
-                MessageBox.Show("Bookings can only be made up to 11 months in advance.");
+                Dialog("Bookings can only be made up to 11 months in advance.");
                 return false;
             }
             try
@@ -209,13 +224,13 @@ namespace Project01_3693_dotNet5780
                 }
                 else
                 {
-                    MessageBox.Show("You have not selected a district.");
+                    Dialog("You have not selected a district.");
                     return false;
                 }
             }
             catch (Exception)
             {
-                MessageBox.Show("District selection is not valid.");
+                Dialog("District selection is not valid.");
                 return false;
             }
             try
@@ -226,28 +241,28 @@ namespace Project01_3693_dotNet5780
                 }
                 else
                 {
-                    MessageBox.Show("You have not selected a city.");
+                    Dialog("You have not selected a city.");
                     return false;
                 }
             }
             catch (Exception)
             {
-                MessageBox.Show("City selection is not valid.");
+                Dialog("City selection is not valid.");
                 return false;
             }
             if (gNumAdults.SelectedIndex == -1)
             {
-                MessageBox.Show("Please select the number of adults.");
+                Dialog("Please select the number of adults.");
                 return false;
             }
             else if (gNumChildren.SelectedIndex == -1)
             {
-                MessageBox.Show("Please select the number of children.");
+                Dialog("Please select the number of children.");
                 return false;
             }
             if (gNumAdults.SelectedIndex + gNumChildren.SelectedIndex == 0)
             {
-                MessageBox.Show("Booking must be reserved for at least 1 person.");
+                Dialog("Booking must be reserved for at least 1 person.");
                 return false;
             }
             try
@@ -258,13 +273,13 @@ namespace Project01_3693_dotNet5780
                 }
                 else
                 {
-                    MessageBox.Show("You have not selected a type of place.");
+                    Dialog("You have not selected a type of place.");
                     return false;
                 }
             }
             catch (Exception)
             {
-                MessageBox.Show("Type of place selection is not valid.");
+                Dialog("Type of place selection is not valid.");
                 return false;
             }
             return true;
@@ -301,7 +316,7 @@ namespace Project01_3693_dotNet5780
 
             MyBL.CreateGuestRequest(guest);
 
-            MessageBox.Show("Success! Your request has been added.");
+            Dialog("Success! Your request has been added.");
         }
     }
 }
