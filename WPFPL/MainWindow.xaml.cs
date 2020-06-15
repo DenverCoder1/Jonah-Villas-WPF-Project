@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,9 +31,11 @@ namespace Project01_3693_dotNet5780
     {
         private static IBL MyBL;
 
-        public GuestRequest GuestReq { get; set; }
-
         public ObservableCollection<string> DynamicCityList { get; set; }
+
+        public TabItem CurrentTab { get; set; }
+
+        public static Host MyHost { get; set; }
 
         /// <summary>
         /// Startup function
@@ -40,6 +43,9 @@ namespace Project01_3693_dotNet5780
         public MainWindow()
         {
             InitializeComponent();
+            MyBL = BL_Imp.GetBL();
+            DynamicCityList = new ObservableCollection<string> { "Select a district." };
+            CurrentTab = Tab0;
             Loaded += MainWindow_Loaded;
         }
 
@@ -48,13 +54,29 @@ namespace Project01_3693_dotNet5780
         /// </summary>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            DynamicCityList = new ObservableCollection<string> { "Select a district." };
             gPrefCity.ItemsSource = DynamicCityList;
-            MyBL = BL_Imp.GetBL();
-            GuestReq = new GuestRequest();
             HostingFrame.Navigate(new HostSignIn());
             AdminFrame.Navigate(new AdminMenu());
             MyDialog.IsOpen = false;
+
+            DateTime entry = DateTime.Now.Date.AddDays(5);
+            DateTime release = DateTime.Now.Date.AddDays(10);
+            string fname = "Jonah";
+            string lname = "Lawrence";
+            string email = "jonah@google.com";
+            District region = District.TelAviv;
+            City city = City.BneiBrak;
+            BE.TypeOfPlace type = BE.TypeOfPlace.Apartment;
+            Dictionary<Amenity, PrefLevel> amenities = new Dictionary<Amenity, PrefLevel>
+            {
+                [Amenity.TV] = PrefLevel.Required,
+                [Amenity.Pool] = PrefLevel.NotInterested,
+                [Amenity.Kitchen] = PrefLevel.Required
+            };
+
+            GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
+
+            MyBL.CreateGuestRequest(guest);
         }
 
         /// <summary>
@@ -92,29 +114,34 @@ namespace Project01_3693_dotNet5780
                 gPrefCity, gNumAdults, gNumChildren, gPrefType
             };
 
-            if (Tab0.IsSelected) {
+            if (CurrentTab != Tab0 && Tab0.IsSelected)
+            {
+                CurrentTab = Tab0;
                 Util.SetTabControlsVisibility(Tab1Controls, false);
                 if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
                 if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
-
             }
-            else if (Tab1.IsSelected)
+            else if (CurrentTab != Tab1 && Tab1.IsSelected)
             {
+                CurrentTab = Tab1;
                 Util.SetTabControlsVisibility(Tab1Controls, true);
                 if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
                 if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
             }
-            else if (Tab2.IsSelected)
+            else if (CurrentTab != Tab2 && Tab2.IsSelected)
             {
+                CurrentTab = Tab2;
                 Util.SetTabControlsVisibility(Tab1Controls, false);
                 if (HostSignUp.SignUpControls != null) HostSignUp.ShowControls();
                 if (HostSignIn.SignInControls != null) HostSignIn.ShowControls();
             }
-            else if (Tab3.IsSelected)
+            else if (CurrentTab != Tab3 && Tab3.IsSelected)
             {
+                CurrentTab = Tab3;
                 Util.SetTabControlsVisibility(Tab1Controls, false);
                 if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
                 if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
+                AdminRequests.Refresh();
             }
         }
 
@@ -145,178 +172,48 @@ namespace Project01_3693_dotNet5780
         }
 
         /// <summary>
-        /// Check if an email address is valid
-        /// </summary>
-        private bool IsValidEmail(string email)
-        {
-            try
-            {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Validate the information inputted to the guest request form
-        /// </summary>
-        /// <returns>True if valid, false if invalid.</returns>
-        private bool ValidateGuestForm()
-        {
-            if (gFirstName.Text.ToString().Length < 2)
-            {
-                Dialog("First name must contain at least 2 letters.");
-                return false;
-            }
-            else if (!gFirstName.Text.ToString().All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
-            {
-                Dialog("First name must only contain letters and whitespace.");
-                return false;
-            }
-            else if(gLastName.Text.ToString().Length < 2)
-            {
-                Dialog("Last name must contain at least 2 letters.");
-                return false;
-            }
-            else if (!gLastName.Text.ToString().All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
-            {
-                Dialog("Last name must only contain letters and whitespace.");
-                return false;
-            }
-            else if (!IsValidEmail(gEmail.Text.ToString()))
-            {
-                Dialog("Email address is not valid.");
-                return false;
-            }
-            else if (!DateTime.TryParse(gEntryDate.SelectedDate.ToString(), out DateTime entry))
-            {
-                Dialog("Entry date is not valid.");
-                return false;
-            }
-            else if (DateTime.Compare(entry.Date, DateTime.Now.Date) < 0)
-            {
-                Dialog("Entry date must not be before today's date.");
-                return false;
-            }
-            else if (!DateTime.TryParse(gReleaseDate.SelectedDate.ToString(), out DateTime release))
-            {
-                Dialog("Departure date is not valid.");
-                return false;
-            }
-            else if (DateTime.Compare(entry.Date, release.Date) >= 0)
-            {
-                Dialog("Entry date must be before departure date.");
-                return false;
-            }
-            else if (DateTime.Compare(release.Date, DateTime.Now.Date.AddMonths(11)) > 0)
-            {
-                Dialog("Bookings can only be made up to 11 months in advance.");
-                return false;
-            }
-            try
-            {
-                if (gPrefDistrict.SelectedItem != null)
-                {
-                    District _ = (District)Enum.Parse(typeof(District), gPrefDistrict.SelectedItem.ToString().Replace(" ", ""));
-                }
-                else
-                {
-                    Dialog("You have not selected a district.");
-                    return false;
-                }
-            }
-            catch (Exception)
-            {
-                Dialog("District selection is not valid.");
-                return false;
-            }
-            try
-            {
-                if (gPrefCity.SelectedItem != null)
-                {
-                    City _ = (City)Enum.Parse(typeof(City), gPrefCity.SelectedItem.ToString().Replace(" ", ""));
-                }
-                else
-                {
-                    Dialog("You have not selected a city.");
-                    return false;
-                }
-            }
-            catch (Exception)
-            {
-                Dialog("City selection is not valid.");
-                return false;
-            }
-            if (gNumAdults.SelectedIndex == -1)
-            {
-                Dialog("Please select the number of adults.");
-                return false;
-            }
-            else if (gNumChildren.SelectedIndex == -1)
-            {
-                Dialog("Please select the number of children.");
-                return false;
-            }
-            if (gNumAdults.SelectedIndex + gNumChildren.SelectedIndex == 0)
-            {
-                Dialog("Booking must be reserved for at least 1 person.");
-                return false;
-            }
-            try
-            {
-                if (gPrefType.SelectedItem != null)
-                {
-                    TypeOfPlace _ = (TypeOfPlace)Enum.Parse(typeof(TypeOfPlace), gPrefType.SelectedItem.ToString().Replace(" ", ""));
-                }
-                else
-                {
-                    Dialog("You have not selected a type of place.");
-                    return false;
-                }
-            }
-            catch (Exception)
-            {
-                Dialog("Type of place selection is not valid.");
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Create guest request from submitted info
         /// </summary>
         private void Submit_Request_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidateGuestForm())
-                return;
-            string fname = gFirstName.Text.ToString();
-            string lname = gLastName.Text.ToString();
-            string email = gEmail.Text.ToString();
-            DateTime.TryParse(gEntryDate.SelectedDate.ToString(), out DateTime entry);
-            DateTime.TryParse(gReleaseDate.SelectedDate.ToString(), out DateTime release);
-            Enum.TryParse(gPrefDistrict.SelectedItem.ToString().Replace(" ", ""), out District district);
-            Enum.TryParse(gPrefCity.SelectedItem.ToString().Replace(" ", ""), out City city);
-            int numAdults = gNumAdults.SelectedIndex;
-            int numChildren = gNumChildren.SelectedIndex;
-            Enum.TryParse(gPrefType.SelectedItem.ToString().Replace(" ", ""), out TypeOfPlace type);
-            System.Collections.IList selectedAmenities = gAmenities.SelectedItems;
-            Dictionary<Amenity, PrefLevel> amenities = new Dictionary<Amenity, PrefLevel>();
-            foreach (Amenity amenity in Enum.GetValues(typeof(Amenity)))
+            try
             {
-                if (selectedAmenities.IndexOf(amenity) > -1)
-                    amenities[amenity] = PrefLevel.Required;
-                else
-                    amenities[amenity] = PrefLevel.NotInterested;
+                string fname = gFirstName.Text.ToString();
+                string lname = gLastName.Text.ToString();
+                string email = gEmail.Text.ToString();
+                DateTime.TryParse(gEntryDate.SelectedDate.ToString(), out DateTime entry);
+                DateTime.TryParse(gReleaseDate.SelectedDate.ToString(), out DateTime release);
+                object districtObj = gPrefDistrict.SelectedItem;
+                object cityObj = gPrefCity.SelectedItem;
+                int numAdults = gNumAdults.SelectedIndex;
+                int numChildren = gNumChildren.SelectedIndex;
+                object prefTypeObj = gPrefType.SelectedItem;
+                System.Collections.IList selectedAmenities = gAmenities.SelectedItems;
+                Dictionary<Amenity, PrefLevel> amenities = new Dictionary<Amenity, PrefLevel>();
+                foreach (Amenity amenity in Enum.GetValues(typeof(Amenity)))
+                {
+                    if (selectedAmenities.IndexOf(amenity) > -1)
+                        amenities[amenity] = PrefLevel.Required;
+                    else
+                        amenities[amenity] = PrefLevel.NotInterested;
+                }
+
+                MyBL.ValidateGuestForm(fname, lname, email, entry.ToString(), release.ToString(), districtObj, cityObj, numAdults, numChildren, prefTypeObj);
+
+                Enum.TryParse(gPrefDistrict.SelectedItem.ToString().Replace(" ", ""), out District district);
+                Enum.TryParse(gPrefCity.SelectedItem.ToString().Replace(" ", ""), out City city);
+                Enum.TryParse(gPrefType.SelectedItem.ToString().Replace(" ", ""), out TypeOfPlace prefType);
+
+                GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, district, city, prefType, numAdults, numChildren, amenities);
+
+                MyBL.CreateGuestRequest(guest);
+
+                Dialog("Success! Your request has been added.");
             }
-
-            GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, district, city, type, numAdults, numChildren, amenities);
-
-            MyBL.CreateGuestRequest(guest);
-
-            Dialog("Success! Your request has been added.");
+            catch (InvalidDataException error)
+            {
+                Dialog(error.Message.ToString());
+            }
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using BE;
 
 namespace BL
@@ -197,6 +199,152 @@ namespace BL
         List<BankBranch> IBL.GetBankBranches()
         {
             return DalInstance.GetBankBranches().ConvertAll(x => x.Clone());
+        }
+
+        // VALIDATION
+
+        /// <summary>
+        /// Validate the information inputted to the guest request form
+        /// </summary>
+        /// <returns>True if valid, false if invalid.</returns>
+        bool IBL.ValidateGuestForm(
+            string fname,
+            string lname,
+            string email,
+            string entryDate,
+            string releaseDate,
+            object district,
+            object city,
+            int numAdults,
+            int numChildren,
+            object prefType)
+        {
+            if (fname.Length < 2)
+            {
+                throw new InvalidDataException("First name must contain at least 2 letters.");
+            }
+            else if (!fname.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+            {
+                throw new InvalidDataException("First name must only contain letters and whitespace.");
+            }
+            else if (lname.Length < 2)
+            {
+                throw new InvalidDataException("Last name must contain at least 2 letters.");
+            }
+            else if (!lname.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+            {
+                throw new InvalidDataException("Last name must only contain letters and whitespace.");
+            }
+            else if (!instance.IsValidEmail(email))
+            {
+                throw new InvalidDataException("Email address is not valid.");
+            }
+            else if (!DateTime.TryParse(entryDate, out DateTime entry))
+            {
+                throw new InvalidDataException("Entry date is not valid.");
+            }
+            else if (DateTime.Compare(entry.Date, DateTime.Now.Date) < 0)
+            {
+                throw new InvalidDataException("Entry date must not be before today's date.");
+            }
+            else if (!DateTime.TryParse(releaseDate, out DateTime release))
+            {
+                throw new InvalidDataException("Departure date is not valid.");
+            }
+            else if (DateTime.Compare(entry.Date, release.Date) >= 0)
+            {
+                throw new InvalidDataException("Entry date must be before departure date.");
+            }
+            else if (DateTime.Compare(release.Date, DateTime.Now.Date.AddMonths(11)) > 0)
+            {
+                throw new InvalidDataException("Bookings can only be made up to 11 months in advance.");
+            }
+            try
+            {
+                if (district != null && district.ToString() is string d)
+                {
+                    District _ = (District)Enum.Parse(typeof(District), d.Replace(" ", ""));
+                }
+                else
+                {
+                    throw new InvalidDataException("You have not selected a district.");
+                }
+            }
+            catch (InvalidDataException e)
+            {
+                throw e;
+            }
+            catch (Exception)
+            {
+                throw new InvalidDataException("District selection is not valid.");
+            }
+            try
+            {
+                if (city != null && city.ToString() is string c)
+                {
+                    City _ = (City)Enum.Parse(typeof(City), c.Replace(" ", ""));
+                }
+                else
+                {
+                    throw new InvalidDataException("You have not selected a city.");
+                }
+            }
+            catch (InvalidDataException e)
+            {
+                throw e;
+            }
+            catch (Exception)
+            {
+                throw new InvalidDataException("City selection is not valid.");
+            }
+            if (numAdults == -1)
+            {
+                throw new InvalidDataException("Please select the number of adults.");
+            }
+            else if (numChildren == -1)
+            {
+                throw new InvalidDataException("Please select the number of children.");
+            }
+            if (numAdults < 1)
+            {
+                throw new InvalidDataException("Booking must have at least 1 adult.");
+            }
+            try
+            {
+                if (prefType != null && prefType.ToString() is string pt)
+                {
+                    TypeOfPlace _ = (TypeOfPlace)Enum.Parse(typeof(TypeOfPlace), pt.Replace(" ", ""));
+                }
+                else
+                {
+                    throw new InvalidDataException("You have not selected a rental type.");
+                }
+            }
+            catch (InvalidDataException e)
+            {
+                throw e;
+            }
+            catch (Exception)
+            {
+                throw new InvalidDataException("Rental type selection is not valid.");
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Check if an email address is valid
+        /// </summary>
+        bool IBL.IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

@@ -29,7 +29,7 @@ namespace WPFPL
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
-            RequestCollection = new ObservableCollection<string> { "Test" };
+            RequestCollection = new ObservableCollection<string>();
             Requests.ItemsSource = RequestCollection;
         }
 

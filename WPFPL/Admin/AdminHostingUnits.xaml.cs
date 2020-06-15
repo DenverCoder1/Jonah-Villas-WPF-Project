@@ -29,7 +29,7 @@ namespace WPFPL.Admin
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
-            HostingUnitCollection = new ObservableCollection<string> { "Test" };
+            HostingUnitCollection = new ObservableCollection<string>();
             HostingUnits.ItemsSource = HostingUnitCollection;
         }
 

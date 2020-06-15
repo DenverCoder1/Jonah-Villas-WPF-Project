@@ -97,9 +97,11 @@ namespace BE
         {
             StringBuilder output = new StringBuilder();
 
-            output.AppendLine("Entry Date: " + EntryDate.ToString("dd.MM.yyyy"));
-            output.AppendLine("Release Date: " + ReleaseDate.ToString("dd.MM.yyyy"));
-            output.AppendLine("Is Approved: " + Status.ToString());
+            output.AppendLine($"{GuestRequestKey} : {LastName}, {FirstName}");
+            output.AppendLine($"{NumAdults} Adults, {NumChildren} Children");
+            output.AppendLine($"{PrefType} in {PrefCity}, {PrefDistrict}");
+            output.AppendLine($"{EntryDate:dd.MM.yyyy} - {ReleaseDate:dd.MM.yyyy}");
+            output.AppendLine($"Status: {Status}");
 
             return output.ToString();
         }

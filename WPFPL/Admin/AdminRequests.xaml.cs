@@ -1,7 +1,10 @@
-﻿using Project01_3693_dotNet5780;
+﻿using BE;
+using BL;
+using Project01_3693_dotNet5780;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,13 +27,29 @@ namespace WPFPL.Admin
     {
         public MainWindow mainWindow;
 
-        public ObservableCollection<string> RequestCollection { get; set; }
+        private static IBL MyBL;
+
+        public static ObservableCollection<string> RequestCollection { get; set; }
         public AdminRequests()
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
-            RequestCollection = new ObservableCollection<string> { "Test" };
+            MyBL = BL_Imp.GetBL();
+            RequestCollection = new ObservableCollection<string>();
             Requests.ItemsSource = RequestCollection;
+            Refresh();
+        }
+
+        public static void Refresh()
+        {
+            if (RequestCollection != null)
+            {
+                RequestCollection.Clear();
+                foreach (BE.GuestRequest item in MyBL.GetGuestRequests())
+                {
+                    RequestCollection.Add(item.ToString());
+                }
+            }
         }
 
         private void Return_To_Menu(object sender, RoutedEventArgs e)
@@ -40,7 +59,19 @@ namespace WPFPL.Admin
 
         private void Create_Order(object sender, RoutedEventArgs e)
         {
+            //if (Requests.SelectedIndex >= 0)
+            //{
+            //    if (MainWindow.MyHost != null) {
+            //        long huKey = MyBL.GetHostingUnits(MainWindow.MyHost);
+            //        long grKey = MyBL.GetGuestRequests()[Requests.SelectedIndex].GuestRequestKey;
+            //        Order order = new Order(huKey, grKey);
+                    
+            //    }
+            //    else
+            //    {
 
+            //    }
+            //}
         }
     }
 }

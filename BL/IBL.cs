@@ -27,5 +27,20 @@ namespace BL
 
         // bank branches
         List<BankBranch> GetBankBranches();
+
+        // validation
+        bool ValidateGuestForm(
+            string fname,
+            string lname,
+            string email,
+            string entryDate,
+            string releaseDate,
+            object district,
+            object city,
+            int numAdults,
+            int numChildren,
+            object prefType);
+
+        bool IsValidEmail(string email);
     }
 }

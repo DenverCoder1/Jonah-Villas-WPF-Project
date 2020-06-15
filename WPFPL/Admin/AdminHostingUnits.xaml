@@ -18,7 +18,7 @@
             <ListBox x:Name="HostingUnits"
                      Width="280"
                      Height="280"
-                     SelectionMode="Multiple"
+                     SelectionMode="Single"
                      BorderBrush="#e6e6e6"
                      BorderThickness="1"
                      HorizontalAlignment="Left">
