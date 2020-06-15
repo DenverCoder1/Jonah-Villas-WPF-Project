@@ -8,8 +8,6 @@ namespace BE
 {
     public class HostingUnit
     {
-        // Static counter for serial keys
-        private static long stHostingUnitKey = Config.INITIAL_HOSTING_UNIT_KEY;
         // Serial key
         public long HostingUnitKey { get; private set; }
         // Calendar
@@ -22,14 +20,14 @@ namespace BE
         public HostingUnit()
         {
             // get next available serial number
-            HostingUnitKey = ++stHostingUnitKey;
+            HostingUnitKey = ++Config.stHostingUnitKey;
             Calendar = new List<DateRange>();
         }
 
         public HostingUnit(Host owner, string name)
         {
             // get next available serial number
-            HostingUnitKey = ++stHostingUnitKey;
+            HostingUnitKey = ++Config.stHostingUnitKey;
             Calendar = new List<DateRange>();
             Owner = owner;
             UnitName = name;

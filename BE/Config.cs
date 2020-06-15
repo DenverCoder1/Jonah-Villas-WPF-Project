@@ -14,6 +14,11 @@ namespace BE
         public static long INITIAL_HOSTING_UNIT_KEY = 1;
         public static long INITIAL_GUEST_REQUEST_KEY = 1;
 
+        // Static counters for serial keys
+        public static long stOrderKey = INITIAL_ORDER_KEY;
+        public static long stHostingUnitKey = INITIAL_HOSTING_UNIT_KEY;
+        public static long stGuestRequestKey = INITIAL_GUEST_REQUEST_KEY;
+
         // UI
         public static int CONTROL_WIDTH = 160;
 

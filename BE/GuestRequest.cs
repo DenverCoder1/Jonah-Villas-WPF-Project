@@ -8,9 +8,6 @@ namespace BE
 {
     public class GuestRequest
     {
-        // static counter for serial keys
-        public static long stGuestRequestKey = Config.INITIAL_GUEST_REQUEST_KEY;
-
         // request details
         public long GuestRequestKey { get; set; }
         public DateTime EntryDate { get; set; }
@@ -32,7 +29,7 @@ namespace BE
 
         public GuestRequest()
         {
-            GuestRequestKey = ++stGuestRequestKey;
+            GuestRequestKey = ++Config.stGuestRequestKey;
             Status = GuestStatus.Open;
             PrefAmenities = new Dictionary<Amenity, PrefLevel>();
         }
@@ -50,7 +47,7 @@ namespace BE
             int numChildren,
             Dictionary<Amenity, PrefLevel> amenities)
         {
-            GuestRequestKey = ++stGuestRequestKey;
+            GuestRequestKey = ++Config.stGuestRequestKey;
             Status = GuestStatus.Open;
             EntryDate = entry;
             ReleaseDate = release;

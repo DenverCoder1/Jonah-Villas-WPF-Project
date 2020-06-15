@@ -8,8 +8,6 @@ namespace BE
 {
     public class Order
     {
-        // static counter for serial keys
-        private static long stOrderKey = Config.INITIAL_ORDER_KEY;
         public long HostingUnitKey { get; set; }
         public long GuestRequestKey { get; set; }
         public long OrderKey { get; private set; }
@@ -20,14 +18,14 @@ namespace BE
         public Order()
         {
             // get next available serial number
-            OrderKey = ++stOrderKey;
+            OrderKey = ++Config.stOrderKey;
             Status = OrderStatus.NotYetHandled;
         }
 
         public Order(long huKey, long grKey)
         {
             // get next available serial number
-            OrderKey = ++stOrderKey;
+            OrderKey = ++Config.stOrderKey;
             HostingUnitKey = huKey;
             GuestRequestKey = grKey;
             Status = OrderStatus.NotYetHandled;
