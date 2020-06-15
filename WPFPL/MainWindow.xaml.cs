@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using System.Xaml;
 using BE;
 using BL;
+using WPFPL;
 
 namespace Project01_3693_dotNet5780
 {
@@ -50,6 +51,7 @@ namespace Project01_3693_dotNet5780
             gPrefCity.ItemsSource = DynamicCityList;
             MyBL = BL_Imp.GetBL();
             GuestReq = new GuestRequest();
+            HostingFrame.Navigate(new HostSignIn());
         }
 
         /// <summary>
@@ -62,19 +64,6 @@ namespace Project01_3693_dotNet5780
                 MainTabControl.SelectedIndex =
                     int.Parse(((Button)sender).Tag.ToString()))
             );
-        }
-
-        /// <summary>
-        /// Set all input control borders from a given tab
-        /// to be visible or not visible
-        /// </summary>
-        private void SetTabControlsVisibilityByTab(List<Control> TabControls, bool visible)
-        {
-            foreach (Control ctrl in TabControls)
-            {
-                ctrl.Width = visible ? Config.CONTROL_WIDTH : 0;
-                ctrl.BorderThickness = visible ? new Thickness(0, 0, 0, 1) : new Thickness(0);
-            }
         }
 
         /// <summary>
@@ -91,19 +80,23 @@ namespace Project01_3693_dotNet5780
             };
 
             if (Tab0.IsSelected) {
-                SetTabControlsVisibilityByTab(Tab1Controls, false);
+                Util.SetTabControlsVisibility(Tab1Controls, false);
+                if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
             }
             else if (Tab1.IsSelected)
             {
-                SetTabControlsVisibilityByTab(Tab1Controls, true);
+                Util.SetTabControlsVisibility(Tab1Controls, true);
+                if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
             }
             else if (Tab2.IsSelected)
             {
-                SetTabControlsVisibilityByTab(Tab1Controls, false);
+                Util.SetTabControlsVisibility(Tab1Controls, false);
+                if (HostSignUp.SignUpControls != null) HostSignUp.ShowControls();
             }
             else if (Tab3.IsSelected)
             {
-                SetTabControlsVisibilityByTab(Tab1Controls, false);
+                Util.SetTabControlsVisibility(Tab1Controls, false);
+                if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
             }
         }
 

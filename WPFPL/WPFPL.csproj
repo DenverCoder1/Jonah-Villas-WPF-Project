@@ -72,6 +72,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="HostChoices.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HostOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HostRequests.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HostSignIn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HostSignUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -80,12 +100,35 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HostChoices.xaml.cs">
+      <DependentUpon>HostChoices.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HostOrders.xaml.cs">
+      <DependentUpon>HostOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HostRequests.xaml.cs">
+      <DependentUpon>HostRequests.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HostSignUp.xaml.cs">
+      <DependentUpon>HostSignUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Util.cs" />
+    <Compile Include="HostSignIn.xaml.cs">
+      <DependentUpon>HostSignIn.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MyHostingUnits.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MyHostingUnits.xaml.cs">
+      <DependentUpon>MyHostingUnits.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

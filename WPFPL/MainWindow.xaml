@@ -433,12 +433,16 @@
 				<TabItem Header="HOSTING"
                          x:Name="Tab2">
 					<materialDesign:Card Padding="32" Margin="16">
-						<TextBlock FontFamily="{StaticResource OpenSans}"
-								   FontWeight="Light"
-								   FontSize="22px">
-							Welcome, host!
-						</TextBlock>
-					</materialDesign:Card>
+                        <StackPanel>
+                            <TextBlock FontFamily="{StaticResource OpenSans}"
+                                       FontWeight="Light"
+                                       FontSize="22px">
+							    Welcome, host!
+                            </TextBlock>
+                            <Frame x:Name="HostingFrame" 
+                                   NavigationUIVisibility="Hidden" />
+                        </StackPanel>
+                    </materialDesign:Card>
 				</TabItem>
 				<TabItem Header="ADMIN"
                          x:Name="Tab3">

@@ -1,0 +1,47 @@
+﻿<Page x:Class="WPFPL.HostSignIn"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WPFPL"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="HostSignIn">
+
+    <Grid>
+        <StackPanel>
+            <TextBlock FontFamily="{StaticResource OpenSans}"
+                       FontWeight="Light"
+                       FontSize="16px"
+                       Margin="0 20 0 0">
+			    Enter your Host ID:
+            </TextBlock>
+            <TextBox x:Name="HostID"
+                     HorizontalAlignment="Left"
+                     Height="24"
+                     Margin="0 15 0 0"
+                     VerticalAlignment="Center"
+                     Width="140" />
+            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                    Width="Auto"
+                    HorizontalAlignment="Left"
+                    Margin="0 15 0 0"
+                    Click="Host_Enter_Button_Click">
+                ENTER HOSTING AREA
+            </Button>
+            <TextBlock FontFamily="{StaticResource OpenSans}"
+                       FontWeight="Light"
+                       FontSize="16px"
+                       Margin="0 30 0 0">
+							    Don't yet have a Host ID?
+            </TextBlock>
+            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                    Width="Auto"
+                    HorizontalAlignment="Left"
+                    Margin="0 15 0 0"
+                    Click="Host_Sign_Up_Button_Click">
+                SIGN UP FOR HOSTING
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>

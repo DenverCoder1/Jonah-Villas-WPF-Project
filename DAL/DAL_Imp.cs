@@ -184,10 +184,13 @@ namespace DAL
                 o.OrderKey == order.OrderKey
             );
 
+            order.CreationDate = DateTime.Now.Date;
+
             // if not in list
             if (oldOrder == null)
                 // add Order to list
                 DataSource.Orders.Add(order.Clone());
+
             return true;
         }
 

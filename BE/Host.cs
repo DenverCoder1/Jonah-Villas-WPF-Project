@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace BE
 {
-    public class Host : IEnumerable
+    public class Host
     {
         public long HostKey { get; set; }
-        public List<HostingUnit> HostingUnitCollection { get; private set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -18,55 +17,39 @@ namespace BE
         public BankAccount BankDetails { get; set; }
         public bool BankClearance { get; set; }
 
-        public Host(int numUnits)
+        public Host()
         {
             // set host key
             HostKey = ++Config.stHostKey;
-            // create collection and fill with new hosting units
-            HostingUnitCollection = new List<HostingUnit>(numUnits);
-            for (int i = 0; i < numUnits; ++i)
+        }
+
+        // deep copy (clone)
+        public Host Clone()
+        {
+            Host Clone = new Host
             {
-                HostingUnitCollection.Add(new HostingUnit());
-            }
+                HostKey = this.HostKey,
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                Email = this.Email,
+                PhoneNumber = this.PhoneNumber,
+                BankDetails = this.BankDetails,
+                BankClearance = this.BankClearance
+            };
+            return Clone;
         }
 
         public override string ToString()
         {
             // concatenate all hosting unit info to a string
             StringBuilder output = new StringBuilder();
-            foreach (HostingUnit hu in HostingUnitCollection)
-            {
-                if (hu != null)
-                {
-                    output.AppendLine(hu.ToString());
-                }
-            }
+            output.AppendLine($"First Name: {FirstName}");
+            output.AppendLine($"Last Name: {LastName}");
+            output.AppendLine($"Email: {Email}");
+            output.AppendLine($"Phone Number: {PhoneNumber}");
+            output.AppendLine($"Bank Details: {BankDetails}");
+            output.AppendLine($"Bank Clearance: {BankClearance}");
             return output.ToString();
         }
-
-        // IEnumerator
-        public IEnumerator GetEnumerator()
-        {
-            foreach (HostingUnit hu in HostingUnitCollection)
-            {
-                yield return hu;
-            }
-        }
-
-        // indexer
-        public HostingUnit this[int index]
-        {
-            get
-            {
-                return HostingUnitCollection[index];
-            }
-
-            set
-            {
-                HostingUnitCollection[index] = value;
-            }
-        }
-
-
     }
 }
