@@ -49,13 +49,11 @@ namespace WPFPL
         {
             // TODO: Create Host Account
 
-            HideControls();
-            mainWindow.HostingFrame.Navigate(new HostChoices());
+            mainWindow.HostingFrame.Navigate(new HostMenu());
         }
 
         private void Return_To_Sign_In(object sender, RoutedEventArgs e)
         {
-            HideControls();
             mainWindow.HostingFrame.Navigate(new HostSignIn());
         }
     }

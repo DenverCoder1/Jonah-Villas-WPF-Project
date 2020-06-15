@@ -80,6 +80,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Admin\AdminMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Admin\AdminOrders.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -88,7 +92,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Hosting\HostChoices.xaml">
+    <Page Include="Hosting\HostMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -118,6 +122,9 @@
     <Compile Include="Admin\AdminHosts.xaml.cs">
       <DependentUpon>AdminHosts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Admin\AdminMenu.xaml.cs">
+      <DependentUpon>AdminMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Admin\AdminOrders.xaml.cs">
       <DependentUpon>AdminOrders.xaml</DependentUpon>
     </Compile>
@@ -128,8 +135,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Hosting\HostChoices.xaml.cs">
-      <DependentUpon>HostChoices.xaml</DependentUpon>
+    <Compile Include="Hosting\HostMenu.xaml.cs">
+      <DependentUpon>HostMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Hosting\HostOrders.xaml.cs">
       <DependentUpon>HostOrders.xaml</DependentUpon>

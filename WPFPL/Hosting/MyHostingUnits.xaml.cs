@@ -35,7 +35,7 @@ namespace WPFPL
 
         private void Return_To_Options(object sender, RoutedEventArgs e)
         {
-            mainWindow.HostingFrame.Navigate(new HostChoices());
+            mainWindow.HostingFrame.Navigate(new HostMenu());
         }
 
         private void Update_Hosting_Unit(object sender, RoutedEventArgs e)

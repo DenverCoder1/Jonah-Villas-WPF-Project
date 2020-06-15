@@ -22,15 +22,31 @@ namespace WPFPL
     public partial class HostSignIn : Page
     {
         public MainWindow mainWindow;
+
+        public static List<Control> SignInControls;
         public HostSignIn()
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
+            SignInControls = new List<Control>{
+                HostID
+            };
+            ShowControls();
+        }
+
+        public static void ShowControls()
+        {
+            Util.SetTabControlsVisibility(SignInControls, true);
+        }
+
+        public static void HideControls()
+        {
+            Util.SetTabControlsVisibility(SignInControls, false);
         }
 
         private void Host_Enter_Button_Click(object sender, RoutedEventArgs e)
         {
-            mainWindow.HostingFrame.Navigate(new HostChoices());
+            mainWindow.HostingFrame.Navigate(new HostMenu());
         }
 
         private void Host_Sign_Up_Button_Click(object sender, RoutedEventArgs e)

@@ -447,12 +447,16 @@
 				<TabItem Header="ADMIN"
                          x:Name="Tab3">
 					<materialDesign:Card Padding="32" Margin="16">
-						<TextBlock FontFamily="{StaticResource OpenSans}"
-								   FontWeight="Light"
-								   FontSize="22px">
-							Welcome, admin!
-						</TextBlock>
-					</materialDesign:Card>
+                        <StackPanel>
+                            <TextBlock FontFamily="{StaticResource OpenSans}"
+                                       FontWeight="Light"
+                                       FontSize="22px">
+							    Welcome, admin!
+                            </TextBlock>
+                            <Frame x:Name="AdminFrame"
+                                   NavigationUIVisibility="Hidden" />
+                        </StackPanel>
+                    </materialDesign:Card>
 				</TabItem>
 			</dragablz:TabablzControl>
 		</Grid>

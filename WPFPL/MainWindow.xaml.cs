@@ -18,6 +18,7 @@ using System.Xaml;
 using BE;
 using BL;
 using WPFPL;
+using WPFPL.Admin;
 
 namespace Project01_3693_dotNet5780
 {
@@ -52,6 +53,7 @@ namespace Project01_3693_dotNet5780
             MyBL = BL_Imp.GetBL();
             GuestReq = new GuestRequest();
             HostingFrame.Navigate(new HostSignIn());
+            AdminFrame.Navigate(new AdminMenu());
         }
 
         /// <summary>
@@ -82,21 +84,26 @@ namespace Project01_3693_dotNet5780
             if (Tab0.IsSelected) {
                 Util.SetTabControlsVisibility(Tab1Controls, false);
                 if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
+                if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
+
             }
             else if (Tab1.IsSelected)
             {
                 Util.SetTabControlsVisibility(Tab1Controls, true);
                 if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
+                if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
             }
             else if (Tab2.IsSelected)
             {
                 Util.SetTabControlsVisibility(Tab1Controls, false);
                 if (HostSignUp.SignUpControls != null) HostSignUp.ShowControls();
+                if (HostSignIn.SignInControls != null) HostSignIn.ShowControls();
             }
             else if (Tab3.IsSelected)
             {
                 Util.SetTabControlsVisibility(Tab1Controls, false);
                 if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
+                if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
             }
         }
 

@@ -14,16 +14,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFPL
+namespace WPFPL.Admin
 {
     /// <summary>
-    /// Interaction logic for HostChoices.xaml
+    /// Interaction logic for AdminMenu.xaml
     /// </summary>
-    public partial class HostChoices : Page
+    public partial class AdminMenu : Page
     {
-
         public MainWindow mainWindow;
-        public HostChoices()
+        public AdminMenu()
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
@@ -31,22 +30,17 @@ namespace WPFPL
 
         private void View_Hosting_Units_Page(object sender, RoutedEventArgs e)
         {
-            mainWindow.HostingFrame.Navigate(new MyHostingUnits());
-        }
-
-        private void Return_To_Sign_In(object sender, RoutedEventArgs e)
-        {
-            mainWindow.HostingFrame.Navigate(new HostSignIn());
+            mainWindow.AdminFrame.Navigate(new AdminHostingUnits());
         }
 
         private void View_Requests(object sender, RoutedEventArgs e)
         {
-            mainWindow.HostingFrame.Navigate(new HostRequests());
+            mainWindow.AdminFrame.Navigate(new AdminRequests());
         }
 
         private void View_Orders(object sender, RoutedEventArgs e)
         {
-            mainWindow.HostingFrame.Navigate(new HostOrders());
+            mainWindow.AdminFrame.Navigate(new AdminOrders());
         }
     }
 }

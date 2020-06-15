@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Project01_3693_dotNet5780;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +22,20 @@ namespace WPFPL.Admin
     /// </summary>
     public partial class AdminHostingUnits : Page
     {
+        public MainWindow mainWindow;
+
+        public ObservableCollection<string> HostingUnitCollection { get; set; }
         public AdminHostingUnits()
         {
             InitializeComponent();
+            mainWindow = Util.GetMainWindow();
+            HostingUnitCollection = new ObservableCollection<string> { "Test" };
+            HostingUnits.ItemsSource = HostingUnitCollection;
+        }
+
+        private void Return_To_Menu(object sender, RoutedEventArgs e)
+        {
+            mainWindow.AdminFrame.Navigate(new AdminMenu());
         }
     }
 }
