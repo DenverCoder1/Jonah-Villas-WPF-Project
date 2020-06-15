@@ -27,7 +27,7 @@ namespace BE
         // preferences
         public District PrefDistrict { get; set; }
         public City PrefCity { get; set; }
-        public Type PrefType { get; set; }
+        public TypeOfPlace PrefType { get; set; }
         public Dictionary<Amenity, PrefLevel> PrefAmenities { get; set; }
 
         public GuestRequest()
@@ -45,6 +45,7 @@ namespace BE
             string email,
             District region,
             City city,
+            TypeOfPlace type,
             int numAdults,
             int numChildren,
             Dictionary<Amenity, PrefLevel> amenities)
@@ -58,6 +59,7 @@ namespace BE
             Email = email;
             PrefDistrict = region;
             PrefCity = city;
+            PrefType = type;
             NumAdults = numAdults;
             NumChildren = numChildren;
             PrefAmenities = amenities;

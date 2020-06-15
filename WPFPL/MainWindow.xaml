@@ -4,8 +4,8 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:BE="clr-namespace:BE;assembly=BE"
+        xmlns:BL="clr-namespace:BL;assembly=BL"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:local="clr-namespace:WPFPL"
         xmlns:p="clr-namespace:Project01_3693_dotNet5780"
         mc:Ignorable="d"
 		xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
@@ -18,8 +18,8 @@
 		Background="{DynamicResource MaterialDesignPaper}"
 		FontFamily="{DynamicResource MaterialDesignFont}"
 		Title="Jonah's Rentals"
-		Height="700" 
-		Width="1080" 
+		Height="680"
+		Width="920" 
 		WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <CollectionViewSource x:Key="GuestRequestViewSource"
@@ -40,12 +40,19 @@
         </ObjectDataProvider>
         <ObjectDataProvider MethodName="GetValues"
                             ObjectType="{x:Type sys:Enum}"
+                            x:Key="TypeOfPlace">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BE:TypeOfPlace" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}"
                             x:Key="Amenity">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="BE:Amenity" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-        <local:CamelCaseConverter x:Key="CamelCaseConverter" />
+        <BL:CamelCaseConverter x:Key="CamelCaseConverter" />
     </Window.Resources>
     <Grid>
         <Grid Height="60"
@@ -81,80 +88,83 @@
 				<TabItem Header="HOME"
                          x:Name="Tab0">
 					<materialDesign:Card Padding="32" Margin="16">
-						<StackPanel>
-							<TextBlock FontFamily="{StaticResource OpenSans}"
-									   FontWeight="Light"
-									   FontSize="22px"
-									   Margin="0px 0px 0px 10px">
+                        <StackPanel>
+                            <Image Source="Images/mountains.jpg"
+                                   Margin="0 0 0 10"
+                                   MaxHeight="270px"></Image>
+                            <TextBlock FontFamily="{StaticResource OpenSans}"
+                                       FontWeight="Light"
+                                       FontSize="22px"
+                                       Margin="0px 0px 0px 10px">
 								Welcome to Jonah's Rentals!
-							</TextBlock>
-							<TextBlock FontFamily="{StaticResource OpenSans}"
+                            </TextBlock>
+                            <TextBlock FontFamily="{StaticResource OpenSans}"
 									   FontWeight="Normal"
 									   FontSize="16px"
 									   Margin="0px 0px 0px 10px">
 								Click a button below to begin
 							</TextBlock>
-							<Grid HorizontalAlignment="Left"
-								  Margin="0 0 0 0"
-								  Width="540">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition/>
-									<ColumnDefinition/>
-									<ColumnDefinition/>
-								</Grid.ColumnDefinitions>
-								<StackPanel Grid.Column="0" 
-											VerticalAlignment="Center"
-											HorizontalAlignment="Left">
-									<TextBlock FontFamily="{StaticResource OpenSans}"
-											   FontWeight="Bold"
-											   FontSize="14px"
-											   Margin="0 20 0 10">
+                            <Grid HorizontalAlignment="Left"
+                                  Margin="0 0 0 0"
+                                  Width="540">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left">
+                                    <TextBlock FontFamily="{StaticResource OpenSans}"
+                                               FontWeight="Bold"
+                                               FontSize="14px"
+                                               Margin="0 20 0 10">
 										CUSTOMERS
-									</TextBlock>
-									<Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-											Width="165px"
-											HorizontalAlignment="Left"
-											Click="ChangeTab"
-											Tag="1">
-										MAKE A REQUEST 🡆
-									</Button>
-								</StackPanel>
-								<StackPanel Grid.Column="1" 
-											VerticalAlignment="Center"
-											HorizontalAlignment="Left">
-									<TextBlock FontFamily="{StaticResource OpenSans}"
-											   FontWeight="Bold"
-											   FontSize="14px"
-											   Margin="0 20 0 10">
+                                    </TextBlock>
+                                    <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                                            Width="165px"
+                                            HorizontalAlignment="Left"
+                                            Click="ChangeTab"
+                                            Tag="1">
+                                        MAKE A REQUEST 🡆
+                                    </Button>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left">
+                                    <TextBlock FontFamily="{StaticResource OpenSans}"
+                                               FontWeight="Bold"
+                                               FontSize="14px"
+                                               Margin="0 20 0 10">
 										HOSTS
-									</TextBlock>
-									<Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-											Width="165px"
-											HorizontalAlignment="Left"
-											Click="ChangeTab"
-											Tag="2">
-										HOSTING AREA 🡆
-									</Button>
-								</StackPanel>
-								<StackPanel Grid.Column="2" 
-											VerticalAlignment="Center"
-											HorizontalAlignment="Left">
-									<TextBlock FontFamily="{StaticResource OpenSans}"
-											   FontWeight="Bold"
-											   FontSize="14px"
-											   Margin="0 20 0 10">
+                                    </TextBlock>
+                                    <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                                            Width="165px"
+                                            HorizontalAlignment="Left"
+                                            Click="ChangeTab"
+                                            Tag="2">
+                                        HOSTING AREA 🡆
+                                    </Button>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left">
+                                    <TextBlock FontFamily="{StaticResource OpenSans}"
+                                               FontWeight="Bold"
+                                               FontSize="14px"
+                                               Margin="0 20 0 10">
 										ADMIN
-									</TextBlock>
-									<Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-											Width="165px"
-											HorizontalAlignment="Left"
-											Click="ChangeTab"
-											Tag="3">
-										ADMIN PANEL 🡆
-									</Button>
-								</StackPanel>
-							</Grid>
-							<!--<ScrollViewer Height="239" VerticalScrollBarVisibility="Auto">
+                                    </TextBlock>
+                                    <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                                            Width="165px"
+                                            HorizontalAlignment="Left"
+                                            Click="ChangeTab"
+                                            Tag="3">
+                                        ADMIN PANEL 🡆
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                            <!--<ScrollViewer Height="239" VerticalScrollBarVisibility="Auto">
 								 <TextBox FontFamily="Consolas" FontSize="12px"
 										 Margin="0 10"
 										 x:Name="DebugLog"
@@ -164,7 +174,7 @@
 										 TextWrapping="Wrap"
 										 AcceptsReturn="True"/>
 							</ScrollViewer>-->
-						</StackPanel>
+                        </StackPanel>
 					</materialDesign:Card>
 				</TabItem>
 				<TabItem Header="MAKE A REQUEST"
@@ -196,8 +206,6 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -336,6 +344,7 @@
                                               Height="Auto"
                                               Margin="0 4"
                                               VerticalAlignment="Center">
+                                        <ComboBoxItem>0</ComboBoxItem>
                                         <ComboBoxItem>1</ComboBoxItem>
                                         <ComboBoxItem>2</ComboBoxItem>
                                         <ComboBoxItem>3</ComboBoxItem>
@@ -359,6 +368,7 @@
                                               Height="Auto"
                                               Margin="0 4"
                                               VerticalAlignment="Center">
+                                        <ComboBoxItem>0</ComboBoxItem>
                                         <ComboBoxItem>1</ComboBoxItem>
                                         <ComboBoxItem>2</ComboBoxItem>
                                         <ComboBoxItem>3</ComboBoxItem>
@@ -368,19 +378,38 @@
                                         <ComboBoxItem>7</ComboBoxItem>
                                         <ComboBoxItem>8</ComboBoxItem>
                                     </ComboBox>
+                                    <Label Content="Type of place:"
+                                           Grid.Row="9"
+                                           Grid.Column="0"
+                                           Margin="0 4"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                    <ComboBox x:Name="gPrefType"
+                                              ItemsSource="{Binding Source={StaticResource TypeOfPlace }}"
+                                              SelectedItem="{Binding GuestRequest.PrefType}"
+                                              Grid.Row="9"
+                                              Grid.Column="1"
+                                              HorizontalAlignment="Left"
+                                              Height="Auto"
+                                              Margin="0 4"
+                                              VerticalAlignment="Center">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                 </Grid>
                                 <StackPanel Grid.Column="1">
-                                    <Label Content="Which amenities are important to you? (you may select multiple)"
-                                           Grid.Row="8"
-                                           Grid.Column="0"
-                                           Margin="0 24 0 6"
+                                    <Label Content="Which amenities are important to you?"
+                                           Margin="0 24 0 8"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center" />
                                     <ListBox x:Name="gAmenities"
-                                             Width="400"
-                                             Height="270"
+                                             Width="280"
+                                             Height="300"
                                              SelectionMode="Multiple"
-                                             BorderBrush="#f6f6f6"
+                                             BorderBrush="#e6e6e6"
                                              BorderThickness="1"
                                              ItemsSource="{Binding Source={StaticResource Amenity }}">
                                         <ListBox.ItemTemplate>

@@ -20,6 +20,7 @@ namespace ConsolePL
             string email = "jonah@google.com";
             District region = District.TelAviv;
             City city = City.BneiBrak;
+            BE.TypeOfPlace type = BE.TypeOfPlace.Apartment;
             Dictionary<Amenity, PrefLevel> amenities = new Dictionary<Amenity, PrefLevel>
             {
                 [Amenity.TV] = PrefLevel.Required,
@@ -27,7 +28,7 @@ namespace ConsolePL
                 [Amenity.Kitchen] = PrefLevel.Required
             };
 
-            GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, region, city, 6, 8, amenities);
+            GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
 
             MyBL.CreateGuestRequest(guest);
 
@@ -38,7 +39,7 @@ namespace ConsolePL
                 Console.WriteLine(gr);
             }
 
-            List<string> citiesInNorth = Config.GetCities[District.North].ConvertAll(c => Config.CityNames[c]);
+            List<string> citiesInNorth = Config.GetCities[District.North].ConvertAll(c => CamelCaseConverter.Convert(c));
 
             foreach (string c in citiesInNorth)
             {

@@ -87,7 +87,7 @@ namespace Project01_3693_dotNet5780
             List<Control> Tab1Controls = new List<Control>{
                 gFirstName, gLastName, gEmail,
                 gEntryDate, gReleaseDate, gPrefDistrict,
-                gPrefCity, gNumAdults, gNumChildren
+                gPrefCity, gNumAdults, gNumChildren, gPrefType
             };
 
             if (Tab0.IsSelected) {
@@ -112,21 +112,20 @@ namespace Project01_3693_dotNet5780
         /// </summary>
         private void UpdateCityList(object sender, SelectionChangedEventArgs e)
         {
+            // get selected district
+            if (((ComboBox)sender).SelectedItem == null) return;
             string selectedDistrict = ((ComboBox)sender).SelectedItem.ToString();
-            foreach (KeyValuePair<District, string> item in Config.DistrictNames)
+            if (!Enum.TryParse(gPrefDistrict.SelectedItem.ToString().Replace(" ", ""), out District district)) return;
+            // get list of cities in district from config
+            List<string> update = Config.GetCities[district].ConvertAll(c => CamelCaseConverter.Convert(c));
+            // clear list
+            DynamicCityList.Clear();
+            // add cities in district
+            foreach (var item in update)
             {
-                if (selectedDistrict == item.Key.ToString())
-                {
-                    List<string> update = Config.GetCities[item.Key].ConvertAll(c => Config.CityNames[c]);
-                    DynamicCityList.Clear();
-
-                    foreach (var x in update)
-                    {
-                        DynamicCityList.Add(x);
-                    }
-                    break;
-                }
+                DynamicCityList.Add(item);
             }
+            // if list is empty, add item that says to select a district first
             if (DynamicCityList.Count == 0)
             {
                 DynamicCityList.Add("Select a district.");
@@ -134,27 +133,175 @@ namespace Project01_3693_dotNet5780
             return;
         }
 
+        /// <summary>
+        /// Check if an email address is valid
+        /// </summary>
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool ValidateGuestForm()
+        {
+            if (gFirstName.Text.ToString().Length < 2)
+            {
+                MessageBox.Show("First name must contain at least 2 letters.");
+                return false;
+            }
+            else if (!gFirstName.Text.ToString().All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+            {
+                MessageBox.Show("First name must only contain letters and whitespace.");
+                return false;
+            }
+            else if(gLastName.Text.ToString().Length < 2)
+            {
+                MessageBox.Show("Last name must contain at least 2 letters.");
+                return false;
+            }
+            else if (!gLastName.Text.ToString().All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+            {
+                MessageBox.Show("Last name must only contain letters and whitespace.");
+                return false;
+            }
+            else if (!IsValidEmail(gEmail.Text.ToString()))
+            {
+                MessageBox.Show("Email address is not valid.");
+                return false;
+            }
+            else if (!DateTime.TryParse(gEntryDate.SelectedDate.ToString(), out DateTime entry))
+            {
+                MessageBox.Show("Entry date is not valid.");
+                return false;
+            }
+            else if (DateTime.Compare(entry.Date, DateTime.Now.Date) < 0)
+            {
+                MessageBox.Show("Entry date must not be before today's date.");
+                return false;
+            }
+            else if (!DateTime.TryParse(gReleaseDate.SelectedDate.ToString(), out DateTime release))
+            {
+                MessageBox.Show("Departure date is not valid.");
+                return false;
+            }
+            else if (DateTime.Compare(entry.Date, release.Date) >= 0)
+            {
+                MessageBox.Show("Entry date must be before departure date.");
+                return false;
+            }
+            else if (DateTime.Compare(release.Date, DateTime.Now.Date.AddMonths(11)) > 0)
+            {
+                MessageBox.Show("Bookings can only be made up to 11 months in advance.");
+                return false;
+            }
+            try
+            {
+                if (gPrefDistrict.SelectedItem != null)
+                {
+                    District _ = (District)Enum.Parse(typeof(District), gPrefDistrict.SelectedItem.ToString().Replace(" ", ""));
+                }
+                else
+                {
+                    MessageBox.Show("You have not selected a district.");
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("District selection is not valid.");
+                return false;
+            }
+            try
+            {
+                if (gPrefCity.SelectedItem != null)
+                {
+                    City _ = (City)Enum.Parse(typeof(City), gPrefCity.SelectedItem.ToString().Replace(" ", ""));
+                }
+                else
+                {
+                    MessageBox.Show("You have not selected a city.");
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("City selection is not valid.");
+                return false;
+            }
+            if (gNumAdults.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select the number of adults.");
+                return false;
+            }
+            else if (gNumChildren.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select the number of children.");
+                return false;
+            }
+            if (gNumAdults.SelectedIndex + gNumChildren.SelectedIndex == 0)
+            {
+                MessageBox.Show("Booking must be reserved for at least 1 person.");
+                return false;
+            }
+            try
+            {
+                if (gPrefType.SelectedItem != null)
+                {
+                    TypeOfPlace _ = (TypeOfPlace)Enum.Parse(typeof(TypeOfPlace), gPrefType.SelectedItem.ToString().Replace(" ", ""));
+                }
+                else
+                {
+                    MessageBox.Show("You have not selected a type of place.");
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Type of place selection is not valid.");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Create guest request from submitted info
+        /// </summary>
         private void Submit_Request_Button_Click(object sender, RoutedEventArgs e)
         {
-            DateTime entry = DateTime.Parse(gEntryDate.SelectedDate.ToString());
-            DateTime release = DateTime.Parse(gReleaseDate.SelectedDate.ToString());
+            if (!ValidateGuestForm())
+                return;
             string fname = gFirstName.Text.ToString();
             string lname = gLastName.Text.ToString();
             string email = gEmail.Text.ToString();
+            DateTime.TryParse(gEntryDate.SelectedDate.ToString(), out DateTime entry);
+            DateTime.TryParse(gReleaseDate.SelectedDate.ToString(), out DateTime release);
             Enum.TryParse(gPrefDistrict.SelectedItem.ToString().Replace(" ", ""), out District district);
             Enum.TryParse(gPrefCity.SelectedItem.ToString().Replace(" ", ""), out City city);
-            int numAdults = gNumAdults.SelectedIndex + 1;
-            int numChildren = gNumChildren.SelectedIndex + 1;
+            int numAdults = gNumAdults.SelectedIndex;
+            int numChildren = gNumChildren.SelectedIndex;
+            Enum.TryParse(gPrefType.SelectedItem.ToString().Replace(" ", ""), out TypeOfPlace type);
             System.Collections.IList selectedAmenities = gAmenities.SelectedItems;
             Dictionary<Amenity, PrefLevel> amenities = new Dictionary<Amenity, PrefLevel>();
-            foreach (object item in selectedAmenities)
+            foreach (Amenity amenity in Enum.GetValues(typeof(Amenity)))
             {
-                amenities[(Amenity)item] = PrefLevel.Required;
+                if (selectedAmenities.IndexOf(amenity) > -1)
+                    amenities[amenity] = PrefLevel.Required;
+                else
+                    amenities[amenity] = PrefLevel.NotInterested;
             }
 
-            GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, district, city, numAdults, numChildren, amenities);
+            GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, district, city, type, numAdults, numChildren, amenities);
 
             MyBL.CreateGuestRequest(guest);
+
+            MessageBox.Show("Success! Your request has been added.");
         }
     }
 }

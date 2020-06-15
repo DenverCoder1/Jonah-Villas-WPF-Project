@@ -57,7 +57,7 @@
     <Compile Include="PrefLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="District.cs" />
-    <Compile Include="Type.cs" />
+    <Compile Include="TypeOfPlace.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

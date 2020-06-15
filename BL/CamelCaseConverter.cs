@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace WPFPL
+namespace BL
 {
     public class CamelCaseConverter : IValueConverter
     {

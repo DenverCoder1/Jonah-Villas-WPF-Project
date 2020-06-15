@@ -1,6 +1,6 @@
 ﻿namespace BE
 {
-    public enum Type
+    public enum TypeOfPlace
     {
         PrivateRoom,
         EntireHome,

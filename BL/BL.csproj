@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,7 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BL_Imp.cs" />
+    <Compile Include="CamelCaseConverter.cs" />
     <Compile Include="IBL.cs" />
+    <Compile Include="IfNullConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
