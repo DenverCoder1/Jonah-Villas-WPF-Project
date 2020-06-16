@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BE;
 using BL;
@@ -11,6 +12,13 @@ namespace ConsolePL
     class Program
     {
         private static IBL MyBL = BL_Imp.GetBL();
+
+        private static string PascalCaseToText(object value)
+        {
+            string enumString = value.ToString();
+            return Regex.Replace(enumString, "(.[A-Z])", " $1");
+        }
+
         static void Main(string[] args)
         {
             Order order = new Order(1, 2);
@@ -51,7 +59,7 @@ namespace ConsolePL
                 Console.WriteLine(gr);
             }
 
-            List<string> citiesInNorth = Config.GetCities[District.North].ConvertAll(c => CamelCaseConverter.Convert(c));
+            List<string> citiesInNorth = Config.GetCities[District.North].ConvertAll(c => PascalCaseToText(c));
 
             foreach (string c in citiesInNorth)
             {

@@ -4,13 +4,13 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:WPFPL.Admin"
-      xmlns:BL="clr-namespace:BL;assembly=BL"
+      xmlns:p="clr-namespace:Project01_3693_dotNet5780"
       mc:Ignorable="d"
       d:DesignHeight="450"
       d:DesignWidth="800"
       Title="AdminRequests">
     <Page.Resources>
-        <BL:CamelCaseConverter x:Key="CamelCaseConverter" />
+        <p:PascalCaseToText x:Key="PascalCaseToText" />
     </Page.Resources>
     <Grid>
         <StackPanel>
@@ -20,19 +20,19 @@
                 All Guest Requests
             </TextBlock>
             <ListBox x:Name="Requests"
-                     Width="280"
-                     Height="280"
+                     Width="Auto"
+                     Height="320"
                      SelectionMode="Single"
                      BorderBrush="#e6e6e6"
-                     BorderThickness="1"
-                     HorizontalAlignment="Left">
+                     BorderThickness="1">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
+                        <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}"
+                                   TextWrapping="Wrap" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <StackPanel Orientation="Horizontal">
+            <!--<StackPanel Orientation="Horizontal">
                 <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                         Width="Auto"
                         HorizontalAlignment="Left"
@@ -40,7 +40,7 @@
                         Click="Create_Order">
                     BEGIN ORDER
                 </Button>
-            </StackPanel>
+            </StackPanel>-->
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Width="Auto"
                     HorizontalAlignment="Left"

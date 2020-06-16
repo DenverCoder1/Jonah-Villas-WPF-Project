@@ -2,19 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace BL
+namespace Project01_3693_dotNet5780
 {
-    public class CamelCaseConverter : IValueConverter
+    public class AddMonthsConverter : IValueConverter
     {
+        /// <summary>
+        /// Add 11 months to passed date
+        /// </summary>
         public static string Convert(object value)
         {
-            string enumString = value.ToString();
-            string Converted = Regex.Replace(enumString, "([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))", "$1 ");
-            return Converted;
+            if (value != null && value.ToString() is string d)
+            {
+                if (DateTime.TryParse(d, out DateTime dt))
+                {
+                    return dt.AddMonths(11).ToString();
+                }
+                return "";
+            }
+            return "";
         }
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

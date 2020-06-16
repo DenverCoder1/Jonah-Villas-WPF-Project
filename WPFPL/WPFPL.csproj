@@ -116,6 +116,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AddMonthsConverter.cs" />
     <Compile Include="Admin\AdminHostingUnits.xaml.cs">
       <DependentUpon>AdminHostingUnits.xaml</DependentUpon>
     </Compile>
@@ -135,6 +136,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PascalCaseToText.cs" />
+    <Compile Include="ConvertToNextDay.cs" />
     <Compile Include="Hosting\HostMenu.xaml.cs">
       <DependentUpon>HostMenu.xaml</DependentUpon>
     </Compile>

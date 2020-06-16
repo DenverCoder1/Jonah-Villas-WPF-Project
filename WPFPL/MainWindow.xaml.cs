@@ -59,6 +59,7 @@ namespace Project01_3693_dotNet5780
             AdminFrame.Navigate(new AdminMenu());
             MyDialog.IsOpen = false;
 
+            /* DEBUG */
             DateTime entry = DateTime.Now.Date.AddDays(5);
             DateTime release = DateTime.Now.Date.AddDays(10);
             string fname = "Jonah";
@@ -71,20 +72,48 @@ namespace Project01_3693_dotNet5780
             {
                 [Amenity.TV] = PrefLevel.Required,
                 [Amenity.Pool] = PrefLevel.NotInterested,
-                [Amenity.Kitchen] = PrefLevel.Required
+                [Amenity.Kitchen] = PrefLevel.Required,
+                [Amenity.AirConditioning] = PrefLevel.Required,
+                [Amenity.Breakfast] = PrefLevel.Required,
+                [Amenity.ChildrensAttractions] = PrefLevel.Required,
+                [Amenity.FreeParking] = PrefLevel.Required,
+                [Amenity.PrivateBathroom] = PrefLevel.Required,
+                [Amenity.SmokeAlarm] = PrefLevel.Required,
+                [Amenity.Towels] = PrefLevel.Required,
+                [Amenity.Workspace] = PrefLevel.Required
             };
 
             GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
 
             MyBL.CreateGuestRequest(guest);
+
+            HostingUnit hostingUnit = new HostingUnit(new Host(), "myUnit");
+            MyBL.CreateHostingUnit(hostingUnit);
+
+            HostingUnit hostingUnit2 = new HostingUnit(new Host(), "myUnit2");
+            MyBL.CreateHostingUnit(hostingUnit2);
+
+            Order order = new Order(hostingUnit.HostingUnitKey, guest.GuestRequestKey);
+
+            MyBL.CreateOrder(order);
+            /* DEBUG */
         }
 
         /// <summary>
         /// Open custom dialog box with custom text
         /// </summary>
         /// <param name="text">Text to insert into box</param>
-        private void Dialog(string text)
+        private void Dialog(string text, params Control[] controlsEnabled)
         {
+            // hide input boxes
+            MyDialogTextBox.Height = 0;
+            MyDialogComboBox.Height = 0;
+
+            // enabled selected controls
+            foreach (Control c in controlsEnabled)
+                c.Height = double.NaN; // Auto
+
+            // set text and display
             MyDialogText.Text = text;
             MyDialog.IsOpen = true;
         }
@@ -142,6 +171,8 @@ namespace Project01_3693_dotNet5780
                 if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
                 if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
                 AdminRequests.Refresh();
+                AdminOrders.Refresh();
+                AdminHostingUnits.Refresh();
             }
         }
 
@@ -155,7 +186,7 @@ namespace Project01_3693_dotNet5780
             string selectedDistrict = ((ComboBox)sender).SelectedItem.ToString();
             if (!Enum.TryParse(gPrefDistrict.SelectedItem.ToString().Replace(" ", ""), out District district)) return;
             // get list of cities in district from config
-            List<string> update = Config.GetCities[district].ConvertAll(c => CamelCaseConverter.Convert(c));
+            List<string> update = Config.GetCities[district].ConvertAll(c => PascalCaseToText.Convert(c));
             // clear list
             DynamicCityList.Clear();
             // add cities in district
@@ -185,7 +216,7 @@ namespace Project01_3693_dotNet5780
                 DateTime.TryParse(gReleaseDate.SelectedDate.ToString(), out DateTime release);
                 object districtObj = gPrefDistrict.SelectedItem;
                 object cityObj = gPrefCity.SelectedItem;
-                int numAdults = gNumAdults.SelectedIndex;
+                int numAdults = gNumAdults.SelectedIndex + 1; // No option for 0 adults
                 int numChildren = gNumChildren.SelectedIndex;
                 object prefTypeObj = gPrefType.SelectedItem;
                 System.Collections.IList selectedAmenities = gAmenities.SelectedItems;

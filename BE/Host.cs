@@ -48,7 +48,7 @@ namespace BE
             output.AppendLine($"Email: {Email}");
             output.AppendLine($"Phone Number: {PhoneNumber}");
             output.AppendLine($"Bank Details: {BankDetails}");
-            output.AppendLine($"Bank Clearance: {BankClearance}");
+            output.Append($"Bank Clearance: {BankClearance}");
             return output.ToString();
         }
     }

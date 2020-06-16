@@ -30,6 +30,7 @@ namespace WPFPL.Admin
         private static IBL MyBL;
 
         public static ObservableCollection<string> RequestCollection { get; set; }
+
         public AdminRequests()
         {
             InitializeComponent();
@@ -59,19 +60,7 @@ namespace WPFPL.Admin
 
         private void Create_Order(object sender, RoutedEventArgs e)
         {
-            //if (Requests.SelectedIndex >= 0)
-            //{
-            //    if (MainWindow.MyHost != null) {
-            //        long huKey = MyBL.GetHostingUnits(MainWindow.MyHost);
-            //        long grKey = MyBL.GetGuestRequests()[Requests.SelectedIndex].GuestRequestKey;
-            //        Order order = new Order(huKey, grKey);
-                    
-            //    }
-            //    else
-            //    {
-
-            //    }
-            //}
+            
         }
     }
 }

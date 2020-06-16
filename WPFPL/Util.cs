@@ -41,9 +41,10 @@ namespace WPFPL
         /// </summary>
         public static void SetTabControlsVisibility(List<Control> TabControls, bool visible)
         {
+            int VISIBLE_CONTROL_WIDTH = 160;
             foreach (Control ctrl in TabControls)
             {
-                ctrl.Width = visible ? Config.CONTROL_WIDTH : 0;
+                ctrl.Width = visible ? VISIBLE_CONTROL_WIDTH : 0;
                 ctrl.BorderThickness = visible ? new Thickness(0, 0, 0, 1) : new Thickness(0);
             }
         }

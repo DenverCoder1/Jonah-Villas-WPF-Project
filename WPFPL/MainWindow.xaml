@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:BE="clr-namespace:BE;assembly=BE"
         xmlns:BL="clr-namespace:BL;assembly=BL"
+        xmlns:p="clr-namespace:Project01_3693_dotNet5780"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
@@ -51,8 +52,9 @@
                 <x:Type TypeName="BE:Amenity" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-        <BL:CamelCaseConverter x:Key="CamelCaseConverter" />
-        <BL:AddMonthsConverter x:Key="AddMonthsConverter" />
+        <p:PascalCaseToText x:Key="PascalCaseToText" />
+        <p:ConvertToNextDay x:Key="ConvertToNextDay" />
+        <p:AddMonthsConverter x:Key="AddMonthsConverter" />
     </Window.Resources>
     <md:DialogHost x:Name="MyDialog">
         <md:DialogHost.DialogContent>
@@ -67,13 +69,17 @@
                                  Foreground="Black" />
                 </Button>
                 <TextBlock x:Name="MyDialogText"
-                           Margin="0 10 0 20"
+                           Margin="0 10 0 0"
                            Width="180px"
                            HorizontalAlignment="Left"
                            TextWrapping="Wrap"
-                           LineHeight="20px">
-                    Custom Dialog Box
-                </TextBlock>
+                           LineHeight="20px" />
+                <TextBox x:Name="MyDialogTextBox"
+                         Margin="0 5 20 10"
+                         Height="0"/>
+                <ComboBox x:Name="MyDialogComboBox"
+                          Margin="0 5 20 10"
+                          Height="0" />
                 <Button Content="OK"
                         Command="{x:Static md:DialogHost.CloseDialogCommand}"
                         Width="80px"
@@ -296,7 +302,7 @@
                                                     Margin="0 4 4 4"
                                                     VerticalAlignment="Center"
                                                     DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                                                    DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today},  Converter={StaticResource AddMonthsConverter}}" />
+                                                    DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
                                         <Label Content="Date of departure:"
                                                Grid.Row="4"
                                                Grid.Column="0"
@@ -310,7 +316,7 @@
                                                     Height="24"
                                                     Margin="0 4 4 4"
                                                     VerticalAlignment="Center"
-                                                    DisplayDateStart="{Binding ElementName=gEntryDate, Path=SelectedDate}"
+                                                    DisplayDateStart="{Binding ElementName=gEntryDate, Path=SelectedDate, Converter={StaticResource ConvertToNextDay}}"
                                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
                                         <Label Content="Vacation district:"
                                                Grid.Row="5"
@@ -329,7 +335,7 @@
                                                   SelectionChanged="UpdateCityList">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
+                                                    <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
@@ -340,7 +346,6 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center" />
                                         <ComboBox x:Name="gPrefCity"
-                                                  ItemsSource="{Binding CityList}"
                                                   Grid.Row="6"
                                                   Grid.Column="1"
                                                   HorizontalAlignment="Left"
@@ -349,7 +354,7 @@
                                                   VerticalAlignment="Center">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
+                                                    <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
@@ -366,7 +371,6 @@
                                                   Height="Auto"
                                                   Margin="0 4 4 4"
                                                   VerticalAlignment="Center">
-                                            <ComboBoxItem>0</ComboBoxItem>
                                             <ComboBoxItem>1</ComboBoxItem>
                                             <ComboBoxItem>2</ComboBoxItem>
                                             <ComboBoxItem>3</ComboBoxItem>
@@ -415,7 +419,7 @@
                                                   VerticalAlignment="Center">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
+                                                    <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
@@ -434,7 +438,7 @@
                                                  ItemsSource="{Binding Source={StaticResource Amenity }}">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding Converter={StaticResource CamelCaseConverter}}" />
+                                                    <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>

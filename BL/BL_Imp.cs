@@ -1,12 +1,8 @@
-﻿using System;
+﻿using BE;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using BE;
 
 namespace BL
 {
@@ -263,7 +259,7 @@ namespace BL
             {
                 if (district != null && district.ToString() is string d)
                 {
-                    District _ = (District)Enum.Parse(typeof(District), d.Replace(" ", ""));
+                    _ = (District)Enum.Parse(typeof(District), d.Replace(" ", ""));
                 }
                 else
                 {
@@ -282,7 +278,7 @@ namespace BL
             {
                 if (city != null && city.ToString() is string c)
                 {
-                    City _ = (City)Enum.Parse(typeof(City), c.Replace(" ", ""));
+                    _ = (City)Enum.Parse(typeof(City), c.Replace(" ", ""));
                 }
                 else
                 {
@@ -313,7 +309,7 @@ namespace BL
             {
                 if (prefType != null && prefType.ToString() is string pt)
                 {
-                    TypeOfPlace _ = (TypeOfPlace)Enum.Parse(typeof(TypeOfPlace), pt.Replace(" ", ""));
+                    _ = (TypeOfPlace)Enum.Parse(typeof(TypeOfPlace), pt.Replace(" ", ""));
                 }
                 else
                 {
@@ -338,10 +334,10 @@ namespace BL
         {
             try
             {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
+                System.Net.Mail.MailAddress mailAddress = new System.Net.Mail.MailAddress(email);
+                return mailAddress.Address == email;
             }
-            catch
+            catch (Exception)
             {
                 return false;
             }

@@ -1,4 +1,5 @@
-﻿using Project01_3693_dotNet5780;
+﻿using BL;
+using Project01_3693_dotNet5780;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,13 +25,27 @@ namespace WPFPL.Admin
     {
         public MainWindow mainWindow;
 
-        public ObservableCollection<string> HostingUnitCollection { get; set; }
+        public static ObservableCollection<string> HostingUnitCollection { get; set; }
+
         public AdminHostingUnits()
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
             HostingUnitCollection = new ObservableCollection<string>();
             HostingUnits.ItemsSource = HostingUnitCollection;
+            Refresh();
+        }
+
+        public static void Refresh()
+        {
+            if (HostingUnitCollection != null)
+            {
+                HostingUnitCollection.Clear();
+                foreach (BE.HostingUnit item in BL.BL_Imp.GetBL().GetHostingUnits())
+                {
+                    HostingUnitCollection.Add(item.ToString());
+                }
+            }
         }
 
         private void Return_To_Menu(object sender, RoutedEventArgs e)

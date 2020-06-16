@@ -96,13 +96,16 @@ namespace BE
         public override string ToString()
         {
             StringBuilder output = new StringBuilder();
-
-            output.AppendLine($"{GuestRequestKey} : {LastName}, {FirstName}");
-            output.AppendLine($"{NumAdults} Adults, {NumChildren} Children");
-            output.AppendLine($"{PrefType} in {PrefCity}, {PrefDistrict}");
-            output.AppendLine($"{EntryDate:dd.MM.yyyy} - {ReleaseDate:dd.MM.yyyy}");
-            output.AppendLine($"Status: {Status}");
-
+            output.Append($"#{GuestRequestKey} : {LastName}, {FirstName} | ");
+            output.Append($"{NumAdults} Adults, {NumChildren} Children | ");
+            output.Append($"{PrefType} in {PrefCity}, {PrefDistrict} | ");
+            output.Append($"{EntryDate:dd.MM.yyyy} - {ReleaseDate:dd.MM.yyyy} | ");
+            output.Append($"Status: {Status}\n");
+            IEnumerable<Amenity> matches = from KeyValuePair<Amenity, PrefLevel> item in PrefAmenities
+                                           where item.Value == PrefLevel.Required
+                                           select item.Key;
+            string amenities = String.Join(", ", matches.ToList());
+            output.Append($"Amenities: {(amenities != "" ? amenities : "None")}");
             return output.ToString();
         }
     }

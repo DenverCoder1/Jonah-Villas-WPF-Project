@@ -16,12 +16,11 @@
                 All Hosting Units
             </TextBlock>
             <ListBox x:Name="HostingUnits"
-                     Width="280"
-                     Height="280"
+                     Width="Auto"
+                     Height="320"
                      SelectionMode="Single"
                      BorderBrush="#e6e6e6"
-                     BorderThickness="1"
-                     HorizontalAlignment="Left">
+                     BorderThickness="1">
             </ListBox>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Width="Auto"

@@ -21,10 +21,13 @@ namespace BE
         public static long stHostingUnitKey = INITIAL_HOSTING_UNIT_KEY;
         public static long stGuestRequestKey = INITIAL_GUEST_REQUEST_KEY;
 
-        // UI
-        public static int CONTROL_WIDTH = 160;
+        // Banking
+        public static float TRANSACTION_FEE_NIS = 10;
 
-        // locations mapping
+        // Request
+        public static int REQUEST_MAX_MONTHS_AHEAD = 11; // Maximum number of months a request can be booked ahead
+
+        // Locations
         public static Dictionary<District, List<City>> GetCities = new Dictionary<District, List<City>>
         {
             [District.Jerusalem] = new List<City> { City.Jerusalem, City.BeitShemesh },

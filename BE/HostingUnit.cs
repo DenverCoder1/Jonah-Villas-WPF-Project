@@ -55,14 +55,8 @@ namespace BE
         {
             StringBuilder output = new StringBuilder();
             // add serial number to output
-            output.AppendLine("Serial Number: " + HostingUnitKey);
-
-            // list reserved sequences
-            for (int i = 0; i < Calendar.Count; ++i)
-            {
-                output.AppendLine(Calendar[i].ToString());
-            }
-
+            output.Append($"#{HostingUnitKey} : {UnitName} | ");
+            output.Append($"Host ID: {Owner.HostKey}");
             return output.ToString();
         }
     }

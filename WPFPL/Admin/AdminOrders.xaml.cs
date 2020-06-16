@@ -1,4 +1,5 @@
-﻿using Project01_3693_dotNet5780;
+﻿using BL;
+using Project01_3693_dotNet5780;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,13 +25,26 @@ namespace WPFPL.Admin
     {
         public MainWindow mainWindow;
 
-        public ObservableCollection<string> OrdersCollection { get; set; }
+        public static ObservableCollection<string> OrdersCollection { get; set; }
         public AdminOrders()
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
             OrdersCollection = new ObservableCollection<string>();
             Orders.ItemsSource = OrdersCollection;
+            Refresh();
+        }
+
+        public static void Refresh()
+        {
+            if (OrdersCollection != null)
+            {
+                OrdersCollection.Clear();
+                foreach (BE.Order item in BL_Imp.GetBL().GetOrders())
+                {
+                    OrdersCollection.Add(item.ToString());
+                }
+            }
         }
 
         private void Return_To_Menu(object sender, RoutedEventArgs e)
