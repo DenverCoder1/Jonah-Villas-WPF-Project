@@ -37,11 +37,10 @@ namespace WPFPL
 
         public static void Refresh()
         {
-            IBL Bl = BL_Imp.GetBL();
             if (OrdersCollection != null)
             {
                 OrdersCollection.Clear();
-                foreach (BE.Order item in Bl.GetHostOrders(MainWindow.MyHost.HostKey))
+                foreach (BE.Order item in Util.Bl.GetHostOrders(Util.MyHost.HostKey))
                 {
                     OrdersCollection.Add(item.ToString());
                 }

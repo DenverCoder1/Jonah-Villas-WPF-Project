@@ -29,13 +29,9 @@ namespace WPFPL
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static IBL Bl;
-
         public ObservableCollection<string> DynamicCityList { get; set; }
 
         public TabItem CurrentTab { get; set; }
-
-        public static Host MyHost { get; set; }
 
         /// <summary>
         /// Startup function
@@ -43,9 +39,6 @@ namespace WPFPL
         public MainWindow()
         {
             InitializeComponent();
-            Bl = BL_Imp.GetBL();
-            DynamicCityList = new ObservableCollection<string> { "Select a district." };
-            CurrentTab = Tab0;
             Loaded += MainWindow_Loaded;
         }
 
@@ -54,6 +47,8 @@ namespace WPFPL
         /// </summary>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            CurrentTab = Tab0;
+            DynamicCityList = new ObservableCollection<string> { "Select a district." };
             gPrefCity.ItemsSource = DynamicCityList;
             HostingFrame.Navigate(new HostSignIn());
             AdminFrame.Navigate(new AdminMenu());
@@ -85,33 +80,33 @@ namespace WPFPL
 
             GuestRequest guest1 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 2, 3, amenities);
 
-            Bl.CreateGuestRequest(guest1);
+            Util.Bl.CreateGuestRequest(guest1);
 
             GuestRequest guest2 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
 
-            Bl.CreateGuestRequest(guest2);
+            Util.Bl.CreateGuestRequest(guest2);
 
             Host host1 = new Host("James", "Smith", "james@james.com", "6456346343", new BankBranch(), 543646545);
 
-            Bl.CreateHost(host1);
+            Util.Bl.CreateHost(host1);
 
             Host host2 = new Host("Larry", "Page", "larry@googz.com", "4363466463", new BankBranch(), 6364636456);
 
-            Bl.CreateHost(host2);
+            Util.Bl.CreateHost(host2);
 
             HostingUnit hostingUnit1 = new HostingUnit(host1, "myUnit");
-            Bl.CreateHostingUnit(hostingUnit1);
+            Util.Bl.CreateHostingUnit(hostingUnit1);
 
             HostingUnit hostingUnit2 = new HostingUnit(host2, "myUnit2");
-            Bl.CreateHostingUnit(hostingUnit2);
+            Util.Bl.CreateHostingUnit(hostingUnit2);
 
             Order order1 = new Order(hostingUnit1.HostingUnitKey, guest1.GuestRequestKey);
 
-            Bl.CreateOrder(order1);
+            Util.Bl.CreateOrder(order1);
 
             Order order2 = new Order(hostingUnit2.HostingUnitKey, guest1.GuestRequestKey);
 
-            Bl.CreateOrder(order2);
+            Util.Bl.CreateOrder(order2);
 
             /* DEBUG */
         }
@@ -266,7 +261,7 @@ namespace WPFPL
                         amenities[amenity] = PrefLevel.NotInterested;
                 }
 
-                Bl.ValidateGuestForm(fname, lname, email, entry.ToString(), release.ToString(), districtObj, cityObj, numAdults, numChildren, prefTypeObj);
+                Util.Bl.ValidateGuestForm(fname, lname, email, entry.ToString(), release.ToString(), districtObj, cityObj, numAdults, numChildren, prefTypeObj);
 
                 Enum.TryParse(gPrefDistrict.SelectedItem.ToString().Replace(" ", ""), out District district);
                 Enum.TryParse(gPrefCity.SelectedItem.ToString().Replace(" ", ""), out City city);
@@ -274,7 +269,7 @@ namespace WPFPL
 
                 GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, district, city, prefType, numAdults, numChildren, amenities);
 
-                Bl.CreateGuestRequest(guest);
+                Util.Bl.CreateGuestRequest(guest);
 
                 Dialog("Success! Your request has been added.");
             }

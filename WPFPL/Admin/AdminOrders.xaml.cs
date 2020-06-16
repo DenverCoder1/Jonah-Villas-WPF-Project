@@ -37,11 +37,10 @@ namespace WPFPL.Admin
 
         public static void Refresh()
         {
-            IBL Bl = BL_Imp.GetBL();
             if (OrdersCollection != null)
             {
                 OrdersCollection.Clear();
-                foreach (BE.Order item in Bl.GetOrders())
+                foreach (BE.Order item in Util.Bl.GetOrders())
                 {
                     OrdersCollection.Add(item.ToString());
                 }

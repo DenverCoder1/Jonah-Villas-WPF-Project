@@ -37,11 +37,10 @@ namespace WPFPL
 
         public static void Refresh()
         {
-            IBL Bl = BL_Imp.GetBL();
             if (RequestCollection != null)
             {
                 RequestCollection.Clear();
-                foreach (BE.GuestRequest item in Bl.GetGuestRequests())
+                foreach (BE.GuestRequest item in Util.Bl.GetGuestRequests())
                 {
                     RequestCollection.Add(item.ToString());
                 }

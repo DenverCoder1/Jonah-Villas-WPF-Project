@@ -218,15 +218,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="favicon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="hotel_logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="hotel_logo_outline.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="hotel_icon_shadow_rounded.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

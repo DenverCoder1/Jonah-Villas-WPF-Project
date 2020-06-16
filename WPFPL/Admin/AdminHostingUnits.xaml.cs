@@ -38,11 +38,10 @@ namespace WPFPL.Admin
 
         public static void Refresh()
         {
-            IBL Bl = BL_Imp.GetBL();
             if (HostingUnitCollection != null)
             {
                 HostingUnitCollection.Clear();
-                foreach (BE.HostingUnit item in Bl.GetHostingUnits())
+                foreach (BE.HostingUnit item in Util.Bl.GetHostingUnits())
                 {
                     HostingUnitCollection.Add(item.ToString());
                 }

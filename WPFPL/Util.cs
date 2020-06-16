@@ -7,11 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using BL;
 
 namespace WPFPL
 {
     class Util
     {
+        // Reference to the BL instance
+        public static IBL Bl = BL_Imp.GetBL();
+
+        // Global reference to current signed in host
+        public static Host MyHost { get; set; }
+
         /// <summary>
         /// Get Main Window
         /// </summary>

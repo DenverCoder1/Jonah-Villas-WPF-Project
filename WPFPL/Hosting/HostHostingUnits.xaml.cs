@@ -42,14 +42,20 @@ namespace WPFPL
 
         public static void Refresh()
         {
-            IBL Bl = BL_Imp.GetBL();
-            if (HostingUnitCollection != null)
+            try
             {
-                HostingUnitCollection.Clear();
-                foreach (BE.HostingUnit item in Bl.GetHostHostingUnits(MainWindow.MyHost.HostKey))
+                if (HostingUnitCollection != null)
                 {
-                    HostingUnitCollection.Add(item.ToString());
+                    HostingUnitCollection.Clear();
+                    foreach (BE.HostingUnit item in Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey))
+                    {
+                        HostingUnitCollection.Add(item.ToString());
+                    }
                 }
+            }
+            catch (Exception error)
+            {
+
             }
         }
 
@@ -77,8 +83,6 @@ namespace WPFPL
 
         public static void Update_Hosting_Unit_Name(string dialogText, string name)
         {
-            IBL Bl = BL_Imp.GetBL();
-
             if (String.IsNullOrEmpty(name))
             {
                 MessageBox.Show("Action was cancelled.");
@@ -91,13 +95,13 @@ namespace WPFPL
                 {
                     try
                     {
-                        HostingUnit hostingUnit = Bl.GetHostingUnits().FirstOrDefault(hu =>
+                        HostingUnit hostingUnit = Util.Bl.GetHostingUnits().FirstOrDefault(hu =>
                             hu.HostingUnitKey == huKey
                         );
 
                         hostingUnit.UnitName = name;
 
-                        Bl.UpdateHostingUnit(hostingUnit);
+                        Util.Bl.UpdateHostingUnit(hostingUnit);
                     }
                     catch (InvalidDataException error)
                     {
@@ -130,7 +134,6 @@ namespace WPFPL
 
         public static void Confirm_Delete(string dialogText, string textBoxHuKey)
         {
-            IBL Bl = BL_Imp.GetBL();
             Match match = new Regex(@".*The ID is (\d+).*").Match(dialogText);
             if (match.Success)
             {
@@ -140,7 +143,7 @@ namespace WPFPL
                 {
                     try
                     {
-                        if (Bl.DeleteHostingUnit(huKey))
+                        if (Util.Bl.DeleteHostingUnit(huKey))
                         {
                             MessageBox.Show("Successfully deleted.");
                             Refresh();
@@ -165,18 +168,16 @@ namespace WPFPL
 
         public static void Add_Hosting_Unit_Named(string name)
         {
-            IBL Bl = BL_Imp.GetBL();
-
             if (String.IsNullOrEmpty(name))
             {
                 MessageBox.Show("Action was cancelled.");
             }
 
-            HostingUnit hostingUnit = new HostingUnit(MainWindow.MyHost, name);
+            HostingUnit hostingUnit = new HostingUnit(Util.MyHost, name);
 
             try
             {
-                Bl.CreateHostingUnit(hostingUnit);
+                Util.Bl.CreateHostingUnit(hostingUnit);
             }
             catch (InvalidDataException error)
             {

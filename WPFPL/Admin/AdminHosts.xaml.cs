@@ -37,11 +37,10 @@ namespace WPFPL.Admin
 
         public static void Refresh()
         {
-            IBL Bl = BL_Imp.GetBL();
             if (HostCollection != null)
             {
                 HostCollection.Clear();
-                foreach (BE.Host item in Bl.GetHosts())
+                foreach (BE.Host item in Util.Bl.GetHosts())
                 {
                     HostCollection.Add(item.ToString());
                 }

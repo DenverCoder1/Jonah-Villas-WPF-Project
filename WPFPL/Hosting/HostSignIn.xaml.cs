@@ -49,16 +49,15 @@ namespace WPFPL
 
         private void Host_Enter_Button_Click(object sender, RoutedEventArgs e)
         {
-            IBL Bl = BL_Imp.GetBL();
             if (long.TryParse(HostID.Text, out long hKey))
             {
-                Host host = Bl.GetHost(hKey);
+                Host host = Util.Bl.GetHost(hKey);
                 if (host == null)
                 {
                     MainWindow.Dialog("Host ID does not exist.");
                     return;
                 }
-                MainWindow.MyHost = host;
+                Util.MyHost = host;
                 mainWindow.HostingFrame.Navigate(new HostMenu());
             }
             else

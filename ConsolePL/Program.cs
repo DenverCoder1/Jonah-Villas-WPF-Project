@@ -11,7 +11,7 @@ namespace ConsolePL
 {
     class Program
     {
-        private static IBL MyBL = BL_Imp.GetBL();
+        private static IBL Bl = BL_Imp.GetBL();
 
         private static string PascalCaseToText(object value)
         {
@@ -23,11 +23,11 @@ namespace ConsolePL
         {
             Order order = new Order(1, 2);
 
-            MyBL.CreateOrder(order);
+            Bl.CreateOrder(order);
 
-            order.Status = OrderStatus.C;
+            order.Status = OrderStatus.ClosedByCustomerResponse;
 
-            MyBL.UpdateOrder(order);
+            Bl.UpdateOrder(order);
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
@@ -50,9 +50,9 @@ namespace ConsolePL
 
             GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
 
-            MyBL.CreateGuestRequest(guest);
+            Bl.CreateGuestRequest(guest);
 
-            List<GuestRequest> list = MyBL.GetGuestRequests();
+            List<GuestRequest> list = Bl.GetGuestRequests();
 
             foreach (GuestRequest gr in list)
             {

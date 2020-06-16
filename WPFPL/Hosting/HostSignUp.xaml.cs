@@ -51,18 +51,17 @@ namespace WPFPL
 
         private void Create_Account(object sender, RoutedEventArgs e)
         {
-            IBL Bl = BL_Imp.GetBL();
             string fname = hFirstName.Text;
             string lname = hLastName.Text;
             string email = hEmail.Text;
             string phone = hPhone.Text;
             string branch = hBranch.Text;
-            BankBranch bankBranch = Bl.GetBankBranches()[0];
+            BankBranch bankBranch = Util.Bl.GetBankBranches()[0];
             string routing = hRoutingNumber.Text;
 
             try
             {
-                Bl.ValidateHostSignUp(fname, lname, email, phone, branch, routing);
+                Util.Bl.ValidateHostSignUp(fname, lname, email, phone, branch, routing);
             }
             catch (InvalidDataException error)
             {
@@ -76,9 +75,9 @@ namespace WPFPL
 
             try
             {
-                MainWindow.MyHost = new BE.Host(fname, lname, email, phone, bankBranch, routingNum);
-                Bl.CreateHost(MainWindow.MyHost.Clone());
-                MainWindow.Dialog($"Success! Your Host ID is {MainWindow.MyHost.HostKey}. Use this number when you want to enter the hosting area.");
+                Util.MyHost = new BE.Host(fname, lname, email, phone, bankBranch, routingNum);
+                Util.Bl.CreateHost(Util.MyHost.Clone());
+                MainWindow.Dialog($"Success! Your Host ID is {Util.MyHost.HostKey}. Use this number when you want to enter the hosting area.");
             }
             catch (Exception error)
             {

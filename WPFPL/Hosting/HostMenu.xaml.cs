@@ -27,7 +27,7 @@ namespace WPFPL
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
-            YourHostID.Text = $"Your host ID is {MainWindow.MyHost.HostKey}";
+            YourHostID.Text = $"Your host ID is {Util.MyHost.HostKey}";
         }
 
         private void View_Hosting_Units_Page(object sender, RoutedEventArgs e)
