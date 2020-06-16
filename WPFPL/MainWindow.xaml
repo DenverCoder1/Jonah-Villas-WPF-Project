@@ -55,7 +55,8 @@
         <p:ConvertToNextDay x:Key="ConvertToNextDay" />
         <p:AddMonthsConverter x:Key="AddMonthsConverter" />
     </Window.Resources>
-    <md:DialogHost x:Name="MyDialog">
+    <md:DialogHost x:Name="MyDialog"
+                   DialogClosing="Dialog_Closed">
         <md:DialogHost.DialogContent>
             <StackPanel Margin="20 4 0 20"
                         Width="200px">

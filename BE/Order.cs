@@ -50,7 +50,7 @@ namespace BE
         {
             // concatenate all info to a string
             StringBuilder output = new StringBuilder();
-            output.AppendLine($"#{OrderKey} : Host ID: {HostingUnitKey}, Request ID: {GuestRequestKey}");
+            output.AppendLine($"#{OrderKey} : Hosting Unit ID: {HostingUnitKey}, Request ID: {GuestRequestKey}");
             output.Append($"Created: {((CreationDate == default) ? "N/A" : CreationDate.ToString("dd.MM.yyyy"))}, ");
             output.Append($"Email: {((EmailDeliveryDate == default) ? "N/A" : EmailDeliveryDate.ToString("dd.MM.yyyy"))}\n");
             output.Append($"Status: {Status}");

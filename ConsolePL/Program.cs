@@ -25,7 +25,7 @@ namespace ConsolePL
 
             MyBL.CreateOrder(order);
 
-            order.Status = OrderStatus.NoResponse;
+            order.Status = OrderStatus.C;
 
             MyBL.UpdateOrder(order);
 

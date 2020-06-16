@@ -64,7 +64,7 @@ namespace WPFPL
             DateTime release = DateTime.Now.Date.AddDays(10);
             string fname = "Jonah";
             string lname = "Lawrence";
-            string email = "jonah@google.com";
+            string email = "jonah@jonah.com";
             District region = District.TelAviv;
             City city = City.BneiBrak;
             BE.TypeOfPlace type = BE.TypeOfPlace.Apartment;
@@ -83,19 +83,36 @@ namespace WPFPL
                 [Amenity.Workspace] = PrefLevel.Required
             };
 
-            GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
+            GuestRequest guest1 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 2, 3, amenities);
 
-            Bl.CreateGuestRequest(guest);
+            Bl.CreateGuestRequest(guest1);
 
-            HostingUnit hostingUnit = new HostingUnit(new Host(), "myUnit");
-            Bl.CreateHostingUnit(hostingUnit);
+            GuestRequest guest2 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
 
-            HostingUnit hostingUnit2 = new HostingUnit(new Host(), "myUnit2");
+            Bl.CreateGuestRequest(guest2);
+
+            Host host1 = new Host("James", "Smith", "james@james.com", "6456346343", new BankBranch(), 543646545);
+
+            Bl.CreateHost(host1);
+
+            Host host2 = new Host("Larry", "Page", "larry@googz.com", "4363466463", new BankBranch(), 6364636456);
+
+            Bl.CreateHost(host2);
+
+            HostingUnit hostingUnit1 = new HostingUnit(host1, "myUnit");
+            Bl.CreateHostingUnit(hostingUnit1);
+
+            HostingUnit hostingUnit2 = new HostingUnit(host2, "myUnit2");
             Bl.CreateHostingUnit(hostingUnit2);
 
-            Order order = new Order(hostingUnit.HostingUnitKey, guest.GuestRequestKey);
+            Order order1 = new Order(hostingUnit1.HostingUnitKey, guest1.GuestRequestKey);
 
-            Bl.CreateOrder(order);
+            Bl.CreateOrder(order1);
+
+            Order order2 = new Order(hostingUnit2.HostingUnitKey, guest1.GuestRequestKey);
+
+            Bl.CreateOrder(order2);
+
             /* DEBUG */
         }
 
@@ -103,20 +120,39 @@ namespace WPFPL
         /// Open custom dialog box with custom text
         /// </summary>
         /// <param name="text">Text to insert into box</param>
-        public static void Dialog(string text, params Control[] controlsEnabled)
+        public static void Dialog(string text, string tag = "", bool textBoxEnabled = false, bool comboBoxEnabled = false)
         {
             MainWindow mainWindow = Util.GetMainWindow();
-            // hide input boxes
-            mainWindow.MyDialogTextBox.Height = 0;
-            mainWindow.MyDialogComboBox.Height = 0;
 
-            // enabled selected controls
-            foreach (Control c in controlsEnabled)
-                c.Height = double.NaN; // Auto
+            // hide / show input boxes
+            mainWindow.MyDialogTextBox.Height = (!textBoxEnabled) ? (0 /* hidden */) : (double.NaN /* Auto */);
+            mainWindow.MyDialogComboBox.Height = (!comboBoxEnabled) ? (0 /* hidden */) : (double.NaN /* Auto */);
 
             // set text and display
+            mainWindow.MyDialogTextBox.Text = "";
+            mainWindow.MyDialogComboBox.SelectedIndex = -1;
+            mainWindow.MyDialog.Tag = tag;
             mainWindow.MyDialogText.Text = text;
             mainWindow.MyDialog.IsOpen = true;
+        }
+
+        /// <summary>
+        /// Dialog closed handler
+        /// </summary>
+        private void Dialog_Closed(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
+        {
+            if (MyDialog.Tag.ToString() == "HostAddHostingUnit")
+            {
+                HostHostingUnits.Add_Hosting_Unit_Named(MyDialogTextBox.Text);
+            }
+            else if (MyDialog.Tag.ToString() == "HostDeleteHostingUnit")
+            {
+                HostHostingUnits.Confirm_Delete(MyDialogText.Text, MyDialogTextBox.Text);
+            }
+            else if (MyDialog.Tag.ToString() == "HostUpdateHostingUnit")
+            {
+                HostHostingUnits.Update_Hosting_Unit_Name(MyDialogText.Text, MyDialogTextBox.Text);
+            }
         }
 
         /// <summary>
@@ -247,5 +283,7 @@ namespace WPFPL
                 Dialog(error.Message.ToString());
             }
         }
+
+        
     }
 }

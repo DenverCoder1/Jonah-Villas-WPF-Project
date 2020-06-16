@@ -1,0 +1,58 @@
+﻿<Page x:Class="WPFPL.HostHostingUnits"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WPFPL"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="HostHostingUnits">
+
+    <Grid>
+        <StackPanel>
+            <TextBlock FontFamily="{StaticResource OpenSans}"
+                       FontSize="16px"
+                       Margin="0 5 0 10">
+                Your Hosting Units
+            </TextBlock>
+            <ListBox x:Name="HostingUnits"
+                     Width="280"
+                     Height="280"
+                     SelectionMode="Single"
+                     BorderBrush="#e6e6e6"
+                     BorderThickness="1"
+                     HorizontalAlignment="Left">
+            </ListBox>
+            <StackPanel Orientation="Horizontal">
+                <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                        Width="Auto"
+                        HorizontalAlignment="Left"
+                        Margin="0 15 6 0"
+                        Click="Update_Hosting_Unit">
+                    UPDATE
+                </Button>
+                <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                        Width="Auto"
+                        HorizontalAlignment="Left"
+                        Margin="0 15 6 0"
+                        Click="Delete_Hosting_Unit">
+                    DELETE
+                </Button>
+                <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                        Width="Auto"
+                        HorizontalAlignment="Left"
+                        Margin="0 15 0 0"
+                        Click="Add_Hosting_Unit">
+                    ADD NEW
+                </Button>
+            </StackPanel>
+            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                    Width="Auto"
+                    HorizontalAlignment="Left"
+                    Margin="0 15 0 0"
+                    Click="Return_To_Options">
+                RETURN TO MENU
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>

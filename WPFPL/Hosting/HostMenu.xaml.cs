@@ -32,7 +32,7 @@ namespace WPFPL
 
         private void View_Hosting_Units_Page(object sender, RoutedEventArgs e)
         {
-            mainWindow.HostingFrame.Navigate(new MyHostingUnits());
+            mainWindow.HostingFrame.Navigate(new HostHostingUnits());
         }
 
         private void Return_To_Sign_In(object sender, RoutedEventArgs e)

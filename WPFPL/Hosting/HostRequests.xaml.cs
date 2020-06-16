@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BL;
 
 namespace WPFPL
 {
@@ -24,13 +25,27 @@ namespace WPFPL
     {
         public MainWindow mainWindow;
 
-        public ObservableCollection<string> RequestCollection { get; set; }
+        public static ObservableCollection<string> RequestCollection { get; set; }
         public HostRequests()
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
             RequestCollection = new ObservableCollection<string>();
             Requests.ItemsSource = RequestCollection;
+            Refresh();
+        }
+
+        public static void Refresh()
+        {
+            IBL Bl = BL_Imp.GetBL();
+            if (RequestCollection != null)
+            {
+                RequestCollection.Clear();
+                foreach (BE.GuestRequest item in Bl.GetGuestRequests())
+                {
+                    RequestCollection.Add(item.ToString());
+                }
+            }
         }
 
         private void Return_To_Options(object sender, RoutedEventArgs e)

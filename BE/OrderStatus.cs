@@ -4,7 +4,7 @@
     {
         NotYetHandled = 0,
         SentEmail = 1,
-        NoResponse = 2,
-        GuestClosed = 3
+        ClosedByNoCustomerResponse = 2,
+        ClosedByCustomerResponse = 3
     }
 }

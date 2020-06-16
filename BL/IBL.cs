@@ -14,16 +14,19 @@ namespace BL
         bool DeleteHostingUnit(long hostingUnitKey);
         bool UpdateHostingUnit(HostingUnit newHostingUnit);
         List<HostingUnit> GetHostingUnits();
+        List<HostingUnit> GetHostHostingUnits(long hostKey);
 
         // guest requests
         bool CreateGuestRequest(GuestRequest guestRequest);
         bool UpdateGuestRequest(GuestRequest newGuestRequest);
         List<GuestRequest> GetGuestRequests();
+        List<GuestRequest> GetOpenGuestRequests();
 
         // orders
         bool CreateOrder(Order order);
         bool UpdateOrder(Order newOrder);
         List<Order> GetOrders();
+        List<Order> GetHostOrders(long hostKey);
 
         // bank branches
         List<BankBranch> GetBankBranches();

@@ -54,7 +54,17 @@ namespace BL
         bool IBL.DeleteHostingUnit(long hostingUnitKey)
         {
             try {
-                return DalInstance.DeleteHostingUnit(hostingUnitKey);
+                // Check that there are no open orders in the hosting unit
+                var matches = from Order item in DalInstance.GetOrders()
+                              let s = item.Status
+                              let stillOpen = (s == OrderStatus.NotYetHandled || s == OrderStatus.SentEmail)
+                              where item.HostingUnitKey == hostingUnitKey && stillOpen
+                              select item;
+
+                if (matches.Count() == 0)
+                    return DalInstance.DeleteHostingUnit(hostingUnitKey);
+                else
+                    throw new ApplicationException("Could not delete since the Hosting Unit has 1 or more open orders.");
             }
             catch (Exception e)
             {
@@ -87,6 +97,18 @@ namespace BL
         List<HostingUnit> IBL.GetHostingUnits()
         {
             return DalInstance.GetHostingUnits().ConvertAll(x => x.Clone());
+        }
+
+        /// <summary>
+        /// Return hosting units belonging to a given host
+        /// </summary>
+        List<HostingUnit> IBL.GetHostHostingUnits(long hostKey)
+        {
+            List<HostingUnit> hostingUnits = DalInstance.GetHostingUnits().ConvertAll(x => x.Clone());
+            var matches = from HostingUnit item in hostingUnits
+                          where item.Owner.HostKey == hostKey
+                          select item;
+            return matches.ToList();
         }
 
         // GUEST REQUESTS
@@ -133,6 +155,18 @@ namespace BL
         List<GuestRequest> IBL.GetGuestRequests()
         {
             return DalInstance.GetGuestRequests().ConvertAll(x => x.Clone());
+        }
+
+        /// <summary>
+        /// Get open guest requests 
+        /// </summary>
+        List<GuestRequest> IBL.GetOpenGuestRequests()
+        {
+            List<GuestRequest> guestRequests = DalInstance.GetGuestRequests().ConvertAll(x => x.Clone());
+            var matches = from GuestRequest item in guestRequests
+                          where item.Status == GuestStatus.Open
+                          select item;
+            return matches.ToList();
         }
 
         // ORDER
@@ -190,6 +224,19 @@ namespace BL
         List<Order> IBL.GetOrders()
         {
             return DalInstance.GetOrders().ConvertAll(x => x.Clone());
+        }
+
+        /// <summary>
+        /// Get orders maintained by given host
+        /// </summary>
+        List<Order> IBL.GetHostOrders(long hostKey)
+        {
+            List<Order> orders = DalInstance.GetOrders().ConvertAll(x => x.Clone());
+            List<long> hostHostingUnitKeys = instance.GetHostHostingUnits(hostKey).ConvertAll(x => x.HostingUnitKey);
+            var matches = from Order item in orders
+                          where hostHostingUnitKeys.IndexOf(item.HostingUnitKey) > -1
+                          select item;
+            return matches.ToList();
         }
 
         // BANK BRANCHES

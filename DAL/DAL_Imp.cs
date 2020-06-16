@@ -112,24 +112,12 @@ namespace DAL
         bool IDAL.DeleteHostingUnit(long hostingUnitKey)
         {
             // find hosting unit in list
-            IEnumerable<HostingUnit> matches =
-                from HostingUnit item in instance.GetHostingUnits()
-                where item.HostingUnitKey == hostingUnitKey
-                select item;
-
-            // if not in list, can't delete
-            if (matches.ToList().Count == 0)
-                throw new ArgumentException("No Hosting Unit was found with this key.");
-
-            HostingUnit oldHostingUnit = matches.ToList()[0];
-
-            // find index of hosting unit
-            int index = DataSource.HostingUnits.FindIndex(item =>
-                item.HostingUnitKey == oldHostingUnit.HostingUnitKey
+            var hostingUnitToDelete = DataSource.HostingUnits.FirstOrDefault(hu =>
+                hu.HostingUnitKey == hostingUnitKey
             );
 
             // remove
-            DataSource.HostingUnits.Remove(oldHostingUnit);
+            DataSource.HostingUnits.Remove(hostingUnitToDelete);
             return true;
         }
 

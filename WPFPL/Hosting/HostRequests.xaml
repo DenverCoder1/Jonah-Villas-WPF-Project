@@ -16,7 +16,7 @@
             <TextBlock FontFamily="{StaticResource OpenSans}"
                        FontSize="16px"
                        Margin="0 5 0 10">
-                Guest Requests
+                Open Guest Requests
             </TextBlock>
             <ListBox x:Name="Requests"
                      Width="280"
