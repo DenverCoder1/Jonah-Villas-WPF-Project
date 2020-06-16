@@ -1,7 +1,7 @@
-﻿<Application x:Class="Project01_3693_dotNet5780.App"
+﻿<Application x:Class="WPFPL.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Project01_3693_dotNet5780"
+             xmlns:local="clr-namespace:WPFPL"
              xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
              StartupUri="MainWindow.xaml">
     <Application.Resources>

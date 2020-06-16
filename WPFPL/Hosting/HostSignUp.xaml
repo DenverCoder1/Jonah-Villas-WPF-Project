@@ -89,7 +89,9 @@
                          HorizontalAlignment="Left"
                          Height="24"
                          Margin="0 4"
-                         VerticalAlignment="Center" />
+                         VerticalAlignment="Center"
+                         PreviewTextInput="Preview_Numbers"
+                         DataObject.Pasting="Pasting_Numbers"/>
                 <Label Content="Bank branch:"
                        Grid.Row="4"
                        Grid.Column="0"
@@ -115,7 +117,9 @@
                          HorizontalAlignment="Left"
                          Height="24"
                          Margin="0 4"
-                         VerticalAlignment="Center" />
+                         VerticalAlignment="Center"
+                         PreviewTextInput="Preview_Numbers"
+                         DataObject.Pasting="Pasting_Numbers" />
             </Grid>
 
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"

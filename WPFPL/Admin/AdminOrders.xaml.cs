@@ -1,5 +1,5 @@
 ﻿using BL;
-using Project01_3693_dotNet5780;
+using WPFPL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,10 +37,11 @@ namespace WPFPL.Admin
 
         public static void Refresh()
         {
+            IBL Bl = BL_Imp.GetBL();
             if (OrdersCollection != null)
             {
                 OrdersCollection.Clear();
-                foreach (BE.Order item in BL_Imp.GetBL().GetOrders())
+                foreach (BE.Order item in Bl.GetOrders())
                 {
                     OrdersCollection.Add(item.ToString());
                 }

@@ -1,4 +1,4 @@
-﻿using Project01_3693_dotNet5780;
+﻿using WPFPL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +27,7 @@ namespace WPFPL
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
+            YourHostID.Text = $"Your host ID is {MainWindow.MyHost.HostKey}";
         }
 
         private void View_Hosting_Units_Page(object sender, RoutedEventArgs e)

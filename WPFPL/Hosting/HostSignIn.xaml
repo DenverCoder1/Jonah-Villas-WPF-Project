@@ -21,7 +21,10 @@
                      Height="24"
                      Margin="0 15 0 0"
                      VerticalAlignment="Center"
-                     Width="140" />
+                     Width="140"
+                     KeyUp="HostID_TextBox_KeyUp" 
+                     PreviewTextInput="HostID_PreviewTextInput"
+                     DataObject.Pasting="HostID_Pasting"/>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Width="Auto"
                     HorizontalAlignment="Left"
@@ -33,7 +36,7 @@
                        FontWeight="Light"
                        FontSize="16px"
                        Margin="0 30 0 0">
-							    Don't yet have a Host ID?
+			    Don't yet have a Host ID?
             </TextBlock>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Width="Auto"

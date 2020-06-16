@@ -28,6 +28,11 @@ namespace BL
         // bank branches
         List<BankBranch> GetBankBranches();
 
+        // hosts
+        bool CreateHost(Host host);
+        List<Host> GetHosts();
+        Host GetHost(long hostKey);
+
         // validation
         bool ValidateGuestForm(
             string fname,
@@ -41,6 +46,19 @@ namespace BL
             int numChildren,
             object prefType);
 
+        bool ValidateHostSignUp(
+            string fname,
+            string lname,
+            string email,
+            string phone,
+            string bankBranch,
+            string routingNum);
+
+        bool IsValidName(string name);
         bool IsValidEmail(string email);
+
+        bool IsValidPhoneNumber(string phone);
+
+        bool IsValidRoutingNumber(string routing);
     }
 }

@@ -25,6 +25,10 @@ namespace DAL
         bool UpdateOrder(Order newOrder);
         List<Order> GetOrders();
 
+        // hosts
+        bool CreateHost(Host host);
+        List<Host> GetHosts();
+
         // bank branches
         List<BankBranch> GetBankBranches();
     }

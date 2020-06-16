@@ -1,4 +1,4 @@
-﻿using Project01_3693_dotNet5780;
+﻿using WPFPL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +41,11 @@ namespace WPFPL.Admin
         private void View_Orders(object sender, RoutedEventArgs e)
         {
             mainWindow.AdminFrame.Navigate(new AdminOrders());
+        }
+
+        private void View_Hosts(object sender, RoutedEventArgs e)
+        {
+            mainWindow.AdminFrame.Navigate(new AdminHosts());
         }
     }
 }

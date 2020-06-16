@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Project01_3693_dotNet5780
+namespace WPFPL
 {
     public class PascalCaseToText : IValueConverter
     {

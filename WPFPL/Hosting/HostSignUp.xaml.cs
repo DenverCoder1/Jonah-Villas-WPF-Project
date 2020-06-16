@@ -1,4 +1,4 @@
-﻿using Project01_3693_dotNet5780;
+﻿using WPFPL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BL;
+using System.IO;
+using BE;
+using System.Text.RegularExpressions;
 
 namespace WPFPL
 {
@@ -47,7 +51,40 @@ namespace WPFPL
 
         private void Create_Account(object sender, RoutedEventArgs e)
         {
-            // TODO: Create Host Account
+            IBL Bl = BL_Imp.GetBL();
+            string fname = hFirstName.Text;
+            string lname = hLastName.Text;
+            string email = hEmail.Text;
+            string phone = hPhone.Text;
+            string branch = hBranch.Text;
+            BankBranch bankBranch = Bl.GetBankBranches()[0];
+            string routing = hRoutingNumber.Text;
+
+            try
+            {
+                Bl.ValidateHostSignUp(fname, lname, email, phone, branch, routing);
+            }
+            catch (InvalidDataException error)
+            {
+                MainWindow.Dialog(error.Message.ToString());
+                return;
+            }
+
+            long.TryParse(routing, out long routingNum);
+
+
+
+            try
+            {
+                MainWindow.MyHost = new BE.Host(fname, lname, email, phone, bankBranch, routingNum);
+                Bl.CreateHost(MainWindow.MyHost.Clone());
+                MainWindow.Dialog($"Success! Your Host ID is {MainWindow.MyHost.HostKey}. Use this number when you want to enter the hosting area.");
+            }
+            catch (Exception error)
+            {
+                MainWindow.Dialog(error.Message.ToString());
+                return;
+            }
 
             mainWindow.HostingFrame.Navigate(new HostMenu());
         }
@@ -55,6 +92,33 @@ namespace WPFPL
         private void Return_To_Sign_In(object sender, RoutedEventArgs e)
         {
             mainWindow.HostingFrame.Navigate(new HostSignIn());
+        }
+
+        private static readonly Regex NumbersRegex = new Regex("[^0-9]+"); //regex that matches disallowed text
+        private static bool IsTextAllowed(string text)
+        {
+            return !NumbersRegex.IsMatch(text);
+        }
+
+        private void Preview_Numbers(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsTextAllowed(e.Text);
+        }
+
+        private void Pasting_Numbers(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(String)))
+            {
+                String text = (String)e.DataObject.GetData(typeof(String));
+                if (!IsTextAllowed(text))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
+            }
         }
     }
 }

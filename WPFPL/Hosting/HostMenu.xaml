@@ -10,6 +10,10 @@
 
     <Grid>
         <StackPanel>
+            <TextBlock x:Name="YourHostID"
+                       FontFamily="{StaticResource OpenSans}"
+                       FontSize="16px"
+                       Margin="0 8 0 0" />
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Width="170px"
                     HorizontalAlignment="Left"

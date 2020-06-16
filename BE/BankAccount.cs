@@ -11,6 +11,12 @@ namespace BE
         BankBranch Branch { get; set; }
         public long RoutingNumber { get; set; }
 
+        public BankAccount(BankBranch branch, long routing)
+        {
+            Branch = branch;
+            RoutingNumber = routing;
+        }
+
         public override string ToString()
         {
             // concatenate all info to a string

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Project01_3693_dotNet5780.Properties
+namespace WPFPL.Properties
 {
 
 

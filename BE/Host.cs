@@ -21,6 +21,24 @@ namespace BE
         {
             // set host key
             HostKey = ++Config.stHostKey;
+            BankClearance = true;
+        }
+
+        public Host(
+            string fname,
+            string lname,
+            string email,
+            string phone,
+            BankBranch branch,
+            long routing)
+        {
+            HostKey = ++Config.stHostKey;
+            FirstName = fname;
+            LastName = lname;
+            Email = email;
+            PhoneNumber = phone;
+            BankDetails = new BankAccount(branch, routing);
+            BankClearance = true;
         }
 
         // deep copy (clone)
@@ -43,11 +61,8 @@ namespace BE
         {
             // concatenate all hosting unit info to a string
             StringBuilder output = new StringBuilder();
-            output.AppendLine($"First Name: {FirstName}");
-            output.AppendLine($"Last Name: {LastName}");
-            output.AppendLine($"Email: {Email}");
-            output.AppendLine($"Phone Number: {PhoneNumber}");
-            output.AppendLine($"Bank Details: {BankDetails}");
+            output.AppendLine($"#{HostKey} : {LastName}, {FirstName}");
+            output.AppendLine($"Email: {Email}, Phone: {PhoneNumber}");
             output.Append($"Bank Clearance: {BankClearance}");
             return output.ToString();
         }

@@ -1,5 +1,5 @@
 ﻿using BL;
-using Project01_3693_dotNet5780;
+using WPFPL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -38,10 +38,11 @@ namespace WPFPL.Admin
 
         public static void Refresh()
         {
+            IBL Bl = BL_Imp.GetBL();
             if (HostingUnitCollection != null)
             {
                 HostingUnitCollection.Clear();
-                foreach (BE.HostingUnit item in BL.BL_Imp.GetBL().GetHostingUnits())
+                foreach (BE.HostingUnit item in Bl.GetHostingUnits())
                 {
                     HostingUnitCollection.Add(item.ToString());
                 }

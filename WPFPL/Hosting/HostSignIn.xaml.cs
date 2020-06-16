@@ -1,4 +1,5 @@
-﻿using Project01_3693_dotNet5780;
+﻿using BE;
+using WPFPL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
+using BL;
 
 namespace WPFPL
 {
@@ -46,12 +49,65 @@ namespace WPFPL
 
         private void Host_Enter_Button_Click(object sender, RoutedEventArgs e)
         {
-            mainWindow.HostingFrame.Navigate(new HostMenu());
+            IBL Bl = BL_Imp.GetBL();
+            if (long.TryParse(HostID.Text, out long hKey))
+            {
+                Host host = Bl.GetHost(hKey);
+                if (host == null)
+                {
+                    MainWindow.Dialog("Host ID does not exist.");
+                    return;
+                }
+                MainWindow.MyHost = host;
+                mainWindow.HostingFrame.Navigate(new HostMenu());
+            }
+            else
+            {
+                MainWindow.Dialog("Host ID is invalid.");
+            }
         }
 
         private void Host_Sign_Up_Button_Click(object sender, RoutedEventArgs e)
         {
             mainWindow.HostingFrame.Navigate(new HostSignUp());
+        }
+
+        private void HostID_TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.Enter)
+                return;
+
+            // Enter key pressed
+            e.Handled = true;
+            Host_Enter_Button_Click(sender, e);
+        }
+
+        private static readonly Regex NumbersRegex = new Regex("[^0-9]+"); //regex that matches disallowed text
+        private static bool IsTextAllowed(string text)
+        {
+            return !NumbersRegex.IsMatch(text);
+        }
+
+        // Use the DataObject.Pasting Handler 
+        private void HostID_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(String)))
+            {
+                String text = (String)e.DataObject.GetData(typeof(String));
+                if (!IsTextAllowed(text))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
+            }
+        }
+
+        private void HostID_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsTextAllowed(e.Text);
         }
     }
 }

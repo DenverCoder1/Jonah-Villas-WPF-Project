@@ -230,7 +230,28 @@ namespace DAL
         {
             return DataSource.Orders.ConvertAll(x => x.Clone());
         }
-        
+
+        // hosts
+        bool IDAL.CreateHost(Host host)
+        {
+            // check if host is already in list
+            Host oldHost = instance.GetHosts().Find((Host h) =>
+                h.HostKey == host.HostKey
+            );
+
+            // if not in list
+            if (oldHost == null)
+            {
+                // add to list
+                DataSource.Hosts.Add(host.Clone());
+            }
+            return true;
+        }
+        List<Host> IDAL.GetHosts()
+        {
+            return DataSource.Hosts.ConvertAll(x => x.Clone());
+        }
+
         // bank branches
 
         /// <summary>

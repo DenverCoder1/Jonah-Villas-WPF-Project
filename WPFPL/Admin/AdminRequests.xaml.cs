@@ -1,6 +1,6 @@
 ﻿using BE;
 using BL;
-using Project01_3693_dotNet5780;
+using WPFPL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,15 +27,12 @@ namespace WPFPL.Admin
     {
         public MainWindow mainWindow;
 
-        private static IBL MyBL;
-
         public static ObservableCollection<string> RequestCollection { get; set; }
 
         public AdminRequests()
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
-            MyBL = BL_Imp.GetBL();
             RequestCollection = new ObservableCollection<string>();
             Requests.ItemsSource = RequestCollection;
             Refresh();
@@ -43,10 +40,11 @@ namespace WPFPL.Admin
 
         public static void Refresh()
         {
+            IBL Bl = BL_Imp.GetBL();
             if (RequestCollection != null)
             {
                 RequestCollection.Clear();
-                foreach (BE.GuestRequest item in MyBL.GetGuestRequests())
+                foreach (BE.GuestRequest item in Bl.GetGuestRequests())
                 {
                     RequestCollection.Add(item.ToString());
                 }

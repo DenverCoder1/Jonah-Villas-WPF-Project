@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace BL
 {
@@ -51,8 +53,8 @@ namespace BL
         /// </summary>
         bool IBL.DeleteHostingUnit(long hostingUnitKey)
         {
-            try { 
-                return DalInstance.DeleteHostingUnit(hostingUnitKey); 
+            try {
+                return DalInstance.DeleteHostingUnit(hostingUnitKey);
             }
             catch (Exception e)
             {
@@ -197,6 +199,43 @@ namespace BL
             return DalInstance.GetBankBranches().ConvertAll(x => x.Clone());
         }
 
+        // HOSTS
+
+        /// <summary>
+        /// Create host in data
+        /// </summary>
+        bool IBL.CreateHost(Host host)
+        {
+            if (host == null)
+            {
+                throw new ArgumentNullException("Host cannot be null.");
+            }
+            // Make sure the Guest Request is unique
+            if (DalInstance.GetHosts().Exists((Host h) => h.HostKey == host.HostKey))
+            {
+                throw new ArgumentException($"Host with key {host.HostKey} already exists.");
+            }
+            return DalInstance.CreateHost(host.Clone());
+        }
+
+        /// <summary>
+        /// Get list of hosts
+        /// </summary>
+        /// <returns></returns>
+        List<Host> IBL.GetHosts()
+        {
+            return DalInstance.GetHosts().ConvertAll(x => x.Clone());
+        }
+
+        /// <summary>
+        /// Check if a host exists with hostKey, return host or null
+        /// </summary>
+        Host IBL.GetHost(long hostKey)
+        {
+            Host host = DalInstance.GetHosts().FirstOrDefault(h => h.HostKey == hostKey);
+            return host;
+        }
+
         // VALIDATION
 
         /// <summary>
@@ -215,21 +254,13 @@ namespace BL
             int numChildren,
             object prefType)
         {
-            if (fname.Length < 2)
+            if (!instance.IsValidName(fname))
             {
-                throw new InvalidDataException("First name must contain at least 2 letters.");
+                throw new InvalidDataException("First name must be at least 2 characters long and contain only letters and whitespace.");
             }
-            else if (!fname.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+            else if (!instance.IsValidName(lname))
             {
-                throw new InvalidDataException("First name must only contain letters and whitespace.");
-            }
-            else if (lname.Length < 2)
-            {
-                throw new InvalidDataException("Last name must contain at least 2 letters.");
-            }
-            else if (!lname.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
-            {
-                throw new InvalidDataException("Last name must only contain letters and whitespace.");
+                throw new InvalidDataException("Last name must be at least 2 characters long and contain only letters and whitespace.");
             }
             else if (!instance.IsValidEmail(email))
             {
@@ -328,6 +359,56 @@ namespace BL
         }
 
         /// <summary>
+        /// Validate details from host sign up form
+        /// </summary>
+        bool IBL.ValidateHostSignUp(
+            string fname,
+            string lname,
+            string email,
+            string phone,
+            string bankBranch,
+            string routingNum)
+        {
+            if (!instance.IsValidName(fname))
+            {
+                throw new InvalidDataException("First name must be at least 2 characters long and contain only letters and whitespace.");
+            }
+            else if (!instance.IsValidName(lname))
+            {
+                throw new InvalidDataException("Last name must be at least 2 characters long and contain only letters and whitespace.");
+            }
+            else if (!instance.IsValidEmail(email))
+            {
+                throw new InvalidDataException("Email address is not valid.");
+            }
+            else if (!instance.IsValidPhoneNumber(phone))
+            {
+                throw new InvalidDataException("Phone number is not valid.");
+            }
+            else if (!instance.IsValidRoutingNumber(routingNum))
+            {
+                throw new InvalidDataException("Routing number is not valid.");
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Check if an name is valid
+        /// </summary>
+        bool IBL.IsValidName(string name)
+        {
+            if (name.Length < 2)
+            {
+                return false;
+            }
+            else if (!name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Check if an email address is valid
         /// </summary>
         bool IBL.IsValidEmail(string email)
@@ -341,6 +422,37 @@ namespace BL
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Check if an phone number is valid
+        /// </summary>
+        bool IBL.IsValidPhoneNumber(string phone)
+        {
+            if (string.IsNullOrEmpty(phone))
+                return false;
+
+            var numbersOnly = Regex.Replace(phone, @"[^0-9]+", "");
+
+            if (numbersOnly.Length >= 7 && numbersOnly.Length <= 15)
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// Check if an routing number is valid
+        /// </summary>
+        bool IBL.IsValidRoutingNumber(string routing)
+        {
+            if (string.IsNullOrEmpty(routing))
+                return false;
+
+            var numbersOnly = Regex.Replace(routing, @"[^0-9]+", "");
+            if (numbersOnly.Length >= 8 && numbersOnly.Length <= 16)
+                return long.TryParse(routing, out _);
+            else
+                return false;
         }
     }
 }

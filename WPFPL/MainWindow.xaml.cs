@@ -21,7 +21,7 @@ using BL;
 using WPFPL;
 using WPFPL.Admin;
 
-namespace Project01_3693_dotNet5780
+namespace WPFPL
 {
 
     /// <summary>
@@ -29,7 +29,7 @@ namespace Project01_3693_dotNet5780
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static IBL MyBL;
+        private static IBL Bl;
 
         public ObservableCollection<string> DynamicCityList { get; set; }
 
@@ -43,7 +43,7 @@ namespace Project01_3693_dotNet5780
         public MainWindow()
         {
             InitializeComponent();
-            MyBL = BL_Imp.GetBL();
+            Bl = BL_Imp.GetBL();
             DynamicCityList = new ObservableCollection<string> { "Select a district." };
             CurrentTab = Tab0;
             Loaded += MainWindow_Loaded;
@@ -85,17 +85,17 @@ namespace Project01_3693_dotNet5780
 
             GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
 
-            MyBL.CreateGuestRequest(guest);
+            Bl.CreateGuestRequest(guest);
 
             HostingUnit hostingUnit = new HostingUnit(new Host(), "myUnit");
-            MyBL.CreateHostingUnit(hostingUnit);
+            Bl.CreateHostingUnit(hostingUnit);
 
             HostingUnit hostingUnit2 = new HostingUnit(new Host(), "myUnit2");
-            MyBL.CreateHostingUnit(hostingUnit2);
+            Bl.CreateHostingUnit(hostingUnit2);
 
             Order order = new Order(hostingUnit.HostingUnitKey, guest.GuestRequestKey);
 
-            MyBL.CreateOrder(order);
+            Bl.CreateOrder(order);
             /* DEBUG */
         }
 
@@ -103,19 +103,20 @@ namespace Project01_3693_dotNet5780
         /// Open custom dialog box with custom text
         /// </summary>
         /// <param name="text">Text to insert into box</param>
-        private void Dialog(string text, params Control[] controlsEnabled)
+        public static void Dialog(string text, params Control[] controlsEnabled)
         {
+            MainWindow mainWindow = Util.GetMainWindow();
             // hide input boxes
-            MyDialogTextBox.Height = 0;
-            MyDialogComboBox.Height = 0;
+            mainWindow.MyDialogTextBox.Height = 0;
+            mainWindow.MyDialogComboBox.Height = 0;
 
             // enabled selected controls
             foreach (Control c in controlsEnabled)
                 c.Height = double.NaN; // Auto
 
             // set text and display
-            MyDialogText.Text = text;
-            MyDialog.IsOpen = true;
+            mainWindow.MyDialogText.Text = text;
+            mainWindow.MyDialog.IsOpen = true;
         }
 
         /// <summary>
@@ -229,7 +230,7 @@ namespace Project01_3693_dotNet5780
                         amenities[amenity] = PrefLevel.NotInterested;
                 }
 
-                MyBL.ValidateGuestForm(fname, lname, email, entry.ToString(), release.ToString(), districtObj, cityObj, numAdults, numChildren, prefTypeObj);
+                Bl.ValidateGuestForm(fname, lname, email, entry.ToString(), release.ToString(), districtObj, cityObj, numAdults, numChildren, prefTypeObj);
 
                 Enum.TryParse(gPrefDistrict.SelectedItem.ToString().Replace(" ", ""), out District district);
                 Enum.TryParse(gPrefCity.SelectedItem.ToString().Replace(" ", ""), out City city);
@@ -237,7 +238,7 @@ namespace Project01_3693_dotNet5780
 
                 GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, district, city, prefType, numAdults, numChildren, amenities);
 
-                MyBL.CreateGuestRequest(guest);
+                Bl.CreateGuestRequest(guest);
 
                 Dialog("Success! Your request has been added.");
             }
