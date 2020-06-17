@@ -24,6 +24,7 @@
         Barbecue,
         Gym,
         ChildrensAttractions,
+        HandicapAccessibility,
         PetFriendly,
         Garden,
         Patio,
@@ -31,6 +32,7 @@
         Fireplace,
         BedsideOutlets,
         SmokeAlarm,
+        SecuritySystem,
         Movies,
         Books,
         GameConsole
