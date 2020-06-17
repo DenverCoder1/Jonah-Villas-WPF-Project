@@ -41,22 +41,6 @@ namespace BE
             BankClearance = true;
         }
 
-        // deep copy (clone)
-        public Host Clone()
-        {
-            Host Clone = new Host
-            {
-                HostKey = this.HostKey,
-                FirstName = this.FirstName,
-                LastName = this.LastName,
-                Email = this.Email,
-                PhoneNumber = this.PhoneNumber,
-                BankDetails = this.BankDetails,
-                BankClearance = this.BankClearance
-            };
-            return Clone;
-        }
-
         public override string ToString()
         {
             // concatenate all hosting unit info to a string

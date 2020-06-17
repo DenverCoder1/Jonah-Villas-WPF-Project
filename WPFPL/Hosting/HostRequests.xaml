@@ -19,12 +19,11 @@
                 Open Guest Requests
             </TextBlock>
             <ListBox x:Name="Requests"
-                     Width="280"
+                     Width="Auto"
                      Height="280"
                      SelectionMode="Single"
-                     BorderBrush="#e6e6e6"
-                     BorderThickness="1"
-                     HorizontalAlignment="Left">
+                     BorderBrush="LightGray"
+                     BorderThickness="1">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />

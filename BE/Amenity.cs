@@ -13,14 +13,26 @@
         Towels,
         Shampoo,
         Workspace,
+        Furniture,
+        Bedding,
         Breakfast,
+        ClothesIron,
+        Dishwasher,
+        WalkInClosets,
         PrivateBathroom,
         FreeParking,
+        Barbecue,
         Gym,
         ChildrensAttractions,
+        PetFriendly,
         Garden,
+        Patio,
         Hangers,
         Fireplace,
-        SmokeAlarm
+        BedsideOutlets,
+        SmokeAlarm,
+        Movies,
+        Books,
+        GameConsole
     }
 }

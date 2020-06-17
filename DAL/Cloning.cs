@@ -1,0 +1,100 @@
+﻿using BE;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DAL
+{
+    public static class Cloning
+    {
+        public static BankBranch Clone(this BankBranch original)
+        {
+            BankBranch clone = new BankBranch
+            {
+                BankNumber = original.BankNumber,
+                BankName = original.BankName,
+                BranchNumber = original.BranchNumber,
+                BranchAddress = original.BranchAddress,
+                BranchCity = original.BranchCity
+            };
+            return clone;
+        }
+
+        public static GuestRequest Clone(this GuestRequest original)
+        {
+            GuestRequest clone = new GuestRequest
+            {
+                // request details
+                GuestRequestKey = original.GuestRequestKey,
+                EntryDate = original.EntryDate,
+                ReleaseDate = original.ReleaseDate,
+                Status = original.Status,
+                NumAdults = original.NumAdults,
+                NumChildren = original.NumChildren,
+
+                // Guest info
+                FirstName = original.FirstName,
+                LastName = original.LastName,
+                Email = original.Email,
+
+                // preferences
+                PrefDistrict = original.PrefDistrict,
+                PrefCity = original.PrefCity,
+                PrefType = original.PrefType,
+                PrefAmenities = new Dictionary<Amenity, PrefLevel>()
+            };
+            foreach (KeyValuePair<Amenity, PrefLevel> item in original.PrefAmenities)
+            {
+                clone.PrefAmenities[item.Key] = item.Value;
+            }
+            return clone;
+        }
+
+        public static Host Clone(this Host original)
+        {
+            Host clone = new Host
+            {
+                HostKey = original.HostKey,
+                FirstName = original.FirstName,
+                LastName = original.LastName,
+                Email = original.Email,
+                PhoneNumber = original.PhoneNumber,
+                BankDetails = original.BankDetails,
+                BankClearance = original.BankClearance
+            };
+            return clone;
+        }
+
+        public static HostingUnit Clone(this HostingUnit original)
+        {
+            HostingUnit clone = new HostingUnit
+            {
+                HostingUnitKey = original.HostingUnitKey,
+                Calendar = new List<DateRange>(),
+                Owner = original.Owner,
+                UnitName = original.UnitName
+            };
+            foreach (DateRange d in original.Calendar)
+            {
+                clone.Calendar.Add(d);
+            }
+            return clone;
+        }
+
+        public static Order Clone(this Order original)
+        {
+            Order clone = new Order
+            {
+                HostingUnitKey = original.HostingUnitKey,
+                GuestRequestKey = original.GuestRequestKey,
+                OrderKey = original.OrderKey,
+                Status = original.Status,
+                CreationDate = original.CreationDate,
+                EmailDeliveryDate = original.EmailDeliveryDate
+            };
+            return clone;
+        }
+    }
+}

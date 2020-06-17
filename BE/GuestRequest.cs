@@ -62,37 +62,6 @@ namespace BE
             PrefAmenities = amenities;
         }
 
-        // deep copy (clone)
-        public GuestRequest Clone()
-        {
-            GuestRequest Clone = new GuestRequest
-            {
-                // request details
-                GuestRequestKey = this.GuestRequestKey,
-                EntryDate = this.EntryDate,
-                ReleaseDate = this.ReleaseDate,
-                Status = this.Status,
-                NumAdults = this.NumAdults,
-                NumChildren = this.NumChildren,
-
-                // Guest info
-                FirstName = this.FirstName,
-                LastName = this.LastName,
-                Email = this.Email,
-
-                // preferences
-                PrefDistrict = this.PrefDistrict,
-                PrefCity = this.PrefCity,
-                PrefType = this.PrefType,
-                PrefAmenities = new Dictionary<Amenity, PrefLevel>()
-            };
-            foreach (KeyValuePair<Amenity,PrefLevel> item in this.PrefAmenities)
-            {
-                Clone.PrefAmenities[item.Key] = item.Value;
-            }
-            return Clone;
-        }
-
         public override string ToString()
         {
             StringBuilder output = new StringBuilder();

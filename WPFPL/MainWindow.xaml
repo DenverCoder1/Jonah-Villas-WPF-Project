@@ -54,12 +54,81 @@
         <p:PascalCaseToText x:Key="PascalCaseToText" />
         <p:ConvertToNextDay x:Key="ConvertToNextDay" />
         <p:AddMonthsConverter x:Key="AddMonthsConverter" />
+        <Style x:Key="MainHeading" TargetType="TextBlock">
+            <Setter Property="FontFamily"
+                    Value="{StaticResource OpenSans}" />
+            <Setter Property="FontWeight"
+                    Value="Light" />
+            <Setter Property="FontSize"
+                    Value="22px" />
+        </Style>
+        <Style x:Key="SubHeading"
+               TargetType="TextBlock">
+            <Setter Property="FontFamily"
+                    Value="{StaticResource OpenSans}" />
+            <Setter Property="FontWeight"
+                    Value="Normal" />
+            <Setter Property="FontSize"
+                    Value="16px" />
+        </Style>
+        <Style x:Key="FormLabel"
+               BasedOn="{StaticResource MaterialDesignLabel}"
+               TargetType="{x:Type Label}">
+            <Setter Property="HorizontalAlignment"
+                    Value="Left" />
+            <Setter Property="Margin"
+                    Value="0 4 4 4" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+        </Style>
+        <Style x:Key="FormTextBox"
+               BasedOn="{StaticResource MaterialDesignTextBox}"
+               TargetType="{x:Type TextBox}">
+            <Setter Property="HorizontalAlignment"
+                    Value="Left" />
+            <Setter Property="Height"
+                    Value="25" />
+            <Setter Property="Margin"
+                    Value="0 4" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="Width"
+                    Value="160px" />
+        </Style>
+        <Style x:Key="FormComboBox"
+               BasedOn="{StaticResource MaterialDesignComboBox}"
+               TargetType="{x:Type ComboBox}">
+            <Setter Property="HorizontalAlignment"
+                    Value="Left" />
+            <Setter Property="Height"
+                    Value="25" />
+            <Setter Property="Margin"
+                    Value="0 4" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="Width"
+                    Value="160px" />
+        </Style>
+        <Style x:Key="FormDatePicker"
+               BasedOn="{StaticResource MaterialDesignDatePicker}"
+               TargetType="{x:Type DatePicker}">
+            <Setter Property="HorizontalAlignment"
+                    Value="Left" />
+            <Setter Property="Height"
+                    Value="25" />
+            <Setter Property="Margin"
+                    Value="0 4" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="Width"
+                    Value="160px" />
+        </Style>
     </Window.Resources>
     <md:DialogHost x:Name="MyDialog"
                    DialogClosing="Dialog_Closed">
         <md:DialogHost.DialogContent>
             <StackPanel Margin="20 4 0 20"
-                        Width="200px">
+                        Width="220px">
                 <Button HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Background="{x:Null}"
@@ -70,7 +139,7 @@
                 </Button>
                 <TextBlock x:Name="MyDialogText"
                            Margin="0 10 0 0"
-                           Width="180px"
+                           Width="200px"
                            HorizontalAlignment="Left"
                            TextWrapping="Wrap"
                            LineHeight="20px" />
@@ -102,9 +171,7 @@
                                Foreground="White"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               FontSize="22"
-                               FontFamily="{StaticResource OpenSans}"
-                               FontWeight="Light" />
+                               Style="{StaticResource MainHeading}" />
                 </StackPanel>
             </Grid>
             <Grid Margin="0 60 0 0">
@@ -123,16 +190,11 @@
                                 <Image Source="Images/mountains.jpg"
                                        Margin="0 0 0 10"
                                        MaxHeight="270px"></Image>
-                                <TextBlock FontFamily="{StaticResource OpenSans}"
-                                           FontWeight="Light"
-                                           FontSize="22px"
-                                           Margin="0px 0px 0px 10px">
+                                <TextBlock Style="{StaticResource MainHeading}">
 								Welcome to Jonah's Rentals!
                                 </TextBlock>
-                                <TextBlock FontFamily="{StaticResource OpenSans}"
-                                           FontWeight="Normal"
-                                           FontSize="16px"
-                                           Margin="0px 0px 0px 10px">
+                                <TextBlock Style="{StaticResource SubHeading}"
+                                           Margin="0px 10px 0px 10px">
 								Click a button below to begin
                                 </TextBlock>
                                 <Grid HorizontalAlignment="Left"
@@ -195,16 +257,6 @@
                                         </Button>
                                     </StackPanel>
                                 </Grid>
-                                <!--<ScrollViewer Height="239" VerticalScrollBarVisibility="Auto">
-								 <TextBox FontFamily="Consolas" FontSize="12px"
-										 Margin="0 10"
-										 x:Name="DebugLog"
-										 Foreground="Black"
-										 ScrollViewer.CanContentScroll="True"
-										 Width="Auto"
-										 TextWrapping="Wrap"
-										 AcceptsReturn="True"/>
-							</ScrollViewer>-->
                             </StackPanel>
                         </md:Card>
                     </TabItem>
@@ -213,9 +265,7 @@
                         <md:Card Padding="32"
                                  Margin="16">
                             <StackPanel>
-                                <TextBlock FontFamily="{StaticResource OpenSans}"
-                                           FontWeight="Light"
-                                           FontSize="22px">
+                                <TextBlock Style="{StaticResource MainHeading}">
 							    Welcome, guest!
                                 </TextBlock>
                                 <Grid>
@@ -252,86 +302,56 @@
                                         <Label Content="First name:"
                                                Grid.Row="0"
                                                Grid.Column="0"
-                                               Margin="0 4 4 4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center" />
+                                               Style="{StaticResource FormLabel}" />
                                         <TextBox x:Name="gFirstName"
                                                  Grid.Row="0"
                                                  Grid.Column="1"
-                                                 HorizontalAlignment="Left"
-                                                 Height="24"
-                                                 Margin="0 4 4 4"
-                                                 VerticalAlignment="Center" />
+                                                 Style="{StaticResource FormTextBox}" />
                                         <Label Content="Last name:"
                                                Grid.Row="1"
                                                Grid.Column="0"
-                                               Margin="0 4 4 4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center" />
+                                               Style="{StaticResource FormLabel}" />
                                         <TextBox x:Name="gLastName"
                                                  Grid.Row="1"
                                                  Grid.Column="1"
-                                                 HorizontalAlignment="Left"
-                                                 Height="24"
-                                                 Margin="0 4 4 4"
-                                                 VerticalAlignment="Center" />
+                                                 Style="{StaticResource FormTextBox}" />
                                         <Label Content="Email address:"
                                                Grid.Row="2"
                                                Grid.Column="0"
-                                               Margin="0 4 4 4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center" />
+                                               Style="{StaticResource FormLabel}" />
                                         <TextBox x:Name="gEmail"
                                                  Grid.Row="2"
                                                  Grid.Column="1"
-                                                 HorizontalAlignment="Left"
-                                                 Height="24"
-                                                 Margin="0 4 4 4"
-                                                 VerticalAlignment="Center" />
+                                                 Style="{StaticResource FormTextBox}" />
                                         <Label Content="Date of entry:"
                                                Grid.Row="3"
                                                Grid.Column="0"
-                                               Margin="0 4 4 4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center" />
+                                               Style="{StaticResource FormLabel}" />
                                         <DatePicker x:Name="gEntryDate"
                                                     Grid.Row="3"
                                                     Grid.Column="1"
-                                                    HorizontalAlignment="Left"
-                                                    Height="24"
-                                                    Margin="0 4 4 4"
-                                                    VerticalAlignment="Center"
+                                                    Style="{StaticResource FormDatePicker}"
                                                     DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
                                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
                                         <Label Content="Date of departure:"
                                                Grid.Row="4"
                                                Grid.Column="0"
-                                               Margin="0 4 4 4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center" />
+                                               Style="{StaticResource FormLabel}" />
                                         <DatePicker x:Name="gReleaseDate"
                                                     Grid.Row="4"
                                                     Grid.Column="1"
-                                                    HorizontalAlignment="Left"
-                                                    Height="24"
-                                                    Margin="0 4 4 4"
-                                                    VerticalAlignment="Center"
+                                                    Style="{StaticResource FormDatePicker}"
                                                     DisplayDateStart="{Binding ElementName=gEntryDate, Path=SelectedDate, Converter={StaticResource ConvertToNextDay}}"
                                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
                                         <Label Content="Vacation district:"
                                                Grid.Row="5"
                                                Grid.Column="0"
-                                               Margin="0 4 4 4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center" />
+                                               Style="{StaticResource FormLabel}" />
                                         <ComboBox x:Name="gPrefDistrict"
                                                   ItemsSource="{Binding Source={StaticResource District}}"
                                                   Grid.Row="5"
                                                   Grid.Column="1"
-                                                  HorizontalAlignment="Left"
-                                                  Height="Auto"
-                                                  Margin="0 4 4 4"
-                                                  VerticalAlignment="Center"
+                                                  Style="{StaticResource FormComboBox}"
                                                   SelectionChanged="UpdateCityList">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
@@ -342,16 +362,11 @@
                                         <Label Content="Vacation city:"
                                                Grid.Row="6"
                                                Grid.Column="0"
-                                               Margin="0 4 4 4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center" />
+                                               Style="{StaticResource FormLabel}" />
                                         <ComboBox x:Name="gPrefCity"
                                                   Grid.Row="6"
                                                   Grid.Column="1"
-                                                  HorizontalAlignment="Left"
-                                                  Height="Auto"
-                                                  Margin="0 4 4 4"
-                                                  VerticalAlignment="Center">
+                                                  Style="{StaticResource FormComboBox}">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
@@ -361,16 +376,11 @@
                                         <Label Content="Number of adults:"
                                                Grid.Row="7"
                                                Grid.Column="0"
-                                               Margin="0 4 4 4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center" />
+                                               Style="{StaticResource FormLabel}" />
                                         <ComboBox x:Name="gNumAdults"
                                                   Grid.Row="7"
                                                   Grid.Column="1"
-                                                  HorizontalAlignment="Left"
-                                                  Height="Auto"
-                                                  Margin="0 4 4 4"
-                                                  VerticalAlignment="Center">
+                                                  Style="{StaticResource FormComboBox}">
                                             <ComboBoxItem>1</ComboBoxItem>
                                             <ComboBoxItem>2</ComboBoxItem>
                                             <ComboBoxItem>3</ComboBoxItem>
@@ -383,16 +393,11 @@
                                         <Label Content="Number of children:"
                                                Grid.Row="8"
                                                Grid.Column="0"
-                                               Margin="0 4 4 4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center" />
+                                               Style="{StaticResource FormLabel}" />
                                         <ComboBox x:Name="gNumChildren"
                                                   Grid.Row="8"
                                                   Grid.Column="1"
-                                                  HorizontalAlignment="Left"
-                                                  Height="Auto"
-                                                  Margin="4"
-                                                  VerticalAlignment="Center">
+                                                  Style="{StaticResource FormComboBox}">
                                             <ComboBoxItem>0</ComboBoxItem>
                                             <ComboBoxItem>1</ComboBoxItem>
                                             <ComboBoxItem>2</ComboBoxItem>
@@ -406,17 +411,12 @@
                                         <Label Content="Rental type:"
                                                Grid.Row="9"
                                                Grid.Column="0"
-                                               Margin="0 4 4 4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center" />
+                                               Style="{StaticResource FormLabel}" />
                                         <ComboBox x:Name="gPrefType"
                                                   ItemsSource="{Binding Source={StaticResource TypeOfPlace }}"
                                                   Grid.Row="9"
                                                   Grid.Column="1"
-                                                  HorizontalAlignment="Left"
-                                                  Height="Auto"
-                                                  Margin="0 4 4 4"
-                                                  VerticalAlignment="Center">
+                                                  Style="{StaticResource FormComboBox}">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
@@ -426,14 +426,12 @@
                                     </Grid>
                                     <StackPanel Grid.Column="1">
                                         <Label Content="Which amenities are important to you?"
-                                               Margin="0 24 0 8"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center" />
+                                               Margin="0 24 0 8" />
                                         <ListBox x:Name="gAmenities"
                                                  Width="280"
-                                                 Height="300"
+                                                 Height="292"
                                                  SelectionMode="Multiple"
-                                                 BorderBrush="#e6e6e6"
+                                                 BorderBrush="LightGray"
                                                  BorderThickness="1"
                                                  ItemsSource="{Binding Source={StaticResource Amenity }}">
                                             <ListBox.ItemTemplate>
@@ -459,9 +457,7 @@
                         <md:Card Padding="32"
                                  Margin="16">
                             <StackPanel>
-                                <TextBlock FontFamily="{StaticResource OpenSans}"
-                                           FontWeight="Light"
-                                           FontSize="22px">
+                                <TextBlock Style="{StaticResource MainHeading}">
 							    Welcome, host!
                                 </TextBlock>
                                 <Frame x:Name="HostingFrame"
@@ -474,9 +470,7 @@
                         <md:Card Padding="32"
                                  Margin="16">
                             <StackPanel>
-                                <TextBlock FontFamily="{StaticResource OpenSans}"
-                                           FontWeight="Light"
-                                           FontSize="22px">
+                                <TextBlock Style="{StaticResource MainHeading}">
 							    Welcome, admin!
                                 </TextBlock>
                                 <Frame x:Name="AdminFrame"

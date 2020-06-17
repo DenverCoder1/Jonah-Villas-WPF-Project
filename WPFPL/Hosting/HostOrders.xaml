@@ -18,12 +18,11 @@
                 Your Orders
             </TextBlock>
             <ListBox x:Name="Orders"
-                     Width="280"
+                     Width="Auto"
                      Height="280"
                      SelectionMode="Single"
-                     BorderBrush="#e6e6e6"
-                     BorderThickness="1"
-                     HorizontalAlignment="Left">
+                     BorderBrush="LightGray"
+                     BorderThickness="1">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />

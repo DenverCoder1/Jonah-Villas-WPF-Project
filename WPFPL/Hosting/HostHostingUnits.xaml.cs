@@ -42,20 +42,13 @@ namespace WPFPL
 
         public static void Refresh()
         {
-            try
+            if (HostingUnitCollection != null)
             {
-                if (HostingUnitCollection != null)
+                HostingUnitCollection.Clear();
+                foreach (BE.HostingUnit item in Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey))
                 {
-                    HostingUnitCollection.Clear();
-                    foreach (BE.HostingUnit item in Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey))
-                    {
-                        HostingUnitCollection.Add(item.ToString());
-                    }
+                    HostingUnitCollection.Add(item.ToString());
                 }
-            }
-            catch (Exception error)
-            {
-
             }
         }
 
@@ -86,6 +79,7 @@ namespace WPFPL
             if (String.IsNullOrEmpty(name))
             {
                 MessageBox.Show("Action was cancelled.");
+                return;
             }
 
             Match match = new Regex(@".*Hosting Unit (\d+).*").Match(dialogText);
@@ -95,9 +89,7 @@ namespace WPFPL
                 {
                     try
                     {
-                        HostingUnit hostingUnit = Util.Bl.GetHostingUnits().FirstOrDefault(hu =>
-                            hu.HostingUnitKey == huKey
-                        );
+                        HostingUnit hostingUnit = Util.Bl.GetHostingUnit(huKey);
 
                         hostingUnit.UnitName = name;
 
@@ -171,6 +163,7 @@ namespace WPFPL
             if (String.IsNullOrEmpty(name))
             {
                 MessageBox.Show("Action was cancelled.");
+                return;
             }
 
             HostingUnit hostingUnit = new HostingUnit(Util.MyHost, name);

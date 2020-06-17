@@ -139,6 +139,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HostingUnitToCalendarConverter.cs" />
     <Compile Include="PascalCaseToText.cs" />
     <Compile Include="ConvertToNextDay.cs" />
     <Compile Include="Hosting\HostMenu.xaml.cs">

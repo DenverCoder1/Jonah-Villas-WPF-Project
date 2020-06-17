@@ -59,7 +59,7 @@ namespace WPFPL
             DateTime release = DateTime.Now.Date.AddDays(10);
             string fname = "Jonah";
             string lname = "Lawrence";
-            string email = "jonah@jonah.com";
+            string email = "jonah@villas.com";
             District region = District.TelAviv;
             City city = City.BneiBrak;
             BE.TypeOfPlace type = BE.TypeOfPlace.Apartment;
@@ -82,9 +82,43 @@ namespace WPFPL
 
             Util.Bl.CreateGuestRequest(guest1);
 
+            entry = DateTime.Now.Date.AddDays(8);
+            release = DateTime.Now.Date.AddDays(9);
+            fname = "Yonah";
+            lname = "Lawrence";
+            email = "yonah@villas.com";
+            region = District.Haifa;
+            city = City.Hadera;
+            type = BE.TypeOfPlace.PrivateRoom;
+            amenities = new Dictionary<Amenity, PrefLevel>
+            {
+                [Amenity.TV] = PrefLevel.Required,
+                [Amenity.Pool] = PrefLevel.Required,
+                [Amenity.Kitchen] = PrefLevel.Required
+            };
+
             GuestRequest guest2 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
 
             Util.Bl.CreateGuestRequest(guest2);
+
+            entry = DateTime.Now.Date.AddDays(11);
+            release = DateTime.Now.Date.AddDays(17);
+            fname = "Johan";
+            lname = "Lawrence";
+            email = "johan@villas.com";
+            region = District.Jerusalem;
+            city = City.BeitShemesh;
+            type = BE.TypeOfPlace.EntireHome;
+            amenities = new Dictionary<Amenity, PrefLevel>
+            {
+                [Amenity.Laundry] = PrefLevel.Required,
+                [Amenity.Gym] = PrefLevel.Required,
+                [Amenity.Kitchen] = PrefLevel.Required
+            };
+
+            GuestRequest guest3 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
+
+            Util.Bl.CreateGuestRequest(guest3);
 
             Host host1 = new Host("James", "Smith", "james@james.com", "6456346343", new BankBranch(), 543646545);
 
@@ -103,10 +137,6 @@ namespace WPFPL
             Order order1 = new Order(hostingUnit1.HostingUnitKey, guest1.GuestRequestKey);
 
             Util.Bl.CreateOrder(order1);
-
-            Order order2 = new Order(hostingUnit2.HostingUnitKey, guest1.GuestRequestKey);
-
-            Util.Bl.CreateOrder(order2);
 
             /* DEBUG */
         }
@@ -136,17 +166,13 @@ namespace WPFPL
         /// </summary>
         private void Dialog_Closed(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
         {
-            if (MyDialog.Tag.ToString() == "HostAddHostingUnit")
+            switch (MyDialog.Tag.ToString())
             {
-                HostHostingUnits.Add_Hosting_Unit_Named(MyDialogTextBox.Text);
-            }
-            else if (MyDialog.Tag.ToString() == "HostDeleteHostingUnit")
-            {
-                HostHostingUnits.Confirm_Delete(MyDialogText.Text, MyDialogTextBox.Text);
-            }
-            else if (MyDialog.Tag.ToString() == "HostUpdateHostingUnit")
-            {
-                HostHostingUnits.Update_Hosting_Unit_Name(MyDialogText.Text, MyDialogTextBox.Text);
+                case "HostAddHostingUnit": HostHostingUnits.Add_Hosting_Unit_Named(MyDialogTextBox.Text); break;
+                case "HostDeleteHostingUnit": HostHostingUnits.Confirm_Delete(MyDialogText.Text, MyDialogTextBox.Text); break;
+                case "HostUpdateHostingUnit": HostHostingUnits.Update_Hosting_Unit_Name(MyDialogText.Text, MyDialogTextBox.Text); break;
+                case "HostCreateOrder": HostRequests.Finish_Create_Order(MyDialogText.Text, MyDialogComboBox.SelectedItem); break;
+                default: break;
             }
         }
 
@@ -163,8 +189,8 @@ namespace WPFPL
         }
 
         /// <summary>
-        /// Based on selected tab, hide borders of input controls
-        /// from other tabs that should not be visible
+        /// Based on selected tab, hide borders of input controls from
+        /// other tabs that should not be visible and refetch list data
         /// </summary>
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -175,6 +201,7 @@ namespace WPFPL
                 gPrefCity, gNumAdults, gNumChildren, gPrefType
             };
 
+            // Home
             if (CurrentTab != Tab0 && Tab0.IsSelected)
             {
                 CurrentTab = Tab0;
@@ -182,6 +209,7 @@ namespace WPFPL
                 if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
                 if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
             }
+            // Guest Request
             else if (CurrentTab != Tab1 && Tab1.IsSelected)
             {
                 CurrentTab = Tab1;
@@ -189,13 +217,18 @@ namespace WPFPL
                 if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
                 if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
             }
+            // Hosting
             else if (CurrentTab != Tab2 && Tab2.IsSelected)
             {
                 CurrentTab = Tab2;
                 Util.SetTabControlsVisibility(Tab1Controls, false);
                 if (HostSignUp.SignUpControls != null) HostSignUp.ShowControls();
                 if (HostSignIn.SignInControls != null) HostSignIn.ShowControls();
+                HostRequests.Refresh();
+                HostOrders.Refresh();
+                HostHostingUnits.Refresh();
             }
+            // Admin
             else if (CurrentTab != Tab3 && Tab3.IsSelected)
             {
                 CurrentTab = Tab3;
@@ -205,6 +238,7 @@ namespace WPFPL
                 AdminRequests.Refresh();
                 AdminOrders.Refresh();
                 AdminHostingUnits.Refresh();
+                AdminHosts.Refresh();
             }
         }
 
@@ -222,7 +256,7 @@ namespace WPFPL
             // clear list
             DynamicCityList.Clear();
             // add cities in district
-            foreach (var item in update)
+            foreach (string item in update)
             {
                 DynamicCityList.Add(item);
             }
@@ -278,7 +312,5 @@ namespace WPFPL
                 Dialog(error.Message.ToString());
             }
         }
-
-        
     }
 }

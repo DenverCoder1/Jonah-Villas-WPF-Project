@@ -1,4 +1,5 @@
 ﻿using BE;
+using DAL;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +12,7 @@ namespace BL
     public class BL_Imp : IBL
     {
         // SET UP DATA ACCESS CONNECTION
-        private DAL.IDAL DalInstance;
+        public DAL.IDAL DalInstance;
 
         public BL_Imp()
         {
@@ -45,7 +46,7 @@ namespace BL
             {
                 throw new ArgumentException($"Hosting Unit with key {hostingUnit.HostingUnitKey} already exists.");
             }
-            return DalInstance.CreateHostingUnit(hostingUnit.Clone());
+            return DalInstance.CreateHostingUnit(Cloning.Clone(hostingUnit));
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace BL
         {
             try {
                 // Check that there are no open orders in the hosting unit
-                var matches = from Order item in DalInstance.GetOrders()
+                IEnumerable<Order> matches = from Order item in DalInstance.GetOrders()
                               let s = item.Status
                               let stillOpen = (s == OrderStatus.NotYetHandled || s == OrderStatus.SentEmail)
                               where item.HostingUnitKey == hostingUnitKey && stillOpen
@@ -83,7 +84,7 @@ namespace BL
             }
             try
             {
-                return DalInstance.UpdateHostingUnit(newHostingUnit.Clone());
+                return DalInstance.UpdateHostingUnit(Cloning.Clone(newHostingUnit));
             }
             catch (Exception e)
             {
@@ -94,21 +95,68 @@ namespace BL
         /// <summary>
         /// Allow data access layer to handle retrieval of hosting unit
         /// </summary>
+        /// <returns>List of all hosting units</returns>
         List<HostingUnit> IBL.GetHostingUnits()
         {
-            return DalInstance.GetHostingUnits().ConvertAll(x => x.Clone());
+            return DalInstance.GetHostingUnits().ConvertAll(x => Cloning.Clone(x));
         }
 
         /// <summary>
         /// Return hosting units belonging to a given host
         /// </summary>
+        /// <param name="hostKey">Key of host</param>
+        /// <returns>List of host's hosting units</returns>
         List<HostingUnit> IBL.GetHostHostingUnits(long hostKey)
         {
-            List<HostingUnit> hostingUnits = DalInstance.GetHostingUnits().ConvertAll(x => x.Clone());
-            var matches = from HostingUnit item in hostingUnits
-                          where item.Owner.HostKey == hostKey
-                          select item;
+            List<HostingUnit> hostingUnits = DalInstance.GetHostingUnits().ConvertAll(x => Cloning.Clone(x));
+            IEnumerable<HostingUnit> matches = from HostingUnit item in hostingUnits
+                                               where item.Owner.HostKey == hostKey
+                                               select item;
             return matches.ToList();
+        }
+
+        /// <summary>
+        /// Get hosting units belonging to a host which are available for the dates in the guest request
+        /// </summary>
+        /// <param name="hostKey">Key of host</param>
+        /// <param name="guestRequest">Guest request to check</param>
+        /// <returns>List of available hosting units</returns>
+        List<HostingUnit> IBL.GetAvailableHostHostingUnits(long hostKey, long guestRequestKey)
+        {
+            List<HostingUnit> hostingUnits = DalInstance.GetHostingUnits().ConvertAll(x => Cloning.Clone(x));
+            GuestRequest guestRequest = instance.GetGuestRequest(guestRequestKey);
+            try
+            {
+                IEnumerable<HostingUnit> matches = from HostingUnit item in hostingUnits
+                                                   where item.Owner.HostKey == hostKey
+                                                   && instance.CheckOrReserveDates(item, guestRequest, false)
+                                                   select item;
+                return matches.ToList();
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
+        }
+
+        /// <summary>
+        /// Return a list of reserved date ranges for a hosting unit key
+        /// </summary>
+        /// <param name="huKey">hosting unit key</param>
+        /// <returns>Calendar</returns>
+        List<DateRange> IBL.GetDateRanges(long huKey)
+        {
+            HostingUnit hostingUnit = instance.GetHostingUnit(huKey);
+            return hostingUnit.Calendar;
+        }
+
+        /// <summary>
+        /// Return hosting unit given hosting unit key, returns null if not found
+        /// </summary>
+        HostingUnit IBL.GetHostingUnit(long huKey)
+        {
+            HostingUnit hostingUnit = DalInstance.GetHostingUnits().FirstOrDefault(hu => hu.HostingUnitKey == huKey);
+            return hostingUnit;
         }
 
         // GUEST REQUESTS
@@ -127,7 +175,7 @@ namespace BL
             {
                 throw new ArgumentException($"Guest Request with key {guestRequest.GuestRequestKey} already exists.");
             }
-            return DalInstance.CreateGuestRequest(guestRequest.Clone());
+            return DalInstance.CreateGuestRequest(Cloning.Clone(guestRequest));
         }
 
         /// <summary>
@@ -141,7 +189,7 @@ namespace BL
             }
             try
             {
-                return DalInstance.UpdateGuestRequest(newGuestRequest.Clone());
+                return DalInstance.UpdateGuestRequest(Cloning.Clone(newGuestRequest));
             }
             catch (Exception e)
             {
@@ -154,7 +202,7 @@ namespace BL
         /// </summary>
         List<GuestRequest> IBL.GetGuestRequests()
         {
-            return DalInstance.GetGuestRequests().ConvertAll(x => x.Clone());
+            return DalInstance.GetGuestRequests().ConvertAll(x => Cloning.Clone(x));
         }
 
         /// <summary>
@@ -162,11 +210,99 @@ namespace BL
         /// </summary>
         List<GuestRequest> IBL.GetOpenGuestRequests()
         {
-            List<GuestRequest> guestRequests = DalInstance.GetGuestRequests().ConvertAll(x => x.Clone());
-            var matches = from GuestRequest item in guestRequests
-                          where item.Status == GuestStatus.Open
-                          select item;
+            List<GuestRequest> guestRequests = DalInstance.GetGuestRequests().ConvertAll(x => Cloning.Clone(x));
+            IEnumerable<GuestRequest> matches = from GuestRequest item in guestRequests
+                                                where item.Status == GuestStatus.Open
+                                                select item;
             return matches.ToList();
+        }
+
+        /// <summary>
+        /// Check if a guest request exists with guest request key, return request or null if not found
+        /// </summary>
+        GuestRequest IBL.GetGuestRequest(long grKey)
+        {
+            GuestRequest guestRequest = DalInstance.GetGuestRequests().FirstOrDefault(gr => gr.GuestRequestKey == grKey);
+            return guestRequest;
+        }
+
+        /// <summary>
+        /// Check if guest request dates are available in a given hosting unit
+        /// if reserve is set to true, dates will be reserved,
+        /// if not, the function will onl return whether the dates can be reserved
+        /// </summary>
+        bool IBL.CheckOrReserveDates(HostingUnit hostingUnit, GuestRequest guestRequest, bool reserve)
+        {
+            // check if request is legal
+            if (guestRequest == null)
+                throw new ArgumentException("Guest request cannot be null.");
+            if (hostingUnit == null)
+                throw new ArgumentException("Hosting Unit cannot be null.");
+            // dates not set
+            if (guestRequest.EntryDate == default || guestRequest.ReleaseDate == default)
+                throw new ArgumentException("Guest request is missing a date.");
+            // no nights reserved
+            if (guestRequest.EntryDate >= guestRequest.ReleaseDate)
+                throw new ArgumentException("At least one night must be reserved.");
+            // request entry date is before today
+            if (guestRequest.EntryDate < DateTime.Now.Date)
+                throw new ArgumentException("Dates in the past cannot be reserved.");
+            // requested release date is more than 11 months from now
+            if (guestRequest.ReleaseDate > DateTime.Now.Date.AddMonths(11))
+                throw new ArgumentException("Dates more than 11 months in the future cannot be reserved.");
+
+            // go through calendar until reserved
+            for (int i = 0; i < hostingUnit.Calendar.Count; ++i)
+            {
+                DateRange d = hostingUnit.Calendar[i];
+                // request starts before next reserved date range
+                if (guestRequest.EntryDate <= d.Start)
+                {
+                    // request ends before or on day of reserved date range
+                    if (guestRequest.ReleaseDate <= d.Start)
+                    {
+                        // request starts and ends before next date range
+                        // can reserve request
+                        if (reserve)
+                            hostingUnit.Calendar.Insert(i, new DateRange(guestRequest.EntryDate, guestRequest.ReleaseDate));
+                        return true;
+                    }
+                    else
+                    {
+                        // request partially overlaps the next date range
+                        // reject request
+                        return false;
+                    }
+                }
+            }
+
+            // if requested range is after all existing date ranges (or it is the first entry)
+            // can reserve request
+            if (reserve)
+                hostingUnit.Calendar.Add(new DateRange(guestRequest.EntryDate, guestRequest.ReleaseDate));
+            return true;
+        }
+
+        void IBL.CancelDateRange(HostingUnit hostingUnit, DateRange dateRange)
+        {
+            // check if unit is legal
+            if (hostingUnit == null)
+                throw new ArgumentException("Hosting Unit cannot be null.");
+            // dates not set
+            if (dateRange.Start == default || dateRange.End == default)
+                throw new ArgumentException("Date range is missing a date.");
+
+            // go through calendar until found
+            for (int i = 0; i < hostingUnit.Calendar.Count; ++i)
+            {
+                // If start and end match current date range
+                if (dateRange.Start == hostingUnit.Calendar[i].Start 
+                    && dateRange.End == hostingUnit.Calendar[i].End)
+                {
+                    // remove date range
+                    hostingUnit.Calendar.RemoveAt(i);
+                }
+            }
         }
 
         // ORDER
@@ -191,12 +327,66 @@ namespace BL
                 {
                     throw new ArgumentException($"Order with key {order.OrderKey} already exists.");
                 }
+
+                HostingUnit hostingUnit = instance.GetHostingUnit(order.HostingUnitKey);
+
+                GuestRequest guestRequest = instance.GetGuestRequest(order.GuestRequestKey);
+
+                Host host = instance.GetHost(hostingUnit.Owner.HostKey);
+
+                if (hostingUnit == null || guestRequest == null || host == null)
+                    throw new Exception("Could not find data matching the order fields.");
+
+
+                if (host.BankClearance == false)
+                {
+                    throw new Exception("Cannot create order. The host does not have bank clearance.");
+                }
+
+                if (guestRequest.Status != GuestStatus.Open)
+                {
+                    throw new Exception("Request is no longer open for orders.");
+                }
+
+                if (order.Status != OrderStatus.NotYetHandled)
+                {
+                    throw new Exception("Orders must not be handled upon creation.");
+                }
+
+                try
+                {
+                    // add request dates to hosting unit calendar
+                    if (instance.CheckOrReserveDates(hostingUnit, guestRequest, true))
+                    {
+                        // if successfully reserved
+                        guestRequest.Status = GuestStatus.Pending;
+                        order.Status = OrderStatus.SentEmail;
+
+                        // TODO: send an email
+
+                        // update hosting unit calendar
+                        instance.UpdateHostingUnit(hostingUnit);
+
+                        // update guest request status
+                        instance.UpdateGuestRequest(guestRequest);
+
+                        // Create order
+                        return DalInstance.CreateOrder(Cloning.Clone(order));
+                    }
+                    else
+                    {
+                        throw new Exception("The guest request could not be added to the hosting unit.");
+                    }
+                }
+                catch (Exception error)
+                {
+                    throw error;
+                }
             }
             else
             {
                 throw new ArgumentNullException("Order cannot be null");
             }
-            return DalInstance.CreateOrder(order.Clone());
         }
 
         /// <summary>
@@ -205,12 +395,39 @@ namespace BL
         bool IBL.UpdateOrder(Order newOrder)
         {
             if (newOrder == null)
-            {
                 throw new ArgumentNullException("Order cannot be null.");
+
+            Order oldOrder = instance.GetOrder(newOrder.OrderKey);
+
+            if (oldOrder == null)
+                throw new ArgumentException("Order with this key does not yet exist.");
+
+            // check that old status is not closed if changing status
+            if (((oldOrder.Status == OrderStatus.ClosedByCustomerResponse) ||
+                (oldOrder.Status == OrderStatus.ClosedByNoCustomerResponse)) &&
+                (newOrder.Status != oldOrder.Status))
+                throw new ArgumentException("Order status can not be changed after transaction is closed.");
+
+            // if closing order without transaction, cancel date range
+            if (oldOrder.Status == OrderStatus.SentEmail && newOrder.Status == OrderStatus.ClosedByNoCustomerResponse)
+            {
+                try
+                {
+                    var hostingUnit = instance.GetHostingUnit(newOrder.HostingUnitKey);
+                    var guestRequest = instance.GetGuestRequest(newOrder.GuestRequestKey);
+                    var dateRange = new DateRange(guestRequest.EntryDate, guestRequest.ReleaseDate);
+                    instance.CancelDateRange(hostingUnit, dateRange);
+                }
+                catch (Exception error)
+                {
+                    throw error;
+                }
             }
+            
+            // update order in data
             try
             {
-                return DalInstance.UpdateOrder(newOrder.Clone());
+                return DalInstance.UpdateOrder(Cloning.Clone(newOrder));
             }
             catch (Exception e)
             {
@@ -223,7 +440,7 @@ namespace BL
         /// </summary>
         List<Order> IBL.GetOrders()
         {
-            return DalInstance.GetOrders().ConvertAll(x => x.Clone());
+            return DalInstance.GetOrders().ConvertAll(x => Cloning.Clone(x));
         }
 
         /// <summary>
@@ -231,19 +448,28 @@ namespace BL
         /// </summary>
         List<Order> IBL.GetHostOrders(long hostKey)
         {
-            List<Order> orders = DalInstance.GetOrders().ConvertAll(x => x.Clone());
+            List<Order> orders = DalInstance.GetOrders().ConvertAll(x => Cloning.Clone(x));
             List<long> hostHostingUnitKeys = instance.GetHostHostingUnits(hostKey).ConvertAll(x => x.HostingUnitKey);
-            var matches = from Order item in orders
-                          where hostHostingUnitKeys.IndexOf(item.HostingUnitKey) > -1
-                          select item;
+            IEnumerable<Order> matches = from Order item in orders
+                                         where hostHostingUnitKeys.IndexOf(item.HostingUnitKey) > -1
+                                         select item;
             return matches.ToList();
+        }
+
+        /// <summary>
+        /// Check if an order exists with orderKey, return order or null if not found
+        /// </summary>
+        Order IBL.GetOrder(long orderKey)
+        {
+            Order order = DalInstance.GetOrders().FirstOrDefault(o => o.OrderKey == orderKey);
+            return order;
         }
 
         // BANK BRANCHES
 
         List<BankBranch> IBL.GetBankBranches()
         {
-            return DalInstance.GetBankBranches().ConvertAll(x => x.Clone());
+            return DalInstance.GetBankBranches().ConvertAll(x => Cloning.Clone(x));
         }
 
         // HOSTS
@@ -262,7 +488,7 @@ namespace BL
             {
                 throw new ArgumentException($"Host with key {host.HostKey} already exists.");
             }
-            return DalInstance.CreateHost(host.Clone());
+            return DalInstance.CreateHost(Cloning.Clone(host));
         }
 
         /// <summary>
@@ -271,11 +497,11 @@ namespace BL
         /// <returns></returns>
         List<Host> IBL.GetHosts()
         {
-            return DalInstance.GetHosts().ConvertAll(x => x.Clone());
+            return DalInstance.GetHosts().ConvertAll(x => Cloning.Clone(x));
         }
 
         /// <summary>
-        /// Check if a host exists with hostKey, return host or null
+        /// Check if a host exists with hostKey, return host or null if not found
         /// </summary>
         Host IBL.GetHost(long hostKey)
         {
@@ -303,7 +529,7 @@ namespace BL
         {
             if (!instance.IsValidName(fname))
             {
-                throw new InvalidDataException("First name must be at least 2 characters long and contain only letters and whitespace.");
+                throw new InvalidDataException("First name must be at least 2 characters long and contain only letters.");
             }
             else if (!instance.IsValidName(lname))
             {
@@ -448,7 +674,7 @@ namespace BL
             {
                 return false;
             }
-            else if (!name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+            else if (!name.All(c => char.IsLetter(c)))
             {
                 return false;
             }
@@ -479,7 +705,7 @@ namespace BL
             if (string.IsNullOrEmpty(phone))
                 return false;
 
-            var numbersOnly = Regex.Replace(phone, @"[^0-9]+", "");
+            string numbersOnly = Regex.Replace(phone, @"[^0-9]+", "");
 
             if (numbersOnly.Length >= 7 && numbersOnly.Length <= 15)
                 return true;
@@ -495,7 +721,7 @@ namespace BL
             if (string.IsNullOrEmpty(routing))
                 return false;
 
-            var numbersOnly = Regex.Replace(routing, @"[^0-9]+", "");
+            string numbersOnly = Regex.Replace(routing, @"[^0-9]+", "");
             if (numbersOnly.Length >= 8 && numbersOnly.Length <= 16)
                 return long.TryParse(routing, out _);
             else

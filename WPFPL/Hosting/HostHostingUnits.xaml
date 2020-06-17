@@ -7,19 +7,25 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HostHostingUnits">
-
+    <Page.Resources>
+        <local:HostingUnitToCalendarConverter x:Key="HostingUnitToCalendarConverter" />
+    </Page.Resources>
     <Grid>
-        <StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
             <TextBlock FontFamily="{StaticResource OpenSans}"
                        FontSize="16px"
                        Margin="0 5 0 10">
                 Your Hosting Units
             </TextBlock>
             <ListBox x:Name="HostingUnits"
-                     Width="280"
+                     Width="270"
                      Height="280"
                      SelectionMode="Single"
-                     BorderBrush="#e6e6e6"
+                     BorderBrush="LightGray"
                      BorderThickness="1"
                      HorizontalAlignment="Left">
             </ListBox>
@@ -54,5 +60,28 @@
                 RETURN TO MENU
             </Button>
         </StackPanel>
+        <StackPanel Grid.Column="1"
+                    Margin="20 0 0 0">
+            <TextBlock FontFamily="{StaticResource OpenSans}"
+                       FontSize="16px"
+                       Margin="0 5 0 10">
+                Hosting Unit Details:
+            </TextBlock>
+            <Border BorderThickness="1"
+                    BorderBrush="LightGray"
+                    Padding="10 0 10 0">
+                <ScrollViewer Height="278px"
+                              VerticalScrollBarVisibility="Auto">
+                    <TextBlock FontFamily="{StaticResource OpenSans}"
+                               FontSize="13"
+                               Margin="0 5 0 10"
+                               MinWidth="200px"
+                               Width="Auto"
+                               Text="{Binding ElementName=HostingUnits, Path=SelectedItem, Converter={StaticResource HostingUnitToCalendarConverter}}">
+                    </TextBlock>
+                </ScrollViewer>
+            </Border>
+        </StackPanel>
+
     </Grid>
 </Page>

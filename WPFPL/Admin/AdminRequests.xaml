@@ -23,7 +23,7 @@
                      Width="Auto"
                      Height="320"
                      SelectionMode="Single"
-                     BorderBrush="#e6e6e6"
+                     BorderBrush="LightGray"
                      BorderThickness="1">
                 <ListBox.ItemTemplate>
                     <DataTemplate>

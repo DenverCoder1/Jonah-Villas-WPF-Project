@@ -9,7 +9,7 @@ namespace BE
     public class HostingUnit
     {
         // Serial key
-        public long HostingUnitKey { get; private set; }
+        public long HostingUnitKey { get; set; }
         // Calendar
         public List<DateRange> Calendar { get; set; }
         // Owner
@@ -33,30 +33,13 @@ namespace BE
             UnitName = name;
         }
 
-        // deep copy (clone)
-        public HostingUnit Clone()
-        {
-            HostingUnit Clone = new HostingUnit
-            {
-                HostingUnitKey = this.HostingUnitKey,
-                Calendar = new List<DateRange>(),
-                Owner = this.Owner,
-                UnitName = this.UnitName
-            };
-            foreach (DateRange d in Calendar)
-            {
-                Clone.Calendar.Add(d);
-            }
-            return Clone;
-        }
-
         // list all reserved date ranges
         public override string ToString()
         {
             StringBuilder output = new StringBuilder();
             // add serial number to output
-            output.Append($"#{HostingUnitKey} : {UnitName} | ");
-            output.Append($"Host ID: {Owner.HostKey}");
+            output.Append($"#{HostingUnitKey} : Name: {UnitName}, ");
+            output.Append($"Owner ID: {Owner.HostKey}");
             return output.ToString();
         }
     }

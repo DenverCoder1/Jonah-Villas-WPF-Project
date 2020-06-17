@@ -49,7 +49,11 @@ namespace WPFPL
 
         private void Host_Enter_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (long.TryParse(HostID.Text, out long hKey))
+            if (String.IsNullOrEmpty(HostID.Text))
+            {
+                MainWindow.Dialog("You have not entered your host ID.");
+            }
+            else if (long.TryParse(HostID.Text, out long hKey))
             {
                 Host host = Util.Bl.GetHost(hKey);
                 if (host == null)

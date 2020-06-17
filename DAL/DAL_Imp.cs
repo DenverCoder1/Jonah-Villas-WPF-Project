@@ -41,7 +41,7 @@ namespace DAL
             if (oldGuestRequest == null)
             {
                 // add to list
-                DataSource.GuestRequests.Add(guestRequest.Clone());
+                DataSource.GuestRequests.Add(Cloning.Clone(guestRequest));
             }
             return true;
         }
@@ -71,7 +71,7 @@ namespace DAL
             );
             
             // replace with the new guest request
-            DataSource.GuestRequests[index] = newGuestRequest.Clone();
+            DataSource.GuestRequests[index] = Cloning.Clone(newGuestRequest);
             return true;
         }
 
@@ -80,7 +80,7 @@ namespace DAL
         /// </summary>
         List<GuestRequest> IDAL.GetGuestRequests()
         {
-            return DataSource.GuestRequests.ConvertAll(x => x.Clone());
+            return DataSource.GuestRequests.ConvertAll(x => Cloning.Clone(x));
         }
 
         // HOSTING UNIT
@@ -100,7 +100,7 @@ namespace DAL
             if (oldHostingUnit == null)
             {
                 // add Hosting Unit to list
-                DataSource.HostingUnits.Add(hostingUnit.Clone());
+                DataSource.HostingUnits.Add(Cloning.Clone(hostingUnit));
             }
             return true;
         }
@@ -112,7 +112,7 @@ namespace DAL
         bool IDAL.DeleteHostingUnit(long hostingUnitKey)
         {
             // find hosting unit in list
-            var hostingUnitToDelete = DataSource.HostingUnits.FirstOrDefault(hu =>
+            HostingUnit hostingUnitToDelete = DataSource.HostingUnits.FirstOrDefault(hu =>
                 hu.HostingUnitKey == hostingUnitKey
             );
 
@@ -146,7 +146,7 @@ namespace DAL
             );
 
             // replace with the new hosting unit
-            DataSource.HostingUnits[index] = newHostingUnit.Clone();
+            DataSource.HostingUnits[index] = Cloning.Clone(newHostingUnit);
             return true;
         }
 
@@ -155,7 +155,7 @@ namespace DAL
         /// </summary>
         List<HostingUnit> IDAL.GetHostingUnits()
         {
-            return DataSource.HostingUnits.ConvertAll(x => x.Clone());
+            return DataSource.HostingUnits.ConvertAll(x => Cloning.Clone(x));
         }
 
         // order
@@ -168,7 +168,7 @@ namespace DAL
         bool IDAL.CreateOrder(Order order)
         {
             // find order in list
-            Order oldOrder = instance.GetOrders().Find((Order o) =>
+            Order oldOrder = instance.GetOrders().FirstOrDefault((Order o) =>
                 o.OrderKey == order.OrderKey
             );
 
@@ -177,7 +177,7 @@ namespace DAL
             // if not in list
             if (oldOrder == null)
                 // add Order to list
-                DataSource.Orders.Add(order.Clone());
+                DataSource.Orders.Add(Cloning.Clone(order));
 
             return true;
         }
@@ -207,7 +207,7 @@ namespace DAL
             );
 
             // replace with the new order
-            DataSource.Orders[index] = newOrder.Clone();
+            DataSource.Orders[index] = Cloning.Clone(newOrder);
             return true;
         }
 
@@ -216,7 +216,7 @@ namespace DAL
         /// </summary>
         List<Order> IDAL.GetOrders()
         {
-            return DataSource.Orders.ConvertAll(x => x.Clone());
+            return DataSource.Orders.ConvertAll(x => Cloning.Clone(x));
         }
 
         // hosts
@@ -231,13 +231,13 @@ namespace DAL
             if (oldHost == null)
             {
                 // add to list
-                DataSource.Hosts.Add(host.Clone());
+                DataSource.Hosts.Add(Cloning.Clone(host));
             }
             return true;
         }
         List<Host> IDAL.GetHosts()
         {
-            return DataSource.Hosts.ConvertAll(x => x.Clone());
+            return DataSource.Hosts.ConvertAll(x => Cloning.Clone(x));
         }
 
         // bank branches
@@ -247,7 +247,7 @@ namespace DAL
         /// </summary>
         List<BankBranch> IDAL.GetBankBranches()
         {
-            var branches = new List<BankBranch> {
+            List<BankBranch> branches = new List<BankBranch> {
                 new BankBranch(1,"Bank Hapoalim",11,"1 Main St.", "Tel Aviv"),
                 new BankBranch(2,"Bank Leumi",21,"2 Main St.", "Tel Aviv"),
                 new BankBranch(3,"Bank Mizrahi-Tefahot",31,"3 Main St.","Ramat Gan"),

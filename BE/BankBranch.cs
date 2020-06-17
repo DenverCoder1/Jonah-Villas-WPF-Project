@@ -25,21 +25,7 @@ namespace BE
             BranchCity = city;
         }
 
-        // deep copy (clone)
-        public BankBranch Clone()
-        {
-            BankBranch Clone = new BankBranch
-            {
-                BankNumber = this.BankNumber,
-                BankName = this.BankName,
-                BranchNumber = this.BranchNumber,
-                BranchAddress = this.BranchAddress,
-                BranchCity = this.BranchCity
-            };
-            return Clone;
-        }
-
-        public override string ToString()
+        public string GetAllDetails()
         {
             // concatenate all info to a string
             StringBuilder output = new StringBuilder();
@@ -49,6 +35,11 @@ namespace BE
             output.AppendLine($"Branch Address: {BranchAddress}");
             output.AppendLine($"Branch City: {BranchCity}");
             return output.ToString();
+        }
+
+        public override string ToString()
+        {
+            return $"{BankName} Branch {BranchNumber}";
         }
     }
 }

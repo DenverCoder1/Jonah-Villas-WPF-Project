@@ -17,6 +17,7 @@ using BL;
 using System.IO;
 using BE;
 using System.Text.RegularExpressions;
+using System.Collections.ObjectModel;
 
 namespace WPFPL
 {
@@ -28,15 +29,38 @@ namespace WPFPL
         public MainWindow mainWindow;
 
         public static List<Control> SignUpControls;
+
+        public static ObservableCollection<string> BankCollection { get; set; }
+
         public HostSignUp()
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
+            Loaded += Page_Loaded;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            BankCollection = new ObservableCollection<string>();
+            hBranch.ItemsSource = BankCollection;
+            ListBanks();
             SignUpControls = new List<Control>{
                 hFirstName, hLastName, hEmail, hPhone,
                 hBranch, hRoutingNumber
             };
             ShowControls();
+        }
+
+        public static void ListBanks()
+        {
+            if (BankCollection != null)
+            {
+                BankCollection.Clear();
+                foreach (BankBranch item in Util.Bl.GetBankBranches())
+                {
+                    BankCollection.Add(item.ToString());
+                }
+            }
         }
 
         public static void ShowControls()
@@ -71,12 +95,10 @@ namespace WPFPL
 
             long.TryParse(routing, out long routingNum);
 
-
-
             try
             {
                 Util.MyHost = new BE.Host(fname, lname, email, phone, bankBranch, routingNum);
-                Util.Bl.CreateHost(Util.MyHost.Clone());
+                Util.Bl.CreateHost(Util.MyHost);
                 MainWindow.Dialog($"Success! Your Host ID is {Util.MyHost.HostKey}. Use this number when you want to enter the hosting area.");
             }
             catch (Exception error)
@@ -93,7 +115,9 @@ namespace WPFPL
             mainWindow.HostingFrame.Navigate(new HostSignIn());
         }
 
-        private static readonly Regex NumbersRegex = new Regex("[^0-9]+"); //regex that matches disallowed text
+        //regex that matches disallowed text
+        private static readonly Regex NumbersRegex = new Regex("[^0-9]+");
+
         private static bool IsTextAllowed(string text)
         {
             return !NumbersRegex.IsMatch(text);
