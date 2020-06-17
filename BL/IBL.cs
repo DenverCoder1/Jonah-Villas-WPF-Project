@@ -41,6 +41,7 @@ namespace BL
 
         // hosts
         bool CreateHost(Host host);
+        bool UpdateHost(Host host);
         List<Host> GetHosts();
         Host GetHost(long hostKey);
 

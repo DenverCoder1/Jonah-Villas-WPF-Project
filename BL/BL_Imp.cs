@@ -213,6 +213,7 @@ namespace BL
             List<GuestRequest> guestRequests = DalInstance.GetGuestRequests().ConvertAll(x => Cloning.Clone(x));
             IEnumerable<GuestRequest> matches = from GuestRequest item in guestRequests
                                                 where item.Status == GuestStatus.Open
+                                                    || item.Status == GuestStatus.Pending
                                                 select item;
             return matches.ToList();
         }
@@ -355,10 +356,10 @@ namespace BL
 
                 try
                 {
-                    // add request dates to hosting unit calendar
-                    if (instance.CheckOrReserveDates(hostingUnit, guestRequest, true))
+                    // Check if dates can go into the hosting unit
+                    if (instance.CheckOrReserveDates(hostingUnit, guestRequest, false))
                     {
-                        // if successfully reserved
+                        // if possible to reserve
                         guestRequest.Status = GuestStatus.Pending;
                         order.Status = OrderStatus.SentEmail;
 
@@ -408,15 +409,45 @@ namespace BL
                 (newOrder.Status != oldOrder.Status))
                 throw new ArgumentException("Order status can not be changed after transaction is closed.");
 
-            // if closing order without transaction, cancel date range
-            if (oldOrder.Status == OrderStatus.SentEmail && newOrder.Status == OrderStatus.ClosedByNoCustomerResponse)
+            // if closing order with transaction, mark off date range as reserved
+            if (oldOrder.Status == OrderStatus.SentEmail && 
+                newOrder.Status == OrderStatus.ClosedByCustomerResponse)
             {
                 try
                 {
                     var hostingUnit = instance.GetHostingUnit(newOrder.HostingUnitKey);
                     var guestRequest = instance.GetGuestRequest(newOrder.GuestRequestKey);
-                    var dateRange = new DateRange(guestRequest.EntryDate, guestRequest.ReleaseDate);
-                    instance.CancelDateRange(hostingUnit, dateRange);
+                    // reserve dates in the hosting unit
+                    if (instance.CheckOrReserveDates(hostingUnit, guestRequest, true))
+                    {
+                        // if successfully reserved
+                        // change Guest request status
+                        guestRequest.Status = GuestStatus.Complete;
+                        instance.UpdateGuestRequest(guestRequest);
+
+                        // change back status of other orders for this guest request
+                        IEnumerable<Order> matches = from Order item in instance.GetOrders()
+                                                     where item.GuestRequestKey == newOrder.GuestRequestKey
+                                                            && item.OrderKey != newOrder.OrderKey
+                                                     select item;
+                        foreach (Order item in matches)
+                        {
+                            item.Status = OrderStatus.NotYetHandled;
+                            instance.UpdateOrder(item);
+                        }
+
+                        // calculate transaction fee
+                        DateRange dateRange = new DateRange(guestRequest.EntryDate, guestRequest.ReleaseDate);
+                        // multiply number of accomodation nights by fee
+                        var transactionFeeNIS = (dateRange.Duration - 1) * Config.TRANSACTION_FEE_NIS;
+
+                        // TODO: Charge transaction fee to bank account
+                        return true;
+                    }
+                    else
+                    {
+                        throw new Exception("The requested dates are no longer available in the Hosting Unit.");
+                    }
                 }
                 catch (Exception error)
                 {
@@ -507,6 +538,34 @@ namespace BL
         {
             Host host = DalInstance.GetHosts().FirstOrDefault(h => h.HostKey == hostKey);
             return host;
+        }
+
+        /// <summary>
+        /// Allow data access layer to handle update of host
+        /// </summary>
+        bool IBL.UpdateHost(Host newHost)
+        {
+            if (newHost == null)
+            {
+                throw new ArgumentNullException("Host cannot be null.");
+            }
+            try
+            {
+                var oldHost = instance.GetHost(newHost.HostKey);
+                // Billing clearance cannot be revoked when there is an open orders
+                if (oldHost.BankClearance == true && newHost.BankClearance == false)
+                    if (instance.GetOrders().Exists(o => 
+                        (o.Status == OrderStatus.NotYetHandled || o.Status == OrderStatus.SentEmail) &&
+                        instance.GetHostingUnit(o.HostingUnitKey).Owner.HostKey == newHost.HostKey))
+                    {
+                        throw new Exception("Billing clearance can not be revoked while there are open orders.");
+                    }
+                return DalInstance.UpdateHost(Cloning.Clone(newHost));
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         // VALIDATION
