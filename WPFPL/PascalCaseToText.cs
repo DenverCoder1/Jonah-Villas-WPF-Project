@@ -16,6 +16,7 @@ namespace WPFPL
         /// </summary>
         public static string Convert(object value)
         {
+            if (value == null) return "";
             string enumString = value.ToString();
             return Regex.Replace(enumString, "([a-z])([A-Z])", "$1 $2");
         }

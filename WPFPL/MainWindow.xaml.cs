@@ -40,6 +40,14 @@ namespace WPFPL
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+            this.SizeChanged += OnWindowSizeChanged;
+        }
+        private void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width < 830)
+                gAmenities.Style = (Style)System.Windows.Application.Current.Resources["MyMaterialDesignListBox"];
+            else
+                gAmenities.Style = (Style)System.Windows.Application.Current.Resources["MyMaterialDesignFilterChipListBox"];
         }
 
         /// <summary>

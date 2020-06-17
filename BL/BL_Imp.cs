@@ -370,6 +370,8 @@ namespace BL
 
                         // Create order
                         order.Status = OrderStatus.SentEmail;
+                        order.CreationDate = DateTime.Now.Date;
+                        order.EmailDeliveryDate = DateTime.Now.Date;
                         return DalInstance.CreateOrder(Cloning.Clone(order));
                     }
                     else

@@ -22,8 +22,7 @@
                      Width="Auto"
                      Height="280"
                      SelectionMode="Single"
-                     BorderBrush="LightGray"
-                     BorderThickness="1">
+                     Style="{StaticResource MyMaterialDesignListBox}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
@@ -35,7 +34,8 @@
                         Width="Auto"
                         HorizontalAlignment="Left"
                         Margin="0 15 6 0"
-                        Click="Create_Order">
+                        Click="Create_Order"
+                        IsEnabled="{Binding ElementName=Requests, Path=SelectedItem, TargetNullValue=False}">
                     BEGIN ORDER
                 </Button>
             </StackPanel>

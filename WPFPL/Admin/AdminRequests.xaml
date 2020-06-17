@@ -23,8 +23,7 @@
                      Width="Auto"
                      Height="320"
                      SelectionMode="Single"
-                     BorderBrush="LightGray"
-                     BorderThickness="1">
+                     Style="{StaticResource MyMaterialDesignListBox}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}"

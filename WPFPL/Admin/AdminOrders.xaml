@@ -23,8 +23,7 @@
                      Width="Auto"
                      Height="280"
                      SelectionMode="Single"
-                     BorderBrush="LightGray"
-                     BorderThickness="1">
+                     Style="{StaticResource MyMaterialDesignListBox}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
@@ -36,7 +35,8 @@
                         Width="Auto"
                         HorizontalAlignment="Left"
                         Margin="0 15 6 0"
-                        Click="Update_Order">
+                        Click="Update_Order"
+                        IsEnabled="{Binding ElementName=Orders, Path=SelectedItem, TargetNullValue=False}">
                     UPDATE
                 </Button>
             </StackPanel>

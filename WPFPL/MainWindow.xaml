@@ -1,4 +1,5 @@
-﻿<Window x:Class="WPFPL.MainWindow"
+﻿<Window x:Name="Window"
+        x:Class="WPFPL.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -285,7 +286,7 @@
                                           Grid.Column="0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
@@ -428,11 +429,9 @@
                                         <Label Content="Which amenities are important to you?"
                                                Margin="0 24 0 8" />
                                         <ListBox x:Name="gAmenities"
-                                                 Width="280"
+                                                 MaxWidth="420"
                                                  Height="292"
                                                  SelectionMode="Multiple"
-                                                 BorderBrush="LightGray"
-                                                 BorderThickness="1"
                                                  ItemsSource="{Binding Source={StaticResource Amenity }}">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
