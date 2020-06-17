@@ -40,14 +40,6 @@ namespace WPFPL
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
-            this.SizeChanged += OnWindowSizeChanged;
-        }
-        private void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (e.NewSize.Width < 830)
-                gAmenities.Style = (Style)System.Windows.Application.Current.Resources["MyMaterialDesignListBox"];
-            else
-                gAmenities.Style = (Style)System.Windows.Application.Current.Resources["MyMaterialDesignFilterChipListBox"];
         }
 
         /// <summary>
@@ -61,6 +53,7 @@ namespace WPFPL
             HostingFrame.Navigate(new HostSignIn());
             AdminFrame.Navigate(new AdminMenu());
             MyDialog.IsOpen = false;
+            this.SizeChanged += ChooseAmenityListBoxStyle;
 
             /* DEBUG */
             DateTime entry = DateTime.Now.Date.AddDays(5);
@@ -180,8 +173,21 @@ namespace WPFPL
                 case "HostDeleteHostingUnit": HostHostingUnits.Confirm_Delete(MyDialogText.Text, MyDialogTextBox.Text); break;
                 case "HostUpdateHostingUnit": HostHostingUnits.Update_Hosting_Unit_Name(MyDialogText.Text, MyDialogTextBox.Text); break;
                 case "HostCreateOrder": HostRequests.Finish_Create_Order(MyDialogText.Text, MyDialogComboBox.SelectedItem); break;
+                case "HostUpdateOrder": HostOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox.SelectedItem); break;
+                case "AdminUpdateOrder": AdminOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox.SelectedItem); break;
                 default: break;
             }
+        }
+
+        /// <summary>
+        /// Select amenity listbox style based on window width
+        /// </summary>
+        private void ChooseAmenityListBoxStyle(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width < 840)
+                gAmenities.Style = (Style)Application.Current.Resources["MyMaterialDesignListBox"];
+            else
+                gAmenities.Style = (Style)Application.Current.Resources["MyMaterialDesignFilterChipListBox"];
         }
 
         /// <summary>

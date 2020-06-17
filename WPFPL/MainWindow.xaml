@@ -432,7 +432,8 @@
                                                  MaxWidth="420"
                                                  Height="292"
                                                  SelectionMode="Multiple"
-                                                 ItemsSource="{Binding Source={StaticResource Amenity }}">
+                                                 ItemsSource="{Binding Source={StaticResource Amenity }}"
+                                                 Style="{StaticResource MyMaterialDesignFilterChipListBox}">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />

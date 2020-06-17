@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
+using BE;
 
 namespace WPFPL.Admin
 {
@@ -54,7 +56,58 @@ namespace WPFPL.Admin
 
         private void Update_Order(object sender, RoutedEventArgs e)
         {
+            if (Orders.SelectedItem == null)
+            {
+                MainWindow.Dialog("Select an order to update.");
+                return;
+            }
+            Match match = new Regex(@"^#(\d+) .*").Match(Orders.SelectedItem.ToString());
+            if (match.Success)
+            {
+                if (long.TryParse(match.Groups[1].Value, out long orderKey))
+                {
+                    ObservableCollection<string> StatusesCollection = new ObservableCollection<string>();
+                    foreach(string status in Enum.GetNames(typeof(OrderStatus)))
+                    {
+                        StatusesCollection.Add(PascalCaseToText.Convert(status));
+                    }
+                    mainWindow.MyDialogComboBox.ItemsSource = StatusesCollection;
+                    MainWindow.Dialog($"Select a new status for Order #{orderKey}.", "AdminUpdateOrder", false, true);
+                }
+            }
+        }
 
+        public static void Finish_Update_Order(string dialogText, object selection)
+        {
+            if (selection != null)
+            {
+                Match orderKeyMatch = new Regex(@".* #(\d+)\..*").Match(dialogText);
+                if (orderKeyMatch.Success)
+                {
+                    if (long.TryParse(orderKeyMatch.Groups[1].Value, out long orderKey))
+                    {
+                        try
+                        {
+                            if (Enum.TryParse(selection.ToString().Replace(" ", ""), out OrderStatus status))
+                            {
+                                Order order = Util.Bl.GetOrder(orderKey);
+                                order.Status = status;
+                                if (Util.Bl.UpdateOrder(order))
+                                    MessageBox.Show("Order was successfully updated.");
+                                Refresh();
+                                return;
+                            }
+                        }
+                        catch (Exception error)
+                        {
+                            MessageBox.Show(error.Message.ToString());
+                            return;
+                        }
+                    }
+                }
+            }
+
+            MessageBox.Show("Action was cancelled.");
         }
     }
 }
