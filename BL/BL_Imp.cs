@@ -361,17 +361,15 @@ namespace BL
                     {
                         // if possible to reserve
                         guestRequest.Status = GuestStatus.Pending;
-                        order.Status = OrderStatus.SentEmail;
-
-                        // TODO: send an email
-
-                        // update hosting unit calendar
-                        instance.UpdateHostingUnit(hostingUnit);
-
                         // update guest request status
                         instance.UpdateGuestRequest(guestRequest);
+                        // update hosting unit with calendar changes
+                        instance.UpdateHostingUnit(hostingUnit);
+
+                        // TODO: send an email (next step)
 
                         // Create order
+                        order.Status = OrderStatus.SentEmail;
                         return DalInstance.CreateOrder(Cloning.Clone(order));
                     }
                     else
@@ -567,7 +565,7 @@ namespace BL
                 throw e;
             }
         }
-
+        
         // VALIDATION
 
         /// <summary>
