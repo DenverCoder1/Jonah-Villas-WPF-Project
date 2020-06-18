@@ -16,22 +16,38 @@ namespace ConsolePL
         private static string PascalCaseToText(object value)
         {
             string enumString = value.ToString();
-            return Regex.Replace(enumString, "(.[A-Z])", " $1");
+            return Regex.Replace(enumString, "([a-z])([A-Z])", "$1 $2");
         }
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Current progress on the presentation is in WPFPL. Set WPFPL as the Startup project.");
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey();
+            return;
+
             Order order = new Order(1, 2);
 
-            Bl.CreateOrder(order);
+            try
+            {
+                Bl.CreateOrder(order);
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine($"Error: {error.Message}");
+            }
 
             order.Status = OrderStatus.ClosedByCustomerResponse;
 
-            Bl.UpdateOrder(order);
-
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
-
+            try
+            {
+                Bl.UpdateOrder(order);
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine($"Error: {error.Message}");
+            }
+           
 
             DateTime entry = DateTime.Today.AddDays(5);
             DateTime release = DateTime.Today.AddDays(10);
@@ -50,7 +66,14 @@ namespace ConsolePL
 
             GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
 
-            Bl.CreateGuestRequest(guest);
+            try
+            {
+                Bl.CreateGuestRequest(guest);
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine($"Error: {error.Message}");
+            }
 
             List<GuestRequest> list = Bl.GetGuestRequests();
 

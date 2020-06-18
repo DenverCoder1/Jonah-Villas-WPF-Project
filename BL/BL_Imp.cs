@@ -391,47 +391,55 @@ namespace BL
         {
             if (order != null)
             {
-                // if one or more required field is missing
-                if (order.OrderKey == default ||
-                    order.HostingUnitKey == default ||
-                    order.GuestRequestKey == default)
-                {
-                    throw new ArgumentException("Order is missing one or more required field.");
-                }
-
-                // Make sure the Order key is unique
-                if (DalInstance.GetOrders().Exists((Order o) => o.OrderKey == order.OrderKey))
-                {
-                    throw new ArgumentException($"Order with key {order.OrderKey} already exists.");
-                }
-
-                HostingUnit hostingUnit = instance.GetHostingUnit(order.HostingUnitKey);
-
-                GuestRequest guestRequest = instance.GetGuestRequest(order.GuestRequestKey);
-
-                Host host = instance.GetHost(hostingUnit.Owner.HostKey);
-
-                if (hostingUnit == null || guestRequest == null || host == null)
-                    throw new Exception("Could not find data matching the order fields.");
-
-
-                if (host.BankClearance == false)
-                {
-                    throw new Exception("Cannot create order. The host does not have bank clearance.");
-                }
-
-                if (guestRequest.Status != GuestStatus.Open)
-                {
-                    throw new Exception("Request is no longer open for orders.");
-                }
-
-                if (order.Status != OrderStatus.NotYetHandled)
-                {
-                    throw new Exception("Orders must not be handled upon creation.");
-                }
-
                 try
                 {
+                    // if one or more required field is missing
+                    if (order.OrderKey == default ||
+                    order.HostingUnitKey == default ||
+                    order.GuestRequestKey == default)
+                    {
+                        throw new ArgumentException("Order is missing one or more required field.");
+                    }
+
+                    // Make sure the Order key is unique
+                    if (DalInstance.GetOrders().Exists((Order o) => o.OrderKey == order.OrderKey))
+                    {
+                        throw new ArgumentException($"Order with key {order.OrderKey} already exists.");
+                    }
+
+
+                    HostingUnit hostingUnit = instance.GetHostingUnit(order.HostingUnitKey);
+
+                    if (hostingUnit == null)
+                        throw new Exception("Could not find a hosting unit the hosting unit ID.");
+
+                    GuestRequest guestRequest = instance.GetGuestRequest(order.GuestRequestKey);
+
+                    if (guestRequest == null)
+                        throw new Exception("Could not find a request matching the guest request ID.");
+
+                    Host host = instance.GetHost(hostingUnit.Owner.HostKey);
+
+                    if (host == null)
+                        throw new Exception("Could not find a host matching the hosting unit's owner ID.");
+
+
+                    if (host.BankClearance == false)
+                    {
+                        throw new Exception("Cannot create order. The host does not have bank clearance.");
+                    }
+
+                    if (guestRequest.Status != GuestStatus.Open)
+                    {
+                        throw new Exception("Request is no longer open for orders.");
+                    }
+
+                    if (order.Status != OrderStatus.NotYetHandled)
+                    {
+                        throw new Exception("Orders must not be handled upon creation.");
+                    }
+
+
                     // Check if dates can go into the hosting unit
                     if (instance.CheckOrReserveDates(hostingUnit, guestRequest, false))
                     {
