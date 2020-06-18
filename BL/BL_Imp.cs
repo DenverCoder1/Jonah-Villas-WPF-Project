@@ -167,6 +167,8 @@ namespace BL
         List<DateRange> IBL.GetDateRanges(long huKey)
         {
             HostingUnit hostingUnit = instance.GetHostingUnit(huKey);
+            if (hostingUnit == null)
+                throw new Exception($"Hosting unit with ID {huKey} was not found.");
             return hostingUnit.Calendar;
         }
 

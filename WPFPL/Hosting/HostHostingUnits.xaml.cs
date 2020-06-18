@@ -220,7 +220,7 @@ namespace WPFPL
             }
             catch (InvalidDataException error)
             {
-                MainWindow.Dialog(error.Message.ToString());
+                MainWindow.Dialog(error.Message);
             }
 
             Refresh();

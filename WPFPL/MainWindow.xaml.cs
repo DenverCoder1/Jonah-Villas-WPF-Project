@@ -342,7 +342,7 @@ namespace WPFPL
             }
             catch (InvalidDataException error)
             {
-                Dialog(error.Message.ToString());
+                Dialog(error.Message);
             }
         }
     }
