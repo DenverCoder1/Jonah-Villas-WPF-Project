@@ -11,7 +11,7 @@ namespace ConsolePL
 {
     class Program
     {
-        private static IBL Bl = BL_Imp.GetBL();
+        private static IBL Bl = FactoryBL.Build();
 
         private static string PascalCaseToText(object value)
         {

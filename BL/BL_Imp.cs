@@ -223,12 +223,9 @@ namespace BL
         /// </summary>
         List<GuestRequest> IBL.GetOpenGuestRequests()
         {
-            List<GuestRequest> guestRequests = DalInstance.GetGuestRequests().ConvertAll(x => Cloning.Clone(x));
-            IEnumerable<GuestRequest> matches = from GuestRequest item in guestRequests
-                                                where item.Status == GuestStatus.Open
-                                                    || item.Status == GuestStatus.Pending
-                                                select item;
-            return matches.ToList();
+            return instance.GetGuestRequests(delegate (GuestRequest gr) {
+                return gr.Status == GuestStatus.Open || gr.Status == GuestStatus.Pending;
+            });
         }
 
         /// <summary>
@@ -540,9 +537,9 @@ namespace BL
         /// </summary>
         int IBL.GetNumOrders(GuestRequest guestRequest)
         {
-            IEnumerable<Order> matches = from Order item in instance.GetOrders()
-                                         where item.GuestRequestKey == guestRequest.GuestRequestKey
-                                         select item;
+            var matches = from Order item in instance.GetOrders()
+                          where item.GuestRequestKey == guestRequest.GuestRequestKey
+                          select new byte();
             return matches.Count();
         }
 
@@ -551,9 +548,9 @@ namespace BL
         /// </summary>
         int IBL.GetNumOrders(HostingUnit hostingUnit)
         {
-            IEnumerable<Order> matches = from Order item in instance.GetOrders()
-                                         where item.HostingUnitKey == hostingUnit.HostingUnitKey
-                                         select item;
+            var matches = from Order item in instance.GetOrders()
+                          where item.HostingUnitKey == hostingUnit.HostingUnitKey
+                          select new byte();
             return matches.Count();
         }
 
