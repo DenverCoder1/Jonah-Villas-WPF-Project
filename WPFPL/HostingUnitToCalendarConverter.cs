@@ -32,6 +32,7 @@ namespace WPFPL
                         StringBuilder converted = new StringBuilder();
                         converted.AppendLine($"Hosting unit ID: {hostingUnit.HostingUnitKey}");
                         converted.AppendLine($"Hosting unit name: {hostingUnit.UnitName}");
+                        converted.AppendLine($"Hosting unit location: {hostingUnit.UnitCity}, {hostingUnit.UnitDistrict}");
                         converted.AppendLine($"Owner ID: {hostingUnit.Owner.HostKey}\n");
                         if (dateRanges.Count == 0)
                             converted.AppendLine("No dates have been reserved.");
@@ -39,7 +40,7 @@ namespace WPFPL
                         {
                             converted.AppendLine(dr.ToString());
                         }
-                        return converted.ToString();
+                        return PascalCaseToText.Convert(converted.ToString());
                     }
                     catch
                     {

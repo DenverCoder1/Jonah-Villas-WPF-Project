@@ -147,7 +147,11 @@
                 <TextBox x:Name="MyDialogTextBox"
                          Margin="0 5 20 10"
                          Height="0"/>
-                <ComboBox x:Name="MyDialogComboBox"
+                <ComboBox x:Name="MyDialogComboBox1"
+                          Margin="0 5 20 10"
+                          Height="0"
+                          SelectionChanged="MyDialogComboBox1_Changed" />
+                <ComboBox x:Name="MyDialogComboBox2"
                           Margin="0 5 20 10"
                           Height="0" />
                 <Button Content="OK"
@@ -354,7 +358,7 @@
                                                   Grid.Row="5"
                                                   Grid.Column="1"
                                                   Style="{StaticResource FormComboBox}"
-                                                  SelectionChanged="UpdateCityList">
+                                                  SelectionChanged="DistrictComboBox_Changed">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />

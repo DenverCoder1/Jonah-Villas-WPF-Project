@@ -14,8 +14,11 @@ namespace BE
         public List<DateRange> Calendar { get; set; }
         // Owner
         public Host Owner { get; set; }
-        // Unit Name
+        // Unit name
         public string UnitName { get; set; }
+        // Unit location
+        public District UnitDistrict { get; set; }
+        public City UnitCity { get; set; }
 
         public HostingUnit()
         {
@@ -24,13 +27,15 @@ namespace BE
             Calendar = new List<DateRange>();
         }
 
-        public HostingUnit(Host owner, string name)
+        public HostingUnit(Host owner, string name, District district, City city)
         {
             // get next available serial number
             HostingUnitKey = ++Config.stHostingUnitKey;
             Calendar = new List<DateRange>();
             Owner = owner;
             UnitName = name;
+            UnitDistrict = district;
+            UnitCity = city;
         }
 
         // list all reserved date ranges
@@ -38,7 +43,7 @@ namespace BE
         {
             StringBuilder output = new StringBuilder();
             // add serial number to output
-            output.Append($"#{HostingUnitKey} : Name: {UnitName}, ");
+            output.AppendLine($"#{HostingUnitKey} : \"{UnitName}\" in {UnitCity}, {UnitDistrict}");
             output.Append($"Owner ID: {Owner.HostKey}");
             return output.ToString();
         }

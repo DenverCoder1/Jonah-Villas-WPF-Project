@@ -33,17 +33,19 @@ namespace DAL
         bool IDAL.CreateGuestRequest(GuestRequest guestRequest)
         {
             // check if guest request is already in list
-            GuestRequest oldGuestRequest = instance.GetGuestRequests().Find((GuestRequest gr) =>
+            GuestRequest oldGuestRequest = instance.GetGuestRequests().FirstOrDefault((GuestRequest gr) =>
                 gr.GuestRequestKey == guestRequest.GuestRequestKey
             );
 
-            // if not in list
+            // check if request id is unique
             if (oldGuestRequest == null)
             {
                 // add to list
                 DataSource.GuestRequests.Add(Cloning.Clone(guestRequest));
+                return true;
             }
-            return true;
+
+            throw new ArgumentException($"Guest Request with key {guestRequest.GuestRequestKey} already exists.");
         }
 
         /// <summary>
@@ -93,16 +95,17 @@ namespace DAL
         bool IDAL.CreateHostingUnit(HostingUnit hostingUnit)
         {
             // check if hosting unit is already in list
-            HostingUnit oldHostingUnit = instance.GetHostingUnits().Find((HostingUnit hu) =>
+            HostingUnit oldHostingUnit = instance.GetHostingUnits().FirstOrDefault((HostingUnit hu) =>
                 hu.HostingUnitKey == hostingUnit.HostingUnitKey
             );
-            // if not in list
+            // Make sure the Hosting Unit is unique
             if (oldHostingUnit == null)
             {
                 // add Hosting Unit to list
                 DataSource.HostingUnits.Add(Cloning.Clone(hostingUnit));
+                return true;
             }
-            return true;
+            throw new ArgumentException($"Hosting Unit with key {hostingUnit.HostingUnitKey} already exists.");
         }
         /// <summary>
         /// Remove Hosting Unit from data given key
@@ -117,8 +120,13 @@ namespace DAL
             );
 
             // remove
-            DataSource.HostingUnits.Remove(hostingUnitToDelete);
-            return true;
+            if (hostingUnitToDelete != null)
+            {
+                DataSource.HostingUnits.Remove(hostingUnitToDelete);
+                return true;
+            }
+
+            throw new Exception("Hosting unit was not found with given ID.");
         }
 
         /// <summary>
@@ -172,12 +180,15 @@ namespace DAL
                 o.OrderKey == order.OrderKey
             );
 
-            // if not in list
+            // Check that order is unique
             if (oldOrder == null)
+            {
                 // add Order to list
                 DataSource.Orders.Add(Cloning.Clone(order));
+                return true;
+            }
 
-            return true;
+            throw new ArgumentException($"Order with key {order.OrderKey} already exists.");
         }
 
         /// <summary>
@@ -221,17 +232,19 @@ namespace DAL
         bool IDAL.CreateHost(Host host)
         {
             // check if host is already in list
-            Host oldHost = instance.GetHosts().Find((Host h) =>
+            Host oldHost = instance.GetHosts().FirstOrDefault((Host h) =>
                 h.HostKey == host.HostKey
             );
 
-            // if not in list
+            // make sure the host is unique
             if (oldHost == null)
             {
                 // add to list
                 DataSource.Hosts.Add(Cloning.Clone(host));
+                return true;
             }
-            return true;
+
+            throw new ArgumentException($"Host with key {host.HostKey} already exists.");
         }
 
         /// <summary>
@@ -242,7 +255,7 @@ namespace DAL
         bool IDAL.UpdateHost(Host newHost)
         {
             // find order in list
-            var oldHost = instance.GetHosts().FirstOrDefault(h => h.HostKey == newHost.HostKey);
+            Host oldHost = instance.GetHosts().FirstOrDefault(h => h.HostKey == newHost.HostKey);
 
             // if not in list, throw exception
             if (oldHost == null)

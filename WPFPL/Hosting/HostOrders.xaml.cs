@@ -28,6 +28,8 @@ namespace WPFPL
         public MainWindow mainWindow;
 
         public static ObservableCollection<string> OrdersCollection { get; set; }
+        public object PascalCaseConverter { get; private set; }
+
         public HostOrders()
         {
             InitializeComponent();
@@ -71,8 +73,9 @@ namespace WPFPL
                     {
                         StatusesCollection.Add(PascalCaseToText.Convert(status));
                     }
-                    mainWindow.MyDialogComboBox.ItemsSource = StatusesCollection;
-                    MainWindow.Dialog($"Select a new status for Order #{orderKey}.", "HostUpdateOrder", false, true);
+                    mainWindow.MyDialogComboBox1.ItemsSource = StatusesCollection;
+                    string oldStatus = PascalCaseToText.Convert(Util.Bl.GetOrder(orderKey).Status.ToString());
+                    MainWindow.Dialog($"Select a new status for Order #{orderKey}.", "HostUpdateOrder", null, oldStatus);
                 }
             }
         }

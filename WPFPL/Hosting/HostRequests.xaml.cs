@@ -92,8 +92,8 @@ namespace WPFPL
                 if (long.TryParse(match.Groups[1].Value, out long grKey))
                 {
                     UpdateAvailableHostingUnits(grKey);
-                    mainWindow.MyDialogComboBox.ItemsSource = HostingUnitCollection;
-                    MainWindow.Dialog($"Which Hosting Unit do you you want to add Request #{grKey} to?", "HostCreateOrder", false, true);
+                    mainWindow.MyDialogComboBox1.ItemsSource = HostingUnitCollection;
+                    MainWindow.Dialog($"Which Hosting Unit do you you want to add Request #{grKey} to?", "HostCreateOrder", null, "");
                 }
             }
         }

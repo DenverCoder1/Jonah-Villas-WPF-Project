@@ -71,8 +71,9 @@ namespace WPFPL.Admin
                     {
                         StatusesCollection.Add(PascalCaseToText.Convert(status));
                     }
-                    mainWindow.MyDialogComboBox.ItemsSource = StatusesCollection;
-                    MainWindow.Dialog($"Select a new status for Order #{orderKey}.", "AdminUpdateOrder", false, true);
+                    mainWindow.MyDialogComboBox1.ItemsSource = StatusesCollection;
+                    string oldStatus = PascalCaseToText.Convert(Util.Bl.GetOrder(orderKey).Status.ToString());
+                    MainWindow.Dialog($"Select a new status for Order #{orderKey}.", "AdminUpdateOrder", null, oldStatus);
                 }
             }
         }

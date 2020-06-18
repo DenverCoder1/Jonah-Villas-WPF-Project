@@ -12,6 +12,7 @@
       Title="AdminHostingUnits">
     <Page.Resources>
         <p:HostingUnitToCalendarConverter x:Key="HostingUnitToCalendarConverter" />
+        <p:PascalCaseToText x:Key="PascalCaseToText" />
     </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -29,6 +30,11 @@
                      Height="320"
                      SelectionMode="Single"
                      Style="{StaticResource MyMaterialDesignListBox}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Width="Auto"

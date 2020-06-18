@@ -41,12 +41,13 @@ namespace BL
             {
                 throw new ArgumentNullException("Hosting unit cannot be null.");
             }
-            // Make sure the Hosting Unit is unique
-            if (DalInstance.GetHostingUnits().Exists((HostingUnit hu) => hu.HostingUnitKey == hostingUnit.HostingUnitKey))
-            {
-                throw new ArgumentException($"Hosting Unit with key {hostingUnit.HostingUnitKey} already exists.");
+            try { 
+                return DalInstance.CreateHostingUnit(Cloning.Clone(hostingUnit));
             }
-            return DalInstance.CreateHostingUnit(Cloning.Clone(hostingUnit));
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -67,9 +68,9 @@ namespace BL
                 else
                     throw new ApplicationException("Could not delete since the Hosting Unit has 1 or more open orders.");
             }
-            catch (Exception e)
+            catch (Exception error)
             {
-                throw e;
+                throw error;
             }
         }
 
@@ -86,9 +87,9 @@ namespace BL
             {
                 return DalInstance.UpdateHostingUnit(Cloning.Clone(newHostingUnit));
             }
-            catch (Exception e)
+            catch (Exception error)
             {
-                throw e;
+                throw error;
             }
         }
 
@@ -140,6 +141,25 @@ namespace BL
         }
 
         /// <summary>
+        /// Get hosting units grouped by district
+        /// </summary>
+        IEnumerable<IGrouping<District, HostingUnit>> IBL.GetHostingUnitsByDistrict()
+        {
+            return from HostingUnit item in instance.GetHostingUnits()
+                   group item by item.UnitDistrict;
+        }
+
+        /// <summary>
+        /// Get hosting units grouped by city
+        /// </summary>
+        IEnumerable<IGrouping<City, HostingUnit>> IBL.GetHostingUnitsByCity()
+        {
+            return from HostingUnit item in instance.GetHostingUnits()
+                   group item by item.UnitCity;
+
+        }
+
+        /// <summary>
         /// Return a list of reserved date ranges for a hosting unit key
         /// </summary>
         /// <param name="huKey">hosting unit key</param>
@@ -170,12 +190,13 @@ namespace BL
             {
                 throw new ArgumentNullException("Guest request cannot be null.");
             }
-            // Make sure the Guest Request is unique
-            if (DalInstance.GetGuestRequests().Exists((GuestRequest gr) => gr.GuestRequestKey == guestRequest.GuestRequestKey))
-            {
-                throw new ArgumentException($"Guest Request with key {guestRequest.GuestRequestKey} already exists.");
+            try { 
+                return DalInstance.CreateGuestRequest(Cloning.Clone(guestRequest));
             }
-            return DalInstance.CreateGuestRequest(Cloning.Clone(guestRequest));
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -191,9 +212,9 @@ namespace BL
             {
                 return DalInstance.UpdateGuestRequest(Cloning.Clone(newGuestRequest));
             }
-            catch (Exception e)
+            catch (Exception error)
             {
-                throw e;
+                throw error;
             }
         }
 
@@ -212,9 +233,9 @@ namespace BL
         /// <returns>List of matching guest requests</returns>
         List<GuestRequest> IBL.GetGuestRequests(Func<GuestRequest, bool> Criteria)
         {
-            var matches = from GuestRequest item in instance.GetGuestRequests()
-                          where Criteria(item)
-                          select item;
+            IEnumerable<GuestRequest> matches = from GuestRequest item in instance.GetGuestRequests()
+                                                where Criteria(item)
+                                                select item;
             return matches.ToList();
         }
 
@@ -274,9 +295,9 @@ namespace BL
         {
             GuestRequest dates = new GuestRequest { EntryDate = start, ReleaseDate = start.AddDays(numDays) };
             // check date range on each hosting unit
-            var matches = from HostingUnit item in instance.GetHostingUnits()
-                          where instance.CheckOrReserveDates(item, dates, false)
-                          select item;
+            IEnumerable<HostingUnit> matches = from HostingUnit item in instance.GetHostingUnits()
+                                               where instance.CheckOrReserveDates(item, dates, false)
+                                               select item;
             return matches.ToList();
         }
 
@@ -468,8 +489,8 @@ namespace BL
             {
                 try
                 {
-                    var hostingUnit = instance.GetHostingUnit(newOrder.HostingUnitKey);
-                    var guestRequest = instance.GetGuestRequest(newOrder.GuestRequestKey);
+                    HostingUnit hostingUnit = instance.GetHostingUnit(newOrder.HostingUnitKey);
+                    GuestRequest guestRequest = instance.GetGuestRequest(newOrder.GuestRequestKey);
                     // reserve dates in the hosting unit
                     if (instance.CheckOrReserveDates(hostingUnit, guestRequest, true))
                     {
@@ -492,7 +513,7 @@ namespace BL
                         // calculate transaction fee
                         DateRange dateRange = new DateRange(guestRequest.EntryDate, guestRequest.ReleaseDate);
                         // multiply number of accomodation nights by fee
-                        var transactionFeeNIS = (dateRange.Duration - 1) * Config.TRANSACTION_FEE_NIS;
+                        float transactionFeeNIS = (dateRange.Duration - 1) * Config.TRANSACTION_FEE_NIS;
 
                         // TODO: Charge transaction fee to bank account
                         return true;
@@ -513,9 +534,9 @@ namespace BL
             {
                 return DalInstance.UpdateOrder(Cloning.Clone(newOrder));
             }
-            catch (Exception e)
+            catch (Exception error)
             {
-                throw e;
+                throw error;
             }
         }
 
@@ -587,7 +608,14 @@ namespace BL
 
         List<BankBranch> IBL.GetBankBranches()
         {
-            return DalInstance.GetBankBranches().ConvertAll(x => Cloning.Clone(x));
+            try
+            {
+                return DalInstance.GetBankBranches().ConvertAll(x => Cloning.Clone(x));
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         // HOSTS
@@ -601,12 +629,14 @@ namespace BL
             {
                 throw new ArgumentNullException("Host cannot be null.");
             }
-            // Make sure the Guest Request is unique
-            if (DalInstance.GetHosts().Exists((Host h) => h.HostKey == host.HostKey))
+            try
             {
-                throw new ArgumentException($"Host with key {host.HostKey} already exists.");
+                return DalInstance.CreateHost(Cloning.Clone(host));
             }
-            return DalInstance.CreateHost(Cloning.Clone(host));
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -648,7 +678,7 @@ namespace BL
             }
             try
             {
-                var oldHost = instance.GetHost(newHost.HostKey);
+                Host oldHost = instance.GetHost(newHost.HostKey);
                 // Billing clearance cannot be revoked when there is an open orders
                 if (oldHost.BankClearance == true && newHost.BankClearance == false)
                     if (instance.GetOrders().Exists(o =>
@@ -659,9 +689,9 @@ namespace BL
                     }
                 return DalInstance.UpdateHost(Cloning.Clone(newHost));
             }
-            catch (Exception e)
+            catch (Exception error)
             {
-                throw e;
+                throw error;
             }
         }
         
@@ -726,9 +756,9 @@ namespace BL
                     throw new InvalidDataException("You have not selected a district.");
                 }
             }
-            catch (InvalidDataException e)
+            catch (InvalidDataException error)
             {
-                throw e;
+                throw error;
             }
             catch (Exception)
             {
@@ -745,9 +775,9 @@ namespace BL
                     throw new InvalidDataException("You have not selected a city.");
                 }
             }
-            catch (InvalidDataException e)
+            catch (InvalidDataException error)
             {
-                throw e;
+                throw error;
             }
             catch (Exception)
             {
@@ -776,9 +806,9 @@ namespace BL
                     throw new InvalidDataException("You have not selected a rental type.");
                 }
             }
-            catch (InvalidDataException e)
+            catch (InvalidDataException error)
             {
-                throw e;
+                throw error;
             }
             catch (Exception)
             {

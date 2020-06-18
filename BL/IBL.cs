@@ -17,6 +17,8 @@ namespace BL
         List<HostingUnit> GetHostingUnits();
         List<HostingUnit> GetHostHostingUnits(long hostKey);
         List<HostingUnit> GetAvailableHostHostingUnits(long hostKey, long guestRequestKey);
+        IEnumerable<IGrouping<District, HostingUnit>> GetHostingUnitsByDistrict();
+        IEnumerable<IGrouping<City, HostingUnit>> GetHostingUnitsByCity();
         List<DateRange> GetDateRanges(long huKey);
         HostingUnit GetHostingUnit(long huKey);
 

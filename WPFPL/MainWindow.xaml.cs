@@ -129,10 +129,10 @@ namespace WPFPL
 
             Util.Bl.CreateHost(host2);
 
-            HostingUnit hostingUnit1 = new HostingUnit(host1, "myUnit");
+            HostingUnit hostingUnit1 = new HostingUnit(host1, "myUnit", region, city);
             Util.Bl.CreateHostingUnit(hostingUnit1);
 
-            HostingUnit hostingUnit2 = new HostingUnit(host2, "myUnit2");
+            HostingUnit hostingUnit2 = new HostingUnit(host2, "myUnit2", District.Haifa, City.Hadera);
             Util.Bl.CreateHostingUnit(hostingUnit2);
 
             Order order1 = new Order(hostingUnit1.HostingUnitKey, guest1.GuestRequestKey);
@@ -146,17 +146,19 @@ namespace WPFPL
         /// Open custom dialog box with custom text
         /// </summary>
         /// <param name="text">Text to insert into box</param>
-        public static void Dialog(string text, string tag = "", bool textBoxEnabled = false, bool comboBoxEnabled = false)
+        public static void Dialog(string text, string tag = "", object textBox = null, object combo1 = null, object combo2 = null)
         {
             MainWindow mainWindow = Util.GetMainWindow();
 
             // hide / show input boxes
-            mainWindow.MyDialogTextBox.Height = (!textBoxEnabled) ? (0 /* hidden */) : (double.NaN /* Auto */);
-            mainWindow.MyDialogComboBox.Height = (!comboBoxEnabled) ? (0 /* hidden */) : (double.NaN /* Auto */);
+            mainWindow.MyDialogTextBox.Height = (textBox == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
+            mainWindow.MyDialogComboBox1.Height = (combo1 == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
+            mainWindow.MyDialogComboBox2.Height = (combo2 == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
 
             // set text and display
-            mainWindow.MyDialogTextBox.Text = "";
-            mainWindow.MyDialogComboBox.SelectedIndex = -1;
+            if (textBox != null) { mainWindow.MyDialogTextBox.Text = textBox.ToString(); }
+            if (combo1 != null) { mainWindow.MyDialogComboBox1.SelectedItem = ((string)combo1 != "") ? combo1.ToString() : null; }
+            if (combo2 != null) { mainWindow.MyDialogComboBox2.SelectedItem = ((string)combo2 != "") ? combo2.ToString() : null; }
             mainWindow.MyDialog.Tag = tag;
             mainWindow.MyDialogText.Text = text;
             mainWindow.MyDialog.IsOpen = true;
@@ -172,10 +174,23 @@ namespace WPFPL
                 case "HostAddHostingUnit": HostHostingUnits.Add_Hosting_Unit_Named(MyDialogTextBox.Text); break;
                 case "HostDeleteHostingUnit": HostHostingUnits.Confirm_Delete(MyDialogText.Text, MyDialogTextBox.Text); break;
                 case "HostUpdateHostingUnit": HostHostingUnits.Update_Hosting_Unit_Name(MyDialogText.Text, MyDialogTextBox.Text); break;
-                case "HostCreateOrder": HostRequests.Finish_Create_Order(MyDialogText.Text, MyDialogComboBox.SelectedItem); break;
-                case "HostUpdateOrder": HostOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox.SelectedItem); break;
-                case "AdminUpdateOrder": AdminOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox.SelectedItem); break;
+                case "HostCreateOrder": HostRequests.Finish_Create_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
+                case "HostUpdateOrder": HostOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
+                case "AdminUpdateOrder": AdminOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
                 default: break;
+            }
+        }
+
+        private void MyDialogComboBox1_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.MyDialog.Tag != null)
+            {
+                switch (MyDialog.Tag.ToString())
+                {
+                    case "HostAddHostingUnit": UpdateCityList(sender, HostHostingUnits.CitiesCollection); break;
+                    case "HostUpdateHostingUnit": UpdateCityList(sender, HostHostingUnits.CitiesCollection); break;
+                    default: break;
+                }
             }
         }
 
@@ -259,27 +274,31 @@ namespace WPFPL
         /// <summary>
         /// Update City List when District List changed
         /// </summary>
-        private void UpdateCityList(object sender, SelectionChangedEventArgs e)
+        private void UpdateCityList(object sender, ObservableCollection<string> cityList)
         {
             // get selected district
             if (((ComboBox)sender).SelectedItem == null) return;
             string selectedDistrict = ((ComboBox)sender).SelectedItem.ToString();
-            if (!Enum.TryParse(gPrefDistrict.SelectedItem.ToString().Replace(" ", ""), out District district)) return;
+            if (!Enum.TryParse(selectedDistrict.Replace(" ", ""), out District district)) return;
             // get list of cities in district from config
             List<string> update = Config.GetCities[district].ConvertAll(c => PascalCaseToText.Convert(c));
             // clear list
-            DynamicCityList.Clear();
+            cityList.Clear();
             // add cities in district
             foreach (string item in update)
             {
-                DynamicCityList.Add(item);
+                cityList.Add(item);
             }
             // if list is empty, add item that says to select a district first
-            if (DynamicCityList.Count == 0)
+            if (cityList.Count == 0)
             {
-                DynamicCityList.Add("Select a district.");
+                cityList.Add("Select a district.");
             }
-            return;
+        }
+
+        private void DistrictComboBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateCityList(sender, DynamicCityList);
         }
 
         /// <summary>
