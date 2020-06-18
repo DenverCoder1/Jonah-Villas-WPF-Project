@@ -93,11 +93,15 @@ namespace WPFPL
                 return;
             }
 
-            long.TryParse(routing, out long routingNum);
+            if (!long.TryParse(Regex.Replace(phone, "[^0-9]", ""), out long phoneNum))
+                return;
+
+            if (!long.TryParse(Regex.Replace(routing, "[^0-9]", ""), out long routingNum))
+                return;
 
             try
             {
-                Util.MyHost = new BE.Host(fname, lname, email, phone, bankBranch, routingNum);
+                Util.MyHost = new BE.Host(fname, lname, email, phoneNum, bankBranch, routingNum);
                 Util.Bl.CreateHost(Util.MyHost);
                 MainWindow.Dialog($"Success! Your Host ID is {Util.MyHost.HostKey}. Use this number when you want to enter the hosting area.");
             }

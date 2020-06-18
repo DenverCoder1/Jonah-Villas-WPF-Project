@@ -13,18 +13,23 @@
             <TextBlock FontFamily="{StaticResource OpenSans}"
                        FontWeight="Light"
                        FontSize="16px"
-                       Margin="0 20 0 0">
+                       Margin="0 20 0 12">
 			    Enter your Host ID:
             </TextBlock>
-            <TextBox x:Name="HostID"
-                     HorizontalAlignment="Left"
-                     Height="24"
-                     Margin="0 15 0 0"
-                     VerticalAlignment="Center"
-                     Width="140"
-                     KeyUp="HostID_TextBox_KeyUp" 
-                     PreviewTextInput="HostID_PreviewTextInput"
-                     DataObject.Pasting="HostID_Pasting"/>
+            <AdornerDecorator>
+                <TextBox x:Name="HostID"
+                         HorizontalAlignment="Left"
+                         Width="140"
+                         Height="26"
+                         VerticalAlignment="Top"
+                         KeyUp="HostID_TextBox_KeyUp"
+                         PreviewTextInput="HostID_PreviewTextInput"
+                         DataObject.Pasting="HostID_Pasting">
+                    <local:PlaceholderService.Placeholder>
+                        <TextBlock>Host ID</TextBlock>
+                    </local:PlaceholderService.Placeholder>
+                </TextBox>
+            </AdornerDecorator>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Width="Auto"
                     HorizontalAlignment="Left"

@@ -66,7 +66,7 @@ namespace BL
                 if (matches.Count() == 0)
                     return DalInstance.DeleteHostingUnit(hostingUnitKey);
                 else
-                    throw new ApplicationException("Could not delete since the Hosting Unit has open orders.");
+                    throw new ApplicationException("Could not delete since the hosting unit has open orders.");
             }
             catch (Exception error)
             {
@@ -130,7 +130,9 @@ namespace BL
             {
                 IEnumerable<HostingUnit> matches = from HostingUnit item in hostingUnits
                                                    where item.Owner.HostKey == hostKey
-                                                   && instance.CheckOrReserveDates(item, guestRequest, false)
+                                                    && item.UnitDistrict == guestRequest.PrefDistrict
+                                                    && item.UnitCity == guestRequest.PrefCity
+                                                    && instance.CheckOrReserveDates(item, guestRequest, false)
                                                    select item;
                 return matches.ToList();
             }
@@ -314,7 +316,7 @@ namespace BL
             if (guestRequest == null)
                 throw new ArgumentException("Guest request cannot be null.");
             if (hostingUnit == null)
-                throw new ArgumentException("Hosting Unit cannot be null.");
+                throw new ArgumentException("Hosting unit cannot be null.");
             // dates not set
             if (guestRequest.EntryDate == default || guestRequest.ReleaseDate == default)
                 throw new ArgumentException("Guest request is missing a date.");
@@ -364,7 +366,7 @@ namespace BL
         {
             // check if unit is legal
             if (hostingUnit == null)
-                throw new ArgumentException("Hosting Unit cannot be null.");
+                throw new ArgumentException("Hosting unit cannot be null.");
             // dates not set
             if (dateRange.Start == default || dateRange.End == default)
                 throw new ArgumentException("Date range is missing a date.");
@@ -401,13 +403,6 @@ namespace BL
                         throw new ArgumentException("Order is missing one or more required field.");
                     }
 
-                    // Make sure the Order key is unique
-                    if (DalInstance.GetOrders().Exists((Order o) => o.OrderKey == order.OrderKey))
-                    {
-                        throw new ArgumentException($"Order with key {order.OrderKey} already exists.");
-                    }
-
-
                     HostingUnit hostingUnit = instance.GetHostingUnit(order.HostingUnitKey);
 
                     if (hostingUnit == null)
@@ -422,6 +417,27 @@ namespace BL
 
                     if (host == null)
                         throw new Exception("Could not find a host matching the hosting unit's owner ID.");
+
+                    // Make sure the Order key is unique
+                    if (DalInstance.GetOrders().Exists((Order o) => o.OrderKey == order.OrderKey))
+                    {
+                        throw new ArgumentException($"Order with key {order.OrderKey} already exists.");
+                    }
+
+                    // Make sure Host has not already created the order for this guest request
+                    if (instance.GetOrders().Exists((Order o) =>
+                        o.GuestRequestKey == order.GuestRequestKey &&
+                        instance.GetHostingUnit(o.HostingUnitKey).Owner.HostKey == hostingUnit.Owner.HostKey))
+                    {
+                        throw new ArgumentException($"You have already created an order for this request.");
+                    }
+
+                    // Make sure hosting unit city matches guest request city
+                    if (hostingUnit.UnitDistrict != guestRequest.PrefDistrict ||
+                        hostingUnit.UnitCity != guestRequest.PrefCity)
+                    {
+                        throw new ArgumentException($"The hosting unit's city does not match the city requested.");
+                    }
 
 
                     if (host.BankClearance == false)
@@ -533,7 +549,7 @@ namespace BL
                     }
                     else
                     {
-                        throw new Exception("The requested dates are no longer available in the Hosting Unit.");
+                        throw new Exception("The requested dates are no longer available in the hosting unit.");
                     }
                 }
                 catch (Exception error)

@@ -13,7 +13,7 @@ namespace BE
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string PhoneNumber { get; set; }
+        public long PhoneNumber { get; set; }
         public BankAccount BankDetails { get; set; }
         public bool BankClearance { get; set; }
 
@@ -28,7 +28,7 @@ namespace BE
             string fname,
             string lname,
             string email,
-            string phone,
+            long phone,
             BankBranch branch,
             long routing)
         {

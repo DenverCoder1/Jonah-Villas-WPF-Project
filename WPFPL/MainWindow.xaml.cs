@@ -55,89 +55,122 @@ namespace WPFPL
             MyDialog.IsOpen = false;
             this.SizeChanged += ChooseAmenityListBoxStyle;
 
+            // DEBUG - generate test data for testing
+            GenerateTestData();
+        }
+
+        /// <summary>
+        /// Create entries on startup for testing purposes
+        /// </summary>
+        private void GenerateTestData()
+        {
             /* DEBUG */
-            DateTime entry = DateTime.Today.AddDays(5);
-            DateTime release = DateTime.Today.AddDays(10);
-            string fname = "Jonah";
-            string lname = "Lawrence";
-            string email = "jonah@villas.com";
-            District region = District.TelAviv;
-            City city = City.BneiBrak;
-            BE.TypeOfPlace type = BE.TypeOfPlace.Apartment;
-            Dictionary<Amenity, PrefLevel> amenities = new Dictionary<Amenity, PrefLevel>
+            try
             {
-                [Amenity.TV] = PrefLevel.Required,
-                [Amenity.Pool] = PrefLevel.NotInterested,
-                [Amenity.Kitchen] = PrefLevel.Required,
-                [Amenity.AirConditioning] = PrefLevel.Required,
-                [Amenity.Breakfast] = PrefLevel.Required,
-                [Amenity.ChildrensAttractions] = PrefLevel.Required,
-                [Amenity.FreeParking] = PrefLevel.Required,
-                [Amenity.PrivateBathroom] = PrefLevel.Required,
-                [Amenity.SmokeAlarm] = PrefLevel.Required,
-                [Amenity.Towels] = PrefLevel.Required,
-                [Amenity.Workspace] = PrefLevel.Required
-            };
+                DateTime entry = DateTime.Today.AddDays(5);
+                DateTime release = DateTime.Today.AddDays(10);
+                string fname = "Jonah";
+                string lname = "Lawrence";
+                string email = "lawrence@g.jct.ac.il";
+                District region = District.TelAviv;
+                City city = City.BneiBrak;
+                BE.TypeOfPlace type = BE.TypeOfPlace.Apartment;
+                Dictionary<Amenity, PrefLevel> amenities = new Dictionary<Amenity, PrefLevel>
+                {
+                    [Amenity.TV] = PrefLevel.Required,
+                    [Amenity.Kitchen] = PrefLevel.Required,
+                    [Amenity.AirConditioning] = PrefLevel.Required,
+                    [Amenity.Breakfast] = PrefLevel.Required,
+                    [Amenity.PrivateBathroom] = PrefLevel.Required,
+                    [Amenity.SmokeAlarm] = PrefLevel.Required,
+                    [Amenity.Towels] = PrefLevel.Required,
+                    [Amenity.Workspace] = PrefLevel.Required
+                };
 
-            GuestRequest guest1 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 2, 3, amenities);
+                GuestRequest guest1 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 2, 1, amenities);
 
-            Util.Bl.CreateGuestRequest(guest1);
+                Util.Bl.CreateGuestRequest(guest1);
 
-            entry = DateTime.Today.AddDays(8);
-            release = DateTime.Today.AddDays(9);
-            fname = "Yonah";
-            lname = "Lawrence";
-            email = "yonah@villas.com";
-            region = District.Haifa;
-            city = City.Hadera;
-            type = BE.TypeOfPlace.PrivateRoom;
-            amenities = new Dictionary<Amenity, PrefLevel>
+                entry = DateTime.Today.AddDays(8);
+                release = DateTime.Today.AddDays(9);
+                fname = "Yonah";
+                lname = "Lawrence";
+                email = "lawrence@g.jct.ac.il";
+                region = District.Haifa;
+                city = City.Hadera;
+                type = BE.TypeOfPlace.PrivateRoom;
+                amenities = new Dictionary<Amenity, PrefLevel>
+                {
+                    [Amenity.TV] = PrefLevel.Required,
+                    [Amenity.Pool] = PrefLevel.Required,
+                    [Amenity.Kitchen] = PrefLevel.Required
+                };
+
+                GuestRequest guest2 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 4, 3, amenities);
+
+                Util.Bl.CreateGuestRequest(guest2);
+
+                entry = DateTime.Today.AddDays(7);
+                release = DateTime.Today.AddDays(17);
+                fname = "Jonasan";
+                lname = "Lawrence";
+                email = "lawrence@g.jct.ac.il";
+                region = District.Jerusalem;
+                city = City.BeitShemesh;
+                type = BE.TypeOfPlace.EntireHome;
+                amenities = new Dictionary<Amenity, PrefLevel>
+                {
+                    [Amenity.Laundry] = PrefLevel.Required,
+                    [Amenity.Gym] = PrefLevel.Required,
+                    [Amenity.Kitchen] = PrefLevel.Required
+                };
+
+
+                GuestRequest guest3 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 2, 0, amenities);
+
+                Util.Bl.CreateGuestRequest(guest3);
+
+                entry = DateTime.Today.AddDays(18);
+                release = DateTime.Today.AddDays(20);
+                fname = "Jonasan";
+                lname = "Rorensu";
+                email = "lawrence@g.jct.ac.il";
+                region = District.Jerusalem;
+                city = City.BeitShemesh;
+                type = BE.TypeOfPlace.Shared;
+                amenities = new Dictionary<Amenity, PrefLevel>
+                {
+                    [Amenity.Laundry] = PrefLevel.Required,
+                    [Amenity.Pool] = PrefLevel.Required,
+                    [Amenity.TV] = PrefLevel.Required
+                };
+
+
+                GuestRequest guest4 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 1, 0, amenities);
+
+                Util.Bl.CreateGuestRequest(guest4);
+
+                Host host1 = new Host("Dave", "Summers", "dave@email.com", 6456346343, new BankBranch(), 543646545);
+
+                Util.Bl.CreateHost(host1);
+
+                Host host2 = new Host("Saul", "Black", "saul@email.com", 4363466463, new BankBranch(), 6364636456);
+
+                Util.Bl.CreateHost(host2);
+
+                HostingUnit hostingUnit1 = new HostingUnit(host1, "myUnit", region, city);
+                Util.Bl.CreateHostingUnit(hostingUnit1);
+
+                HostingUnit hostingUnit2 = new HostingUnit(host2, "myUnit2", District.Haifa, City.Hadera);
+                Util.Bl.CreateHostingUnit(hostingUnit2);
+
+                Order order1 = new Order(hostingUnit1.HostingUnitKey, guest3.GuestRequestKey);
+                Util.Bl.CreateOrder(order1);
+            }
+            catch (Exception error)
             {
-                [Amenity.TV] = PrefLevel.Required,
-                [Amenity.Pool] = PrefLevel.Required,
-                [Amenity.Kitchen] = PrefLevel.Required
-            };
-
-            GuestRequest guest2 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
-
-            Util.Bl.CreateGuestRequest(guest2);
-
-            entry = DateTime.Today.AddDays(11);
-            release = DateTime.Today.AddDays(17);
-            fname = "Johan";
-            lname = "Lawrence";
-            email = "johan@villas.com";
-            region = District.Jerusalem;
-            city = City.BeitShemesh;
-            type = BE.TypeOfPlace.EntireHome;
-            amenities = new Dictionary<Amenity, PrefLevel>
-            {
-                [Amenity.Laundry] = PrefLevel.Required,
-                [Amenity.Gym] = PrefLevel.Required,
-                [Amenity.Kitchen] = PrefLevel.Required
-            };
-
-            GuestRequest guest3 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 6, 8, amenities);
-
-            Util.Bl.CreateGuestRequest(guest3);
-
-            Host host1 = new Host("James", "Smith", "james@james.com", "6456346343", new BankBranch(), 543646545);
-
-            Util.Bl.CreateHost(host1);
-
-            Host host2 = new Host("Larry", "Page", "larry@googz.com", "4363466463", new BankBranch(), 6364636456);
-
-            Util.Bl.CreateHost(host2);
-
-            HostingUnit hostingUnit1 = new HostingUnit(host1, "myUnit", region, city);
-            Util.Bl.CreateHostingUnit(hostingUnit1);
-
-            HostingUnit hostingUnit2 = new HostingUnit(host2, "myUnit2", District.Haifa, City.Hadera);
-            Util.Bl.CreateHostingUnit(hostingUnit2);
-
-            Order order1 = new Order(hostingUnit1.HostingUnitKey, guest1.GuestRequestKey);
-
-            Util.Bl.CreateOrder(order1);
+                MySnackbar.MessageQueue.Enqueue(error.Message);
+            }
 
             /* DEBUG */
         }

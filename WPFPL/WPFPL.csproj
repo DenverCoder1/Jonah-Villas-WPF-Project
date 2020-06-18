@@ -154,6 +154,7 @@
     <Compile Include="Hosting\HostSignUp.xaml.cs">
       <DependentUpon>HostSignUp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlaceholderText.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Hosting\HostSignIn.xaml.cs">
       <DependentUpon>HostSignIn.xaml</DependentUpon>

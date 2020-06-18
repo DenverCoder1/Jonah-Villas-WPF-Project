@@ -288,6 +288,7 @@
                                                 </StackPanel>
                                             </Label.Content>
                                         </Label>
+
                                         <TextBox x:Name="gFirstName"
                                                  Grid.Row="0"
                                                  Grid.Column="1"
