@@ -56,8 +56,8 @@ namespace WPFPL
             this.SizeChanged += ChooseAmenityListBoxStyle;
 
             /* DEBUG */
-            DateTime entry = DateTime.Now.Date.AddDays(5);
-            DateTime release = DateTime.Now.Date.AddDays(10);
+            DateTime entry = DateTime.Today.AddDays(5);
+            DateTime release = DateTime.Today.AddDays(10);
             string fname = "Jonah";
             string lname = "Lawrence";
             string email = "jonah@villas.com";
@@ -83,8 +83,8 @@ namespace WPFPL
 
             Util.Bl.CreateGuestRequest(guest1);
 
-            entry = DateTime.Now.Date.AddDays(8);
-            release = DateTime.Now.Date.AddDays(9);
+            entry = DateTime.Today.AddDays(8);
+            release = DateTime.Today.AddDays(9);
             fname = "Yonah";
             lname = "Lawrence";
             email = "yonah@villas.com";
@@ -102,8 +102,8 @@ namespace WPFPL
 
             Util.Bl.CreateGuestRequest(guest2);
 
-            entry = DateTime.Now.Date.AddDays(11);
-            release = DateTime.Now.Date.AddDays(17);
+            entry = DateTime.Today.AddDays(11);
+            release = DateTime.Today.AddDays(17);
             fname = "Johan";
             lname = "Lawrence";
             email = "johan@villas.com";

@@ -26,6 +26,7 @@ namespace BL
         List<GuestRequest> GetGuestRequests();
         List<GuestRequest> GetOpenGuestRequests();
         GuestRequest GetGuestRequest(long grKey);
+        List<GuestRequest> GetGuestRequests(Func<GuestRequest, bool> Criteria);
         bool CheckOrReserveDates(HostingUnit hostingUnit, GuestRequest guestRequest, bool reserve = false);
         void CancelDateRange(HostingUnit hostingUnit, DateRange dateRange);
 
@@ -35,6 +36,9 @@ namespace BL
         List<Order> GetOrders();
         List<Order> GetHostOrders(long hostKey);
         Order GetOrder(long orderKey);
+        List<Order> GetOrdersCreatedOutsideNumDays(int numDays);
+        int GetNumOrders(GuestRequest guestRequest);
+        int GetNumOrders(HostingUnit hostingUnit);
 
         // bank branches
         List<BankBranch> GetBankBranches();
@@ -44,6 +48,7 @@ namespace BL
         bool UpdateHost(Host host);
         List<Host> GetHosts();
         Host GetHost(long hostKey);
+        List<HostingUnit> GetAvailableUnits(DateTime start, int numDays);
 
         // validation
         bool ValidateGuestForm(
@@ -72,5 +77,9 @@ namespace BL
         bool IsValidPhoneNumber(string phone);
 
         bool IsValidRoutingNumber(string routing);
+
+        // misc.
+
+        int Duration(DateTime start, DateTime end = default);
     }
 }

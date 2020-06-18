@@ -33,8 +33,8 @@ namespace ConsolePL
             Console.ReadKey();
 
 
-            DateTime entry = DateTime.Now.Date.AddDays(5);
-            DateTime release = DateTime.Now.Date.AddDays(10);
+            DateTime entry = DateTime.Today.AddDays(5);
+            DateTime release = DateTime.Today.AddDays(10);
             string fname = "Jonah";
             string lname = "Lawrence";
             string email = "jonah@google.com";

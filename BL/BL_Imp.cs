@@ -206,6 +206,19 @@ namespace BL
         }
 
         /// <summary>
+        /// Get guest requests matching criteria passed to function as delegate
+        /// </summary>
+        /// <param name="Criteria">Func delegate accepting a GuestRequest and returning a bool</param>
+        /// <returns>List of matching guest requests</returns>
+        List<GuestRequest> IBL.GetGuestRequests(Func<GuestRequest, bool> Criteria)
+        {
+            var matches = from GuestRequest item in instance.GetGuestRequests()
+                          where Criteria(item)
+                          select item;
+            return matches.ToList();
+        }
+
+        /// <summary>
         /// Get open guest requests 
         /// </summary>
         List<GuestRequest> IBL.GetOpenGuestRequests()
@@ -228,6 +241,20 @@ namespace BL
         }
 
         /// <summary>
+        /// Accepts a date and number of vacation days and 
+        /// returns the list of all available hosting units for that range 
+        /// </summary>
+        List<HostingUnit> IBL.GetAvailableUnits(DateTime start, int numDays)
+        {
+            GuestRequest dates = new GuestRequest { EntryDate = start, ReleaseDate = start.AddDays(numDays) };
+            // check date range on each hosting unit
+            var matches = from HostingUnit item in instance.GetHostingUnits()
+                          where instance.CheckOrReserveDates(item, dates, false)
+                          select item;
+            return matches.ToList();
+        }
+
+        /// <summary>
         /// Check if guest request dates are available in a given hosting unit
         /// if reserve is set to true, dates will be reserved,
         /// if not, the function will onl return whether the dates can be reserved
@@ -246,10 +273,10 @@ namespace BL
             if (guestRequest.EntryDate >= guestRequest.ReleaseDate)
                 throw new ArgumentException("At least one night must be reserved.");
             // request entry date is before today
-            if (guestRequest.EntryDate < DateTime.Now.Date)
+            if (guestRequest.EntryDate < DateTime.Today)
                 throw new ArgumentException("Dates in the past cannot be reserved.");
             // requested release date is more than 11 months from now
-            if (guestRequest.ReleaseDate > DateTime.Now.Date.AddMonths(11))
+            if (guestRequest.ReleaseDate > DateTime.Today.AddMonths(11))
                 throw new ArgumentException("Dates more than 11 months in the future cannot be reserved.");
 
             // go through calendar until reserved
@@ -370,8 +397,8 @@ namespace BL
 
                         // Create order
                         order.Status = OrderStatus.SentEmail;
-                        order.CreationDate = DateTime.Now.Date;
-                        order.EmailDeliveryDate = DateTime.Now.Date;
+                        order.CreationDate = DateTime.Today;
+                        order.EmailDeliveryDate = DateTime.Today;
                         return DalInstance.CreateOrder(Cloning.Clone(order));
                     }
                     else
@@ -496,6 +523,40 @@ namespace BL
             return order;
         }
 
+        /// <summary>
+        /// Get a list of orders for which greater than or equal to 
+        /// a given number of days have passed since the order was created
+        /// </summary>
+        List<Order> IBL.GetOrdersCreatedOutsideNumDays(int numDays)
+        {
+            IEnumerable<Order> matches = from Order item in instance.GetOrders()
+                                         where instance.Duration(item.CreationDate) >= numDays
+                                         select item;
+            return matches.ToList();
+        }
+
+        /// <summary>
+        /// Get the number of orders corresponding to a given guest request
+        /// </summary>
+        int IBL.GetNumOrders(GuestRequest guestRequest)
+        {
+            IEnumerable<Order> matches = from Order item in instance.GetOrders()
+                                         where item.GuestRequestKey == guestRequest.GuestRequestKey
+                                         select item;
+            return matches.Count();
+        }
+
+        /// <summary>
+        /// Get the number of orders corresponding to a given hosting unit
+        /// </summary>
+        int IBL.GetNumOrders(HostingUnit hostingUnit)
+        {
+            IEnumerable<Order> matches = from Order item in instance.GetOrders()
+                                         where item.HostingUnitKey == hostingUnit.HostingUnitKey
+                                         select item;
+            return matches.Count();
+        }
+
         // BANK BRANCHES
 
         List<BankBranch> IBL.GetBankBranches()
@@ -602,7 +663,7 @@ namespace BL
             {
                 throw new InvalidDataException("Entry date is not valid.");
             }
-            else if (DateTime.Compare(entry.Date, DateTime.Now.Date) < 0)
+            else if (DateTime.Compare(entry.Date, DateTime.Today) < 0)
             {
                 throw new InvalidDataException("Entry date must not be before today's date.");
             }
@@ -614,7 +675,7 @@ namespace BL
             {
                 throw new InvalidDataException("Entry date must be before departure date.");
             }
-            else if (DateTime.Compare(release.Date, DateTime.Now.Date.AddMonths(11)) > 0)
+            else if (DateTime.Compare(release.Date, DateTime.Today.AddMonths(11)) > 0)
             {
                 throw new InvalidDataException("Bookings can only be made up to 11 months in advance.");
             }
@@ -785,6 +846,22 @@ namespace BL
                 return long.TryParse(routing, out _);
             else
                 return false;
+        }
+
+        // MISC.
+
+        /// <summary>
+        /// A function that accepts one or two dates.
+        /// The function returns the number of days that have passed
+        /// from the first date to the second, or if only one date
+        /// has been received - from the first date to the present day
+        /// </summary>
+        int IBL.Duration(DateTime start, DateTime end)
+        {
+            if (end != default)
+                return (int)(end - start).TotalDays;
+            else
+                return (int)(DateTime.Today - start).TotalDays;
         }
     }
 }
