@@ -506,6 +506,9 @@ namespace BL
                     if (instance.CheckOrReserveDates(hostingUnit, guestRequest, true))
                     {
                         // if successfully reserved
+                        // update hosting unit calendar
+                        instance.UpdateHostingUnit(hostingUnit);
+
                         // change Guest request status
                         guestRequest.Status = GuestStatus.Complete;
                         instance.UpdateGuestRequest(guestRequest);

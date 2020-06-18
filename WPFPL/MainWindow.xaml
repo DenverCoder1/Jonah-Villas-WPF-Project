@@ -113,7 +113,7 @@
         <Grid>
             <Grid Height="60"
                   VerticalAlignment="Top"
-                  Background="#673ab7">
+                  Background="{DynamicResource PrimaryHueMidBrush}">
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center">
                     <md:PackIcon Kind="HotelOutline"
@@ -129,12 +129,11 @@
                 </StackPanel>
             </Grid>
             <Grid Margin="0 60 0 0">
-                <dragablz:TabablzControl Grid.ColumnSpan="2"
-                                         FixedHeaderCount="4"
+                <dragablz:TabablzControl FixedHeaderCount="4"
                                          x:Name="MainTabControl"
                                          SelectionChanged="TabControl_SelectionChanged">
                     <dragablz:TabablzControl.InterTabController>
-                        <dragablz:InterTabController />
+                        <dragablz:InterTabController/>
                     </dragablz:TabablzControl.InterTabController>
                     <TabItem x:Name="Tab0">
                         <TabItem.Header>
@@ -175,14 +174,9 @@
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Left">
                                         <md:PackIcon Kind="HomeSearchOutline"
-                                                     Foreground="#222"
-                                                     Width="28px"
-                                                     Height="28px"/>
+                                                     Style="{StaticResource LargeHomeIcon}"/>
                                         <TextBlock FontFamily="{StaticResource OpenSans}"
-                                                   Foreground="#222"
-                                                   FontWeight="Bold"
-                                                   FontSize="14px"
-                                                   Margin="0 5 0 10">
+                                                   Style="{StaticResource HomeButtonLabel}">
 										CUSTOMERS
                                         </TextBlock>
                                         <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
@@ -197,14 +191,9 @@
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Left">
                                         <md:PackIcon Kind="CardAccountPhoneOutline"
-                                                     Foreground="#222"
-                                                     Width="28px"
-                                                     Height="28px" />
+                                                     Style="{StaticResource LargeHomeIcon}"/>
                                         <TextBlock FontFamily="{StaticResource OpenSans}"
-                                                   Foreground="#222"
-                                                   FontWeight="Bold"
-                                                   FontSize="14px"
-                                                   Margin="0 5 0 10">
+                                                   Style="{StaticResource HomeButtonLabel}">
 										HOSTS
                                         </TextBlock>
                                         <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
@@ -219,14 +208,9 @@
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Left">
                                         <md:PackIcon Kind="AccountKeyOutline"
-                                                     Foreground="#222"
-                                                     Width="28px"
-                                                     Height="28px" />
+                                                     Style="{StaticResource LargeHomeIcon}" />
                                         <TextBlock FontFamily="{StaticResource OpenSans}"
-                                                   Foreground="#222"
-                                                   FontWeight="Bold"
-                                                   FontSize="14px"
-                                                   Margin="0 5 0 10">
+                                                   Style="{StaticResource HomeButtonLabel}">
 										ADMIN
                                         </TextBlock>
                                         <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
@@ -292,54 +276,97 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <Label Content="First name:"
-                                               Grid.Row="0"
+
+                                        <Label Grid.Row="0"
                                                Grid.Column="0"
-                                               Style="{StaticResource FormLabel}" />
+                                               Style="{StaticResource FormLabel}">
+                                            <Label.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <md:PackIcon Kind="AccountOutline"
+                                                                 Style="{StaticResource LabelIcon}"/>
+                                                    <TextBlock Text="First name:" />
+                                                </StackPanel>
+                                            </Label.Content>
+                                        </Label>
                                         <TextBox x:Name="gFirstName"
                                                  Grid.Row="0"
                                                  Grid.Column="1"
                                                  Style="{StaticResource FormTextBox}" />
-                                        <Label Content="Last name:"
-                                               Grid.Row="1"
+                                        <Label Grid.Row="1"
                                                Grid.Column="0"
-                                               Style="{StaticResource FormLabel}" />
+                                               Style="{StaticResource FormLabel}">
+                                            <Label.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <md:PackIcon Kind="AccountOutline"
+                                                                 Style="{StaticResource LabelIcon}" />
+                                                    <TextBlock Text="Last name:" />
+                                                </StackPanel>
+                                            </Label.Content>
+                                        </Label>
                                         <TextBox x:Name="gLastName"
                                                  Grid.Row="1"
                                                  Grid.Column="1"
                                                  Style="{StaticResource FormTextBox}" />
-                                        <Label Content="Email address:"
-                                               Grid.Row="2"
+                                        <Label Grid.Row="2"
                                                Grid.Column="0"
-                                               Style="{StaticResource FormLabel}" />
+                                               Style="{StaticResource FormLabel}">
+                                            <Label.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <md:PackIcon Kind="EmailOutline"
+                                                                 Style="{StaticResource LabelIcon}"/>
+                                                    <TextBlock Text="Email:" />
+                                                </StackPanel>
+                                            </Label.Content>
+                                        </Label>
                                         <TextBox x:Name="gEmail"
                                                  Grid.Row="2"
                                                  Grid.Column="1"
                                                  Style="{StaticResource FormTextBox}" />
-                                        <Label Content="Date of entry:"
-                                               Grid.Row="3"
+                                        <Label Grid.Row="3"
                                                Grid.Column="0"
-                                               Style="{StaticResource FormLabel}" />
+                                               Style="{StaticResource FormLabel}">
+                                            <Label.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <md:PackIcon Kind="CalendarArrowRight"
+                                                                 Style="{StaticResource LabelIcon}" />
+                                                    <TextBlock Text="Entry date:" />
+                                                </StackPanel>
+                                            </Label.Content>
+                                        </Label>
                                         <DatePicker x:Name="gEntryDate"
                                                     Grid.Row="3"
                                                     Grid.Column="1"
                                                     Style="{StaticResource FormDatePicker}"
                                                     DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
                                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
-                                        <Label Content="Date of departure:"
-                                               Grid.Row="4"
+                                        <Label Grid.Row="4"
                                                Grid.Column="0"
-                                               Style="{StaticResource FormLabel}" />
+                                               Style="{StaticResource FormLabel}">
+                                            <Label.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <md:PackIcon Kind="CalendarArrowLeft"
+                                                                 Style="{StaticResource LabelIcon}" />
+                                                    <TextBlock Text="Departure date:" />
+                                                </StackPanel>
+                                            </Label.Content>
+                                        </Label>
                                         <DatePicker x:Name="gReleaseDate"
                                                     Grid.Row="4"
                                                     Grid.Column="1"
                                                     Style="{StaticResource FormDatePicker}"
                                                     DisplayDateStart="{Binding ElementName=gEntryDate, Path=SelectedDate, Converter={StaticResource ConvertToNextDay}}"
                                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
-                                        <Label Content="Vacation district:"
-                                               Grid.Row="5"
+                                        <Label Grid.Row="5"
                                                Grid.Column="0"
-                                               Style="{StaticResource FormLabel}" />
+                                               Style="{StaticResource FormLabel}">
+                                            <Label.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <md:PackIcon Kind="MapOutline"
+                                                                 Style="{StaticResource LabelIcon}" />
+                                                    <TextBlock Text="Vacation district:" />
+                                                </StackPanel>
+                                            </Label.Content>
+                                        </Label>
                                         <ComboBox x:Name="gPrefDistrict"
                                                   ItemsSource="{Binding Source={StaticResource District}}"
                                                   Grid.Row="5"
@@ -352,10 +379,17 @@
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
-                                        <Label Content="Vacation city:"
-                                               Grid.Row="6"
+                                        <Label Grid.Row="6"
                                                Grid.Column="0"
-                                               Style="{StaticResource FormLabel}" />
+                                               Style="{StaticResource FormLabel}">
+                                            <Label.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <md:PackIcon Kind="MapMarkerRadiusOutline"
+                                                                 Style="{StaticResource LabelIcon}" />
+                                                    <TextBlock Text="Vacation city:" />
+                                                </StackPanel>
+                                            </Label.Content>
+                                        </Label>
                                         <ComboBox x:Name="gPrefCity"
                                                   Grid.Row="6"
                                                   Grid.Column="1"
@@ -366,10 +400,17 @@
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
-                                        <Label Content="Number of adults:"
-                                               Grid.Row="7"
+                                        <Label Grid.Row="7"
                                                Grid.Column="0"
-                                               Style="{StaticResource FormLabel}" />
+                                               Style="{StaticResource FormLabel}">
+                                            <Label.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <md:PackIcon Kind="HumanMaleFemale"
+                                                                 Style="{StaticResource LabelIcon}" />
+                                                    <TextBlock Text="Number of adults:" />
+                                                </StackPanel>
+                                            </Label.Content>
+                                        </Label>
                                         <ComboBox x:Name="gNumAdults"
                                                   Grid.Row="7"
                                                   Grid.Column="1"
@@ -383,10 +424,17 @@
                                             <ComboBoxItem>7</ComboBoxItem>
                                             <ComboBoxItem>8</ComboBoxItem>
                                         </ComboBox>
-                                        <Label Content="Number of children:"
-                                               Grid.Row="8"
+                                        <Label Grid.Row="8"
                                                Grid.Column="0"
-                                               Style="{StaticResource FormLabel}" />
+                                               Style="{StaticResource FormLabel}">
+                                            <Label.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <md:PackIcon Kind="HumanMaleChild"
+                                                                 Style="{StaticResource LabelIcon}" />
+                                                    <TextBlock Text="Number of children:" />
+                                                </StackPanel>
+                                            </Label.Content>
+                                        </Label>
                                         <ComboBox x:Name="gNumChildren"
                                                   Grid.Row="8"
                                                   Grid.Column="1"
@@ -401,10 +449,17 @@
                                             <ComboBoxItem>7</ComboBoxItem>
                                             <ComboBoxItem>8</ComboBoxItem>
                                         </ComboBox>
-                                        <Label Content="Rental type:"
-                                               Grid.Row="9"
+                                        <Label Grid.Row="9"
                                                Grid.Column="0"
-                                               Style="{StaticResource FormLabel}" />
+                                               Style="{StaticResource FormLabel}">
+                                            <Label.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <md:PackIcon Kind="MapMarkerQuestionOutline"
+                                                                 Style="{StaticResource LabelIcon}" />
+                                                    <TextBlock Text="Rental type:" />
+                                                </StackPanel>
+                                            </Label.Content>
+                                        </Label>
                                         <ComboBox x:Name="gPrefType"
                                                   ItemsSource="{Binding Source={StaticResource TypeOfPlace }}"
                                                   Grid.Row="9"
@@ -417,7 +472,8 @@
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
                                     </Grid>
-                                    <StackPanel Grid.Column="1">
+                                    <StackPanel Grid.Column="1"
+                                                Margin="20 0 0 0">
                                         <Label Content="Which amenities are important to you?"
                                                Margin="0 24 0 8" />
                                         <ListBox x:Name="gAmenities"

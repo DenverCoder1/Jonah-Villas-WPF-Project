@@ -206,7 +206,7 @@ namespace WPFPL
         /// </summary>
         private void ChooseAmenityListBoxStyle(object sender, SizeChangedEventArgs e)
         {
-            if (e.NewSize.Width < 840)
+            if (e.NewSize.Width < 870)
                 gAmenities.Style = (Style)Application.Current.Resources["MyMaterialDesignListBox"];
             else
                 gAmenities.Style = (Style)Application.Current.Resources["MyMaterialDesignFilterChipListBox"];

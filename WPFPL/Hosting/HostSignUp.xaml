@@ -39,52 +39,94 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Label Content="First name:"
-                       Grid.Row="0"
+                <Label Grid.Row="0"
                        Grid.Column="0"
-                       Style="{StaticResource FormLabel}" />
+                       Style="{StaticResource FormLabel}">
+                    <Label.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="AccountOutline"
+                                         Style="{StaticResource LabelIcon}" />
+                            <TextBlock Text="First name:" />
+                        </StackPanel>
+                    </Label.Content>
+                </Label>
                 <TextBox x:Name="hFirstName"
                          Grid.Row="0"
                          Grid.Column="1"
                          Style="{StaticResource FormTextBox}" />
-                <Label Content="Last name:"
-                       Grid.Row="1"
+                <Label Grid.Row="1"
                        Grid.Column="0"
-                       Style="{StaticResource FormLabel}" />
+                       Style="{StaticResource FormLabel}">
+                    <Label.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="AccountOutline"
+                                         Style="{StaticResource LabelIcon}" />
+                            <TextBlock Text="Last name:" />
+                        </StackPanel>
+                    </Label.Content>
+                </Label>
                 <TextBox x:Name="hLastName"
                          Grid.Row="1"
                          Grid.Column="1"
                          Style="{StaticResource FormTextBox}" />
-                <Label Content="Email address:"
-                       Grid.Row="2"
+                <Label Grid.Row="2"
                        Grid.Column="0"
-                       Style="{StaticResource FormLabel}" />
+                       Style="{StaticResource FormLabel}">
+                    <Label.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="EmailOutline"
+                                         Style="{StaticResource LabelIcon}" />
+                            <TextBlock Text="Email:" />
+                        </StackPanel>
+                    </Label.Content>
+                </Label>
                 <TextBox x:Name="hEmail"
                          Grid.Row="2"
                          Grid.Column="1"
                          Style="{StaticResource FormTextBox}" />
-                <Label Content="Phone number:"
-                       Grid.Row="3"
+                <Label Grid.Row="3"
                        Grid.Column="0"
-                       Style="{StaticResource FormLabel}" />
+                       Style="{StaticResource FormLabel}">
+                    <Label.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="PhoneOutline"
+                                         Style="{StaticResource LabelIcon}" />
+                            <TextBlock Text="Phone number:" />
+                        </StackPanel>
+                    </Label.Content>
+                </Label>
                 <TextBox x:Name="hPhone"
                          Grid.Row="3"
                          Grid.Column="1"
                          Style="{StaticResource FormTextBox}"
                          PreviewTextInput="Preview_Numbers"
                          DataObject.Pasting="Pasting_Numbers"/>
-                <Label Content="Bank branch:"
-                       Grid.Row="4"
+                <Label Grid.Row="4"
                        Grid.Column="0"
-                       Style="{StaticResource FormLabel}" />
+                       Style="{StaticResource FormLabel}">
+                    <Label.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="BankOutline"
+                                         Style="{StaticResource LabelIcon}" />
+                            <TextBlock Text="Bank Branch:" />
+                        </StackPanel>
+                    </Label.Content>
+                </Label>
                 <ComboBox x:Name="hBranch"
                           Grid.Row="4"
                           Grid.Column="1"
                           Style="{StaticResource FormComboBox}" />
-                <Label Content="Routing number:"
-                       Grid.Row="5"
+                <Label Grid.Row="5"
                        Grid.Column="0"
-                       Style="{StaticResource FormLabel}"/>
+                       Style="{StaticResource FormLabel}">
+                    <Label.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="Numeric"
+                                         Style="{StaticResource LabelIcon}" />
+                            <TextBlock Text="Routing number:" />
+                        </StackPanel>
+                    </Label.Content>
+                </Label>
                 <TextBox x:Name="hRoutingNumber"
                          Grid.Row="5"
                          Grid.Column="1"
