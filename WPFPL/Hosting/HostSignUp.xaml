@@ -139,15 +139,19 @@
                 HorizontalAlignment="Left"
                 Margin="0 15 0 0"
                 Click="Create_Account"
-                Width="150px">
-                CREATE ACCOUNT
+                Width="180px">
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="AccountAddOutline"
+                                 Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Text="CREATE ACCOUNT" />
+                </StackPanel>
             </Button>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     HorizontalAlignment="Left"
                     Margin="0 15 0 0"
                     Click="Return_To_Sign_In"
-                    Width="150px">
-                BACK TO SIGN IN
+                    Width="165px"
+                    Content="🡄  BACK TO SIGN IN">
             </Button>
         </StackPanel>
     </Grid>

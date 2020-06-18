@@ -11,16 +11,26 @@ namespace BL
 {
     public class BL_Imp : IBL
     {
-        // SET UP DATA ACCESS CONNECTION
+        #region Fields
+
+        // Set up data access connection
         public DAL.IDAL DalInstance;
+
+        // Singleton Instance
+        private static IBL instance = null;
+
+        #endregion
+
+        #region Constructor
 
         public BL_Imp()
         {
             DalInstance = DAL.FactoryDAL.Build();
         }
 
-        // Singleton Instance
-        private static IBL instance = null;
+        #endregion
+
+        #region Singleton Method
 
         // Get Instance
         public static IBL GetBL()
@@ -30,7 +40,9 @@ namespace BL
             return instance;
         }
 
-        // HOSTING UNIT
+        #endregion
+
+        #region HOSTING UNIT METHODS
 
         /// <summary>
         /// Allow data access layer to handle adding of hosting unit
@@ -183,7 +195,9 @@ namespace BL
             return hostingUnit;
         }
 
-        // GUEST REQUESTS
+        #endregion
+
+        #region GUEST REQUEST METHODS
 
         /// <summary>
         /// Allow data access layer to handle creation of a guest request
@@ -384,7 +398,9 @@ namespace BL
             }
         }
 
-        // ORDER
+        #endregion
+
+        #region ORDER METHODS
 
         /// <summary>
         /// Allow data access layer to handle creation of an order
@@ -633,7 +649,9 @@ namespace BL
             return matches.Count();
         }
 
-        // BANK BRANCHES
+        #endregion
+
+        #region BANK BRANCH METHODS
 
         List<BankBranch> IBL.GetBankBranches()
         {
@@ -647,7 +665,9 @@ namespace BL
             }
         }
 
-        // HOSTS
+        #endregion
+
+        #region HOST METHODS
 
         /// <summary>
         /// Create host in data
@@ -723,8 +743,10 @@ namespace BL
                 throw error;
             }
         }
-        
-        // VALIDATION
+
+        #endregion
+
+        #region FORM VALIDATION METHODS
 
         /// <summary>
         /// Validate the information inputted to the guest request form
@@ -943,7 +965,9 @@ namespace BL
                 return false;
         }
 
-        // MISC.
+        #endregion
+
+        #region OTHER METHODS
 
         /// <summary>
         /// A function that accepts one or two dates.
@@ -958,5 +982,7 @@ namespace BL
             else
                 return (int)(DateTime.Today - start).TotalDays;
         }
+
+        #endregion
     }
 }

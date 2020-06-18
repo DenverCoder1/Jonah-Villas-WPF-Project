@@ -28,6 +28,8 @@ namespace WPFPL.Admin
         public MainWindow mainWindow;
 
         public static ObservableCollection<string> OrdersCollection { get; set; }
+
+        public static string Search { get; set; }
         public AdminOrders()
         {
             InitializeComponent();
@@ -37,14 +39,23 @@ namespace WPFPL.Admin
             Refresh();
         }
 
-        public static void Refresh()
+        public static void Refresh(string search = "")
         {
             if (OrdersCollection != null)
             {
+                // normalize search
+                if (search != null) { search = Normalize.Convert(search); }
+                else { search = ""; }
+                // clear collection
                 OrdersCollection.Clear();
+                // get items and filter by search
                 foreach (BE.Order item in Util.Bl.GetOrders())
                 {
-                    OrdersCollection.Add(item.ToString());
+                    // search by key, name, district, city, or owner id
+                    if (Normalize.Convert(item).Contains(search))
+                    {
+                        OrdersCollection.Add(item.ToString());
+                    }
                 }
             }
         }
@@ -109,6 +120,18 @@ namespace WPFPL.Admin
             }
 
             Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+        }
+
+        private void Refresh_Event(object sender, RoutedEventArgs e)
+        {
+            Search = SearchBox.Text;
+            Refresh(Search);
+        }
+
+        private void Clear_Search(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Text = "";
+            Refresh();
         }
     }
 }

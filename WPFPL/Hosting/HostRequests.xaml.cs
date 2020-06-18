@@ -31,6 +31,9 @@ namespace WPFPL
         public static ObservableCollection<string> RequestCollection { get; set; }
 
         public static ObservableCollection<string> HostingUnitCollection { get; set; }
+
+        public static string Search { get; set; }
+
         public HostRequests()
         {
             InitializeComponent();
@@ -41,14 +44,23 @@ namespace WPFPL
             Refresh();
         }
 
-        public static void Refresh()
+        public static void Refresh(string search = "")
         {
             if (RequestCollection != null)
             {
+                // normalize search
+                if (search != null) { search = Normalize.Convert(search); }
+                else { search = ""; }
+                // clear collection
                 RequestCollection.Clear();
-                foreach (BE.GuestRequest item in Util.Bl.GetOpenGuestRequests())
+                // get items and filter by search
+                foreach (GuestRequest item in Util.Bl.GetOpenGuestRequests())
                 {
-                    RequestCollection.Add(item.ToString());
+                    // search by all public fields
+                    if (Normalize.Convert(item).Contains(search))
+                    {
+                        RequestCollection.Add(item.ToString());
+                    }
                 }
             }
         }
@@ -132,6 +144,18 @@ namespace WPFPL
             }
 
             Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+        }
+
+        private void Refresh_Event(object sender, RoutedEventArgs e)
+        {
+            Search = SearchBox.Text;
+            Refresh(Search);
+        }
+
+        private void Clear_Search(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Text = "";
+            Refresh();
         }
     }
 }

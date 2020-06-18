@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:WPFPL.Admin"
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d"
       d:DesignHeight="450"
       d:DesignWidth="800"
@@ -11,32 +12,48 @@
     <Grid>
         <StackPanel>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                    Width="190px"
+                    Width="215"
                     HorizontalAlignment="Left"
                     Margin="0 15 0 0"
                     Click="View_Hosting_Units_Page">
-                QUERY HOSTING UNITS
-            </Button>
-            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                    Width="190px"
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="CalendarMultipleCheck"
+                             Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Text="QUERY HOSTING UNITS" />
+                </StackPanel>
+        </Button>
+        <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                    Width="215"
                     HorizontalAlignment="Left"
                     Margin="0 15 0 0"
                     Click="View_Requests">
-                QUERY REQUESTS
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="HomeSearchOutline"
+                                 Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Text="QUERY REQUESTS" />
+                </StackPanel>
             </Button>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                    Width="190px"
+                    Width="215"
                     HorizontalAlignment="Left"
                     Margin="0 15 0 0"
                     Click="View_Orders">
-                QUERY ORDERS
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="ClipboardListOutline"
+                                 Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Text="QUERY ORDERS" />
+                </StackPanel>
             </Button>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                    Width="190px"
+                    Width="215"
                     HorizontalAlignment="Left"
                     Margin="0 15 0 0"
                     Click="View_Hosts">
-                QUERY HOSTS
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="CardAccountPhoneOutline"
+                                 Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Text="QUERY HOSTS" />
+                </StackPanel>
             </Button>
         </StackPanel>
     </Grid>

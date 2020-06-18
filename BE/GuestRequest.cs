@@ -29,7 +29,7 @@ namespace BE
 
         public GuestRequest()
         {
-            GuestRequestKey = ++Config.stGuestRequestKey;
+            GuestRequestKey = Config.stGuestRequestKey++;
             Status = GuestStatus.Open;
             PrefAmenities = new Dictionary<Amenity, PrefLevel>();
         }
@@ -47,7 +47,7 @@ namespace BE
             int numChildren,
             Dictionary<Amenity, PrefLevel> amenities)
         {
-            GuestRequestKey = ++Config.stGuestRequestKey;
+            GuestRequestKey = Config.stGuestRequestKey++;
             Status = GuestStatus.Open;
             EntryDate = entry;
             ReleaseDate = release;

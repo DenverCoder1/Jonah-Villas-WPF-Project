@@ -36,6 +36,8 @@ namespace WPFPL
 
         public static ObservableCollection<string> CitiesCollection { get; set; }
 
+        public static string Search { get; set; }
+
         public HostHostingUnits()
         {
             InitializeComponent();
@@ -45,14 +47,23 @@ namespace WPFPL
             Refresh();
         }
 
-        public static void Refresh()
+        public static void Refresh(string search = "")
         {
             if (HostingUnitCollection != null)
             {
+                // normalize search
+                if (search != null) { search = Normalize.Convert(search); }
+                else { search = ""; }
+                // clear collection
                 HostingUnitCollection.Clear();
+                // get items and filter by search
                 foreach (BE.HostingUnit item in Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey))
                 {
-                    HostingUnitCollection.Add(item.ToString());
+                    // search by all public fields
+                    if (Normalize.Convert(item).Contains(search))
+                    {
+                        HostingUnitCollection.Add(item.ToString());
+                    }
                 }
             }
         }
@@ -223,6 +234,18 @@ namespace WPFPL
                 MainWindow.Dialog(error.Message);
             }
 
+            Refresh();
+        }
+
+        private void Refresh_Event(object sender, RoutedEventArgs e)
+        {
+            Search = SearchBox.Text;
+            Refresh(Search);
+        }
+
+        private void Clear_Search(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Text = "";
             Refresh();
         }
     }

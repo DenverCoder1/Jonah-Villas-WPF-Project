@@ -27,6 +27,8 @@ namespace WPFPL.Admin
 
         public static ObservableCollection<string> HostingUnitCollection { get; set; }
 
+        public static string Search { get; set; }
+
         public AdminHostingUnits()
         {
             InitializeComponent();
@@ -36,14 +38,23 @@ namespace WPFPL.Admin
             Refresh();
         }
 
-        public static void Refresh()
+        public static void Refresh(string search = "")
         {
             if (HostingUnitCollection != null)
             {
+                // normalize search
+                if (search != null) { search = Normalize.Convert(search); }
+                else { search = ""; }                    
+                // clear collection
                 HostingUnitCollection.Clear();
+                // get items and filter by search
                 foreach (BE.HostingUnit item in Util.Bl.GetHostingUnits())
                 {
-                    HostingUnitCollection.Add(item.ToString());
+                    // search by all public fields
+                    if (Normalize.Convert(item).Contains(search))
+                    {
+                        HostingUnitCollection.Add(item.ToString());
+                    }
                 }
             }
         }
@@ -51,6 +62,18 @@ namespace WPFPL.Admin
         private void Return_To_Menu(object sender, RoutedEventArgs e)
         {
             mainWindow.AdminFrame.Navigate(new AdminMenu());
+        }
+
+        private void Refresh_Event(object sender, RoutedEventArgs e)
+        {
+            Search = SearchBox.Text;
+            Refresh(Search);
+        }
+
+        private void Clear_Search(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Text = "";
+            Refresh();
         }
     }
 }

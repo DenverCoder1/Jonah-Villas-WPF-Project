@@ -29,6 +29,8 @@ namespace WPFPL.Admin
 
         public static ObservableCollection<string> RequestCollection { get; set; }
 
+        public static string Search { get; set; }
+
         public AdminRequests()
         {
             InitializeComponent();
@@ -38,14 +40,23 @@ namespace WPFPL.Admin
             Refresh();
         }
 
-        public static void Refresh()
+        public static void Refresh(string search = "")
         {
             if (RequestCollection != null)
             {
+                // normalize search
+                if (search != null) { search = Normalize.Convert(search); }
+                else { search = ""; }
+                // clear collection
                 RequestCollection.Clear();
+                // add items
                 foreach (BE.GuestRequest item in Util.Bl.GetGuestRequests())
                 {
-                    RequestCollection.Add(item.ToString());
+                    // search by all public fields
+                    if (Normalize.Convert(item).Contains(search))
+                    {
+                        RequestCollection.Add(item.ToString());
+                    }
                 }
             }
         }
@@ -55,9 +66,16 @@ namespace WPFPL.Admin
             mainWindow.AdminFrame.Navigate(new AdminMenu());
         }
 
-        private void Create_Order(object sender, RoutedEventArgs e)
+        private void Refresh_Event(object sender, RoutedEventArgs e)
         {
-            
+            Search = SearchBox.Text;
+            Refresh(Search);
+        }
+
+        private void Clear_Search(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Text = "";
+            Refresh();
         }
     }
 }

@@ -48,12 +48,13 @@ namespace WPFPL
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             CurrentTab = Tab0;
-            DynamicCityList = new ObservableCollection<string> { "Select a district." };
+            DynamicCityList = new ObservableCollection<string> { "Select district first." };
             gPrefCity.ItemsSource = DynamicCityList;
             HostingFrame.Navigate(new HostSignIn());
             AdminFrame.Navigate(new AdminMenu());
             MyDialog.IsOpen = false;
             this.SizeChanged += ChooseAmenityListBoxStyle;
+            this.DataContext = this;
 
             // DEBUG - generate test data for testing
             GenerateTestData();
@@ -171,7 +172,6 @@ namespace WPFPL
             {
                 MySnackbar.MessageQueue.Enqueue(error.Message);
             }
-
             /* DEBUG */
         }
 
@@ -332,7 +332,7 @@ namespace WPFPL
             // if list is empty, add item that says to select a district first
             if (cityList.Count == 0)
             {
-                cityList.Add("Select a district.");
+                cityList.Add("Select district first.");
             }
         }
 

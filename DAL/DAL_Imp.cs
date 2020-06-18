@@ -11,9 +11,15 @@ namespace DAL
 {
     // Create, Read, Update, Delete on Data Source with list implementation
     public class DAL_Imp : IDAL
-    {        
+    {
+        #region Fields
+
         // Singleton instance
         private static IDAL instance = null;
+
+        #endregion
+
+        #region Singleton method
 
         // Get instance
         public static IDAL GetDAL()
@@ -23,7 +29,9 @@ namespace DAL
             return instance;
         }
 
-        // GUEST REQUEST
+        #endregion
+
+        #region GUEST REQUEST METHODS
 
         /// <summary>
         /// Place a new Guest Request into the data
@@ -85,7 +93,9 @@ namespace DAL
             return DataSource.GuestRequests.ConvertAll(x => Cloning.Clone(x));
         }
 
-        // HOSTING UNIT
+        #endregion
+
+        #region HOSTING UNIT METHODS
 
         /// <summary>
         /// Place a new hosting unit into the data
@@ -166,7 +176,9 @@ namespace DAL
             return DataSource.HostingUnits.ConvertAll(x => Cloning.Clone(x));
         }
 
-        // order
+        #endregion
+
+        #region ORDER METHODS
 
         /// <summary>
         /// Create an order in the list of orders
@@ -228,7 +240,13 @@ namespace DAL
             return DataSource.Orders.ConvertAll(x => Cloning.Clone(x));
         }
 
-        // hosts
+        #endregion
+
+        #region HOST METHODS
+
+        /// <summary>
+        /// Create a new host in the data
+        /// </summary>
         bool IDAL.CreateHost(Host host)
         {
             // check if host is already in list
@@ -277,7 +295,9 @@ namespace DAL
             return DataSource.Hosts.ConvertAll(x => Cloning.Clone(x));
         }
 
-        // bank branches
+        #endregion
+
+        #region BANK BRANCH METHODS
 
         /// <summary>
         /// Return a list of bank branches
@@ -309,5 +329,7 @@ namespace DAL
 
             return matches.ToList();
         }
+
+        #endregion
     }
 }

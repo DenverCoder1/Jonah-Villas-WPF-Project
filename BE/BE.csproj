@@ -51,7 +51,6 @@
     <Compile Include="GuestStatus.cs" />
     <Compile Include="Host.cs" />
     <Compile Include="HostingUnit.cs" />
-    <Compile Include="MyBE.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderStatus.cs" />
     <Compile Include="PrefLevel.cs" />

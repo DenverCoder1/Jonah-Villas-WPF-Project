@@ -23,14 +23,14 @@ namespace BE
         public HostingUnit()
         {
             // get next available serial number
-            HostingUnitKey = ++Config.stHostingUnitKey;
+            HostingUnitKey = Config.stHostingUnitKey++;
             Calendar = new List<DateRange>();
         }
 
         public HostingUnit(Host owner, string name, District district, City city)
         {
             // get next available serial number
-            HostingUnitKey = ++Config.stHostingUnitKey;
+            HostingUnitKey = Config.stHostingUnitKey++;
             Calendar = new List<DateRange>();
             Owner = owner;
             UnitName = name;

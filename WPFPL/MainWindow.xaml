@@ -22,8 +22,6 @@
         Width="920"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <CollectionViewSource x:Key="GuestRequestViewSource"
-                              d:DesignSource="{d:DesignInstance {x:Type BE:GuestRequest}, CreateList=True}" />
         <ObjectDataProvider MethodName="GetValues"
                             ObjectType="{x:Type sys:Enum}"
                             x:Key="District">
@@ -183,8 +181,8 @@
                                                 Width="165px"
                                                 HorizontalAlignment="Left"
                                                 Click="ChangeTab"
-                                                Tag="1">
-                                            MAKE A REQUEST 🡆
+                                                Tag="1"
+                                                Content="MAKE A REQUEST  🡆">
                                         </Button>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1"
@@ -200,8 +198,8 @@
                                                 Width="165px"
                                                 HorizontalAlignment="Left"
                                                 Click="ChangeTab"
-                                                Tag="2">
-                                            HOSTING AREA 🡆
+                                                Tag="2"
+                                                Content="HOSTING AREA  🡆">
                                         </Button>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2"
@@ -217,8 +215,8 @@
                                                 Width="165px"
                                                 HorizontalAlignment="Left"
                                                 Click="ChangeTab"
-                                                Tag="3">
-                                            ADMIN PANEL 🡆
+                                                Tag="3"
+                                                Content="ADMIN PANEL  🡆">
                                         </Button>
                                     </StackPanel>
                                 </Grid>
@@ -496,7 +494,11 @@
                                         HorizontalAlignment="Left"
                                         Margin="0 20 0 0"
                                         Click="Submit_Request_Button_Click">
-                                    SUBMIT REQUEST
+                                    <StackPanel Orientation="Horizontal">
+                                        <md:PackIcon Kind="HomeSearchOutline"
+                                                     Style="{StaticResource ButtonIcon}" />
+                                        <TextBlock Text="SUBMIT REQUEST" />
+                                    </StackPanel>
                                 </Button>
                             </StackPanel>
                         </md:Card>

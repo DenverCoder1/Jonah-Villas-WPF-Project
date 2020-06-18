@@ -38,15 +38,6 @@
                 <Setter Property="FontSize"
                         Value="16px" />
             </Style>
-            <Style x:Key="LargeHomeIcon"
-                   TargetType="{x:Type md:PackIcon}">
-                <Setter Property="Width"
-                        Value="28px" />
-                <Setter Property="Height"
-                        Value="28px" />
-                <Setter Property="Foreground"
-                        Value="#333" />
-            </Style>
             <Style x:Key="HomeButtonLabel"
                    TargetType="{x:Type TextBlock}">
                 <Setter Property="Foreground"
@@ -58,7 +49,6 @@
                 <Setter Property="Margin"
                         Value="0 5 0 10" />
             </Style>
-
 
             <!-- Custom form control styles -->
             <Style x:Key="FormLabel"
@@ -113,6 +103,17 @@
                 <Setter Property="Width"
                         Value="160px" />
             </Style>
+
+            <!-- Custom Icon Styles -->
+            <Style x:Key="LargeHomeIcon"
+                   TargetType="{x:Type md:PackIcon}">
+                <Setter Property="Width"
+                        Value="28px" />
+                <Setter Property="Height"
+                        Value="28px" />
+                <Setter Property="Foreground"
+                        Value="#333" />
+            </Style>
             <Style x:Key="LabelIcon"
                    TargetType="{x:Type md:PackIcon}">
                 <Setter Property="Width"
@@ -123,6 +124,15 @@
                         Value="#666" />
                 <Setter Property="Margin"
                         Value="0 0 10 0" />
+            </Style>
+            <Style x:Key="ButtonIcon"
+                   TargetType="{x:Type md:PackIcon}">
+                <Setter Property="Width"
+                        Value="18px" />
+                <Setter Property="Height"
+                        Value="18px" />
+                <Setter Property="Margin"
+                        Value="0 0 8 0" />
             </Style>
 
             <!-- Custom list box styles -->

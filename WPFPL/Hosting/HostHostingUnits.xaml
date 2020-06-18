@@ -26,7 +26,7 @@
             </TextBlock>
             <ListBox x:Name="HostingUnits"
                      Width="270"
-                     Height="280"
+                     Height="240"
                      SelectionMode="Single"
                      Style="{StaticResource MyMaterialDesignListBox}"
                      HorizontalAlignment="Left">
@@ -36,38 +36,78 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <Border Margin="0 8 0 0"
+                        Padding="8 4 0 4"
+                        BorderThickness="1"
+                        BorderBrush="LightGray"
+                        Width="270px"
+                        HorizontalAlignment="Left">
+                    <DockPanel LastChildFill="False">
+                        <AdornerDecorator DockPanel.Dock="Left">
+                            <TextBox x:Name="SearchBox"
+                                     HorizontalAlignment="Left"
+                                     Width="110px"
+                                     Height="26"
+                                     VerticalAlignment="Top"
+                                     KeyUp="Refresh_Event">
+                                <local:PlaceholderService.Placeholder>
+                                    <TextBlock>Search</TextBlock>
+                                </local:PlaceholderService.Placeholder>
+                            </TextBox>
+                        </AdornerDecorator>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                Width="Auto"
+                                HorizontalAlignment="Left"
+                                Click="Refresh_Event"
+                                Margin="2 0 0 0"
+                                DockPanel.Dock="Left">
+                            FILTER
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                Width="Auto"
+                                HorizontalAlignment="Left"
+                                Click="Clear_Search"
+                                Margin="0 0 2 0"
+                                DockPanel.Dock="Right">
+                            CLEAR
+                        </Button>
+                    </DockPanel>
+                </Border>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                            Width="Auto"
+                            HorizontalAlignment="Left"
+                            Margin="0 10 6 0"
+                            Click="Add_Hosting_Unit">
+                        ADD NEW
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                            Width="Auto"
+                            HorizontalAlignment="Left"
+                            Margin="0 10 6 0"
+                            Click="Update_Hosting_Unit"
+                            IsEnabled="{Binding ElementName=HostingUnits, Path=SelectedItem, TargetNullValue=False}">
+                        UPDATE
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                            Width="Auto"
+                            HorizontalAlignment="Left"
+                            Margin="0 10 6 0"
+                            Click="Delete_Hosting_Unit"
+                            IsEnabled="{Binding ElementName=HostingUnits, Path=SelectedItem, TargetNullValue=False}">
+                        DELETE
+                    </Button>
+                </StackPanel>
                 <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                         Width="Auto"
                         HorizontalAlignment="Left"
-                        Margin="0 15 6 0"
-                        Click="Add_Hosting_Unit">
-                    ADD NEW
-                </Button>
-                <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                        Width="Auto"
-                        HorizontalAlignment="Left"
-                        Margin="0 15 6 0"
-                        Click="Update_Hosting_Unit"
-                        IsEnabled="{Binding ElementName=HostingUnits, Path=SelectedItem, TargetNullValue=False}">
-                    UPDATE
-                </Button>
-                <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                        Width="Auto"
-                        HorizontalAlignment="Left"
-                        Margin="0 15 6 0"
-                        Click="Delete_Hosting_Unit"
-                        IsEnabled="{Binding ElementName=HostingUnits, Path=SelectedItem, TargetNullValue=False}">
-                    DELETE
+                        Margin="0 10 0 0"
+                        Click="Return_To_Options"
+                        Content="🡄  RETURN TO MENU">
                 </Button>
             </StackPanel>
-            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                    Width="Auto"
-                    HorizontalAlignment="Left"
-                    Margin="0 15 0 0"
-                    Click="Return_To_Options">
-                RETURN TO MENU
-            </Button>
         </StackPanel>
         <StackPanel Grid.Column="1"
                     Margin="20 0 0 0">
@@ -79,7 +119,7 @@
             <Border BorderBrush="LightGray"
                     BorderThickness="1px"
                     Padding="10 0 0 0">
-                <ScrollViewer Height="278px"
+                <ScrollViewer Height="238"
                               VerticalScrollBarVisibility="Auto">
                     <TextBlock FontFamily="{StaticResource OpenSans}"
                                FontSize="13"
