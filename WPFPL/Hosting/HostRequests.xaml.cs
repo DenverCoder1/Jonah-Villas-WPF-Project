@@ -70,7 +70,7 @@ namespace WPFPL
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message);
+                mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
             }
         }
 
@@ -116,7 +116,7 @@ namespace WPFPL
                                 {
                                     Order order = new Order(huKey, grKey);
                                     Util.Bl.CreateOrder(order);
-                                    MessageBox.Show("Success! An email will be sent to the customer.");
+                                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Success! An email will be sent to the customer.");
                                     Refresh();
                                     return;
                                 }
@@ -124,14 +124,14 @@ namespace WPFPL
                         }
                         catch (Exception error)
                         {
-                            MessageBox.Show(error.Message.ToString());
+                            Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
                             return;
                         }
                     }
                 }
             }
 
-            MessageBox.Show("Action was cancelled.");
+            Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
         }
     }
 }

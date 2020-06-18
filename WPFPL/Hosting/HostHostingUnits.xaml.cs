@@ -108,7 +108,7 @@ namespace WPFPL
                 !Enum.TryParse(mainWindow.MyDialogComboBox1.SelectedItem.ToString().Replace(" ", ""), out District district) ||
                 !Enum.TryParse(mainWindow.MyDialogComboBox2.SelectedItem.ToString().Replace(" ", ""), out City city))
             {
-                MessageBox.Show("Action was cancelled.");
+                mainWindow.MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
                 return;
             }
 
@@ -125,7 +125,8 @@ namespace WPFPL
                         hostingUnit.UnitDistrict = district;
                         hostingUnit.UnitCity = city;
 
-                        Util.Bl.UpdateHostingUnit(hostingUnit);
+                        if (Util.Bl.UpdateHostingUnit(hostingUnit))
+                            mainWindow.MySnackbar.MessageQueue.Enqueue("Hosting unit was successfully updated.");
                     }
                     catch (InvalidDataException error)
                     {
@@ -136,7 +137,7 @@ namespace WPFPL
                 }
                 else
                 {
-                    MessageBox.Show("Action was cancelled.");
+                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
                 }
             }
         }
@@ -151,36 +152,34 @@ namespace WPFPL
             Match match = new Regex(@"^#(\d+) .*").Match(HostingUnits.SelectedItem.ToString());
             if (match.Success) {
                 if (long.TryParse(match.Groups[1].Value, out long huKey)) {
-                    MainWindow.Dialog($"Are you sure? Please type out the ID of the Hosting Unit to delete it. The ID is {huKey}.", "HostDeleteHostingUnit", "", null, null);
+                    MainWindow.Dialog($"Are you sure? Please check the box to confirm the deletion of Hosting Unit #{huKey}.", "HostDeleteHostingUnit", null, null, null, false);
                 }
             }
         }
 
-        public static void Confirm_Delete(string dialogText, string textBoxHuKey)
+        public static void Confirm_Delete(string dialogText, bool? checkedBox)
         {
-            Match match = new Regex(@".*The ID is (\d+).*").Match(dialogText);
+            Match match = new Regex(@".*Unit #(\d+).*").Match(dialogText);
             if (match.Success)
             {
-                if (long.TryParse(match.Groups[1].Value, out long huKey)
-                    && long.TryParse(textBoxHuKey, out long inputtedHuKey)
-                    && huKey == inputtedHuKey)
+                if (long.TryParse(match.Groups[1].Value, out long huKey) && checkedBox != null && (bool)checkedBox)
                 {
                     try
                     {
                         if (Util.Bl.DeleteHostingUnit(huKey))
                         {
-                            MessageBox.Show("Successfully deleted.");
+                            Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Success! The hosting unit was deleted.");
                             Refresh();
                         }
                     }
                     catch (Exception error)
                     {
-                        MessageBox.Show(error.Message);
+                        Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Action was cancelled.");
+                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
                 }
             }
         }
@@ -208,7 +207,7 @@ namespace WPFPL
                 !Enum.TryParse(mainWindow.MyDialogComboBox1.SelectedItem.ToString().Replace(" ", ""), out District district) ||
                 !Enum.TryParse(mainWindow.MyDialogComboBox2.SelectedItem.ToString().Replace(" ", ""), out City city))
             {
-                MessageBox.Show("Action was cancelled.");
+                mainWindow.MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
                 return;
             }
 
@@ -216,7 +215,8 @@ namespace WPFPL
 
             try
             {
-                Util.Bl.CreateHostingUnit(hostingUnit);
+                if (Util.Bl.CreateHostingUnit(hostingUnit))
+                    mainWindow.MySnackbar.MessageQueue.Enqueue("Hosting unit was successfully added.");
             }
             catch (InvalidDataException error)
             {

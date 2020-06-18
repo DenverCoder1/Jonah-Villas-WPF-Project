@@ -18,7 +18,81 @@
             <!-- Set Dragablz tab control to use the Material Design theme -->
             <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
             
-            <!-- List box styles -->
+            <!-- Custom heading styles -->
+            <Style x:Key="MainHeading"
+                   TargetType="TextBlock">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource OpenSans}" />
+                <Setter Property="FontWeight"
+                        Value="Light" />
+                <Setter Property="FontSize"
+                        Value="22px" />
+            </Style>
+            <Style x:Key="SubHeading"
+                   TargetType="TextBlock">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource OpenSans}" />
+                <Setter Property="FontWeight"
+                        Value="Normal" />
+                <Setter Property="FontSize"
+                        Value="16px" />
+            </Style>
+
+            <!-- Custom form control styles -->
+            <Style x:Key="FormLabel"
+                   BasedOn="{StaticResource MaterialDesignLabel}"
+                   TargetType="{x:Type Label}">
+                <Setter Property="HorizontalAlignment"
+                        Value="Left" />
+                <Setter Property="Margin"
+                        Value="0 4 4 4" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+            </Style>
+            <Style x:Key="FormTextBox"
+                   BasedOn="{StaticResource MaterialDesignTextBox}"
+                   TargetType="{x:Type TextBox}">
+                <Setter Property="HorizontalAlignment"
+                        Value="Left" />
+                <Setter Property="Height"
+                        Value="25" />
+                <Setter Property="Margin"
+                        Value="0 4" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="Width"
+                        Value="160px" />
+            </Style>
+            <Style x:Key="FormComboBox"
+                   BasedOn="{StaticResource MaterialDesignComboBox}"
+                   TargetType="{x:Type ComboBox}">
+                <Setter Property="HorizontalAlignment"
+                        Value="Left" />
+                <Setter Property="Height"
+                        Value="25" />
+                <Setter Property="Margin"
+                        Value="0 4" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="Width"
+                        Value="160px" />
+            </Style>
+            <Style x:Key="FormDatePicker"
+                   BasedOn="{StaticResource MaterialDesignDatePicker}"
+                   TargetType="{x:Type DatePicker}">
+                <Setter Property="HorizontalAlignment"
+                        Value="Left" />
+                <Setter Property="Height"
+                        Value="25" />
+                <Setter Property="Margin"
+                        Value="0 4" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="Width"
+                        Value="160px" />
+            </Style>
+
+            <!-- Custom list box styles -->
             <Style x:Key="MyMaterialDesignListBox"
                    BasedOn="{StaticResource MaterialDesignListBox}" TargetType="{x:Type ListBox}">
                 <Setter Property="BorderBrush"

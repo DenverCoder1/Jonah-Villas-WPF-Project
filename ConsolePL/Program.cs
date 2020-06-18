@@ -19,13 +19,8 @@ namespace ConsolePL
             return Regex.Replace(enumString, "([a-z])([A-Z])", "$1 $2");
         }
 
-        static void Main(string[] args)
+        private static void Run()
         {
-            Console.WriteLine("Current progress on the presentation is in WPFPL. Set WPFPL as the Startup project.");
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
-            return;
-
             Order order = new Order(1, 2);
 
             try
@@ -47,7 +42,7 @@ namespace ConsolePL
             {
                 Console.WriteLine($"Error: {error.Message}");
             }
-           
+
 
             DateTime entry = DateTime.Today.AddDays(5);
             DateTime release = DateTime.Today.AddDays(10);
@@ -91,6 +86,15 @@ namespace ConsolePL
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
+        }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Current progress on the presentation is in WPFPL. Set WPFPL as the Startup project.");
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey();
+
+            // Run();
         }
     }
 }

@@ -66,7 +66,7 @@ namespace BL
                 if (matches.Count() == 0)
                     return DalInstance.DeleteHostingUnit(hostingUnitKey);
                 else
-                    throw new ApplicationException("Could not delete since the Hosting Unit has 1 or more open orders.");
+                    throw new ApplicationException("Could not delete since the Hosting Unit has open orders.");
             }
             catch (Exception error)
             {
@@ -429,7 +429,8 @@ namespace BL
                         throw new Exception("Cannot create order. The host does not have bank clearance.");
                     }
 
-                    if (guestRequest.Status != GuestStatus.Open)
+                    if (guestRequest.Status != GuestStatus.Open &&
+                        guestRequest.Status != GuestStatus.Pending)
                     {
                         throw new Exception("Request is no longer open for orders.");
                     }
@@ -526,7 +527,6 @@ namespace BL
                         float transactionFeeNIS = (dateRange.Duration - 1) * Config.TRANSACTION_FEE_NIS;
 
                         // TODO: Charge transaction fee to bank account
-                        return true;
                     }
                     else
                     {

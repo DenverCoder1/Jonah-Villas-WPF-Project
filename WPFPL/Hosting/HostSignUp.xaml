@@ -9,46 +9,6 @@
       d:DesignHeight="450"
       d:DesignWidth="800"
       Title="HostSignUp">
-    <Page.Resources>
-        <Style x:Key="FormLabel"
-               BasedOn="{StaticResource MaterialDesignLabel}"
-               TargetType="{x:Type Label}">
-            <Setter Property="HorizontalAlignment"
-                    Value="Left" />
-            <Setter Property="Margin"
-                    Value="0 4 4 4" />
-            <Setter Property="VerticalAlignment"
-                    Value="Center" />
-        </Style>
-        <Style x:Key="FormTextBox"
-               BasedOn="{StaticResource MaterialDesignTextBox}"
-               TargetType="{x:Type TextBox}">
-            <Setter Property="HorizontalAlignment"
-                    Value="Left" />
-            <Setter Property="Height"
-                    Value="26" />
-            <Setter Property="Margin"
-                    Value="0 4" />
-            <Setter Property="VerticalAlignment"
-                    Value="Center" />
-            <Setter Property="Width"
-                    Value="160px" />
-        </Style>
-        <Style x:Key="FormComboBox"
-               BasedOn="{StaticResource MaterialDesignComboBox}"
-               TargetType="{x:Type ComboBox}">
-            <Setter Property="HorizontalAlignment"
-                    Value="Left" />
-            <Setter Property="Height"
-                    Value="26" />
-            <Setter Property="Margin"
-                    Value="0 4" />
-            <Setter Property="VerticalAlignment"
-                    Value="Center" />
-            <Setter Property="Width"
-                    Value="160px" />
-        </Style>
-    </Page.Resources>
     <Grid>
         <StackPanel>
             <TextBlock FontFamily="{StaticResource OpenSans}"

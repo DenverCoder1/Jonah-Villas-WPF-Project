@@ -96,21 +96,21 @@ namespace WPFPL
                                 Order order = Util.Bl.GetOrder(orderKey);
                                 order.Status = status;
                                 if (Util.Bl.UpdateOrder(order))
-                                    MessageBox.Show("Order was successfully updated.");
+                                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Order was successfully updated.");
                                 Refresh();
                                 return;
                             }
                         }
                         catch (Exception error)
                         {
-                            MessageBox.Show(error.Message.ToString());
+                            Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
                             return;
                         }
                     }
                 }
             }
 
-            MessageBox.Show("Action was cancelled.");
+            Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
         }
     }
 }
