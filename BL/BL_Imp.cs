@@ -218,6 +218,35 @@ namespace BL
             return matches.ToList();
         }
 
+
+        /// <summary>
+        /// Get guest requests grouped by district
+        /// </summary>
+        IEnumerable<IGrouping<District, GuestRequest>> IBL.GetGuestRequestsByDistrict()
+        {
+             return from GuestRequest item in instance.GetGuestRequests()
+                    group item by item.PrefDistrict;
+        }
+
+        /// <summary>
+        /// Get guest requests grouped by city
+        /// </summary>
+        IEnumerable<IGrouping<City, GuestRequest>> IBL.GetGuestRequestsByCity()
+        {
+            return from GuestRequest item in instance.GetGuestRequests()
+                   group item by item.PrefCity;
+
+        }
+
+        /// <summary>
+        /// Get guest requests grouped by num people
+        /// </summary>
+        IEnumerable<IGrouping<int, GuestRequest>> IBL.GetGuestRequestsByPersonCount()
+        {
+            return from GuestRequest item in instance.GetGuestRequests()
+                   group item by (item.NumAdults + item.NumChildren);
+        }
+
         /// <summary>
         /// Get open guest requests 
         /// </summary>
@@ -590,6 +619,16 @@ namespace BL
         }
 
         /// <summary>
+        /// Get hosts grouped by num hosting units they hold
+        /// </summary>
+        IEnumerable<IGrouping<int, Host>> IBL.GetHostsByNumHostingUnits()
+        {
+            return from Host item in instance.GetHosts()
+                   let numUnits = instance.GetHostHostingUnits(item.HostKey).Count()
+                   group item by numUnits;
+        }
+
+        /// <summary>
         /// Check if a host exists with hostKey, return host or null if not found
         /// </summary>
         Host IBL.GetHost(long hostKey)
@@ -612,7 +651,7 @@ namespace BL
                 var oldHost = instance.GetHost(newHost.HostKey);
                 // Billing clearance cannot be revoked when there is an open orders
                 if (oldHost.BankClearance == true && newHost.BankClearance == false)
-                    if (instance.GetOrders().Exists(o => 
+                    if (instance.GetOrders().Exists(o =>
                         (o.Status == OrderStatus.NotYetHandled || o.Status == OrderStatus.SentEmail) &&
                         instance.GetHostingUnit(o.HostingUnitKey).Owner.HostKey == newHost.HostKey))
                     {

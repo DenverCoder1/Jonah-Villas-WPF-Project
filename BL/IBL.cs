@@ -25,8 +25,11 @@ namespace BL
         bool UpdateGuestRequest(GuestRequest newGuestRequest);
         List<GuestRequest> GetGuestRequests();
         List<GuestRequest> GetOpenGuestRequests();
-        GuestRequest GetGuestRequest(long grKey);
         List<GuestRequest> GetGuestRequests(Func<GuestRequest, bool> Criteria);
+        IEnumerable<IGrouping<District, GuestRequest>> GetGuestRequestsByDistrict();
+        IEnumerable<IGrouping<City, GuestRequest>> GetGuestRequestsByCity();
+        IEnumerable<IGrouping<int, GuestRequest>> GetGuestRequestsByPersonCount();
+        GuestRequest GetGuestRequest(long grKey);
         bool CheckOrReserveDates(HostingUnit hostingUnit, GuestRequest guestRequest, bool reserve = false);
         void CancelDateRange(HostingUnit hostingUnit, DateRange dateRange);
 
@@ -47,6 +50,7 @@ namespace BL
         bool CreateHost(Host host);
         bool UpdateHost(Host host);
         List<Host> GetHosts();
+        IEnumerable<IGrouping<int, Host>> GetHostsByNumHostingUnits();
         Host GetHost(long hostKey);
         List<HostingUnit> GetAvailableUnits(DateTime start, int numDays);
 
