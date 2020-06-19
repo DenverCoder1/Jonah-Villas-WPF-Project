@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -87,5 +88,9 @@ namespace BL
         // misc.
 
         int Duration(DateTime start, DateTime end = default);
+
+        void SendEmail(Order order, RunWorkerCompletedEventHandler completed = null);
+
+        void Worker_DoWork(object sender, DoWorkEventArgs e);
     }
 }

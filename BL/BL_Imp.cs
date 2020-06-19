@@ -2,9 +2,12 @@
 using DAL;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace BL
@@ -14,10 +17,12 @@ namespace BL
         #region Fields
 
         // Set up data access connection
-        public DAL.IDAL DalInstance;
+        private DAL.IDAL DalInstance;
 
         // Singleton Instance
         private static IBL instance = null;
+
+        private BackgroundWorker worker;
 
         #endregion
 
@@ -483,12 +488,14 @@ namespace BL
                         // update hosting unit with calendar changes
                         instance.UpdateHostingUnit(hostingUnit);
 
-                        // TODO: send an email (next step)
-
                         // Create order
                         order.Status = OrderStatus.SentEmail;
                         order.CreationDate = DateTime.Today;
                         order.EmailDeliveryDate = DateTime.Today;
+
+                        // Send an email
+                        //instance.SendEmail(order);
+
                         return DalInstance.CreateOrder(Cloning.Clone(order));
                     }
                     else
@@ -981,6 +988,88 @@ namespace BL
                 return (int)(end - start).TotalDays;
             else
                 return (int)(DateTime.Today - start).TotalDays;
+        }
+
+        /// <summary>
+        /// Send an email in the background
+        /// </summary>
+        /// <param name="order">Order details</param>
+        void IBL.SendEmail(Order order, RunWorkerCompletedEventHandler completed)
+        {
+            worker = new BackgroundWorker();
+            worker.DoWork += new DoWorkEventHandler(instance.Worker_DoWork);
+            if (completed != null)
+                worker.RunWorkerCompleted += completed;
+            worker.RunWorkerAsync(order);
+        }
+
+        void IBL.Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // Get order details
+            Order order = (Order) e.Argument;
+            GuestRequest request = instance.GetGuestRequest(order.GuestRequestKey);
+            HostingUnit hostingUnit = instance.GetHostingUnit(order.HostingUnitKey);
+            Host host = instance.GetHost(hostingUnit.Owner.HostKey);
+
+            // check that all exist
+            if (order == null)
+                throw new ArgumentException("Order cannot be null.");
+            if (request == null)
+                throw new ArgumentException("Guest request was not found.");
+            if (hostingUnit == null)
+                throw new ArgumentException("Hosting unit was not found.");
+            if (host == null)
+                throw new ArgumentException("Host was not found.");
+
+            // MailMessage Create an object
+            MailMessage mail = new MailMessage();
+
+            // address of recipient (more than one can be added)
+            mail.To.Add(request.Email);
+
+            // The address from which the email was sent
+            mail.From = new MailAddress(Config.FROM_EMAIL_ADDRESS);
+
+            // message 
+
+            mail.Subject = $"Jonah's Villas : You have a new offer from {host.FirstName}!";
+
+            // (HTMLMessage content(Suppose the message content is in format
+
+            StringBuilder body = new StringBuilder();
+            body.AppendLine($"<h2>Jonah's Villas</h2><br/>");
+            body.AppendLine($"Hi {request.FirstName},\n");
+            body.Append($"{host.FirstName} {host.LastName} has an offer for you ");
+            body.Append($"in {hostingUnit.UnitCity}, {hostingUnit.UnitDistrict} ");
+            body.Append($"from {request.EntryDate:dd.MM.yyyy} through {request.ReleaseDate:dd.MM.yyyy}.\n\n");
+            body.AppendLine($"{host.FirstName} can be contacted by email at {host.Email} or by phone at {host.PhoneNumber}.");
+            body.AppendLine($"Have a great day!");
+            body.AppendLine($"- Jonah from Jonah's Villas");
+            mail.Body = body.ToString();
+
+            // HTMLDefinition that the message content is in format
+            mail.IsBodyHtml = true;
+
+            // Smtp Create object type
+            SmtpClient smtp = new SmtpClient
+            {
+                // gmailConfigure of server
+                Host = "smtp.gmail.com",
+                // gmailConfigure login information ( username and password ) for account e
+                Credentials = new System.Net.NetworkCredential(Config.FROM_EMAIL_ADDRESS, Config.EMAIL_PASSWORD),
+                // SSLBy " P. Minister requirement , an obligation to allow in this case
+                EnableSsl = true
+            };
+            try
+            {
+                // Send message
+                smtp.Send(mail);
+            }
+            catch (Exception error)
+            {
+                e.Result = false;
+            }
+            e.Result = true;
         }
 
         #endregion

@@ -114,7 +114,7 @@
             <TextBlock FontFamily="{StaticResource OpenSans}"
                        FontSize="16px"
                        Margin="0 5 0 10">
-                Hosting Unit Details:
+                Hosting Unit Details
             </TextBlock>
             <Border BorderBrush="LightGray"
                     BorderThickness="1px"

@@ -85,7 +85,7 @@
             <TextBlock FontFamily="{StaticResource OpenSans}"
                        FontSize="16px"
                        Margin="0 5 0 10">
-                Hosting Unit Details:
+                Hosting Unit Details
             </TextBlock>
             <Border BorderBrush="LightGray" BorderThickness="1px" Padding="10 0 0 0">
                 <ScrollViewer Height="278px"
