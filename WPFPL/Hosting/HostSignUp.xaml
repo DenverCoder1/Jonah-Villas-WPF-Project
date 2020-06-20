@@ -108,15 +108,47 @@
                         <StackPanel Orientation="Horizontal">
                             <md:PackIcon Kind="BankOutline"
                                          Style="{StaticResource LabelIcon}" />
-                            <TextBlock Text="Bank Branch:" />
+                            <TextBlock Text="Bank:" />
                         </StackPanel>
                     </Label.Content>
                 </Label>
-                <ComboBox x:Name="hBranch"
+                <ComboBox x:Name="hBank"
                           Grid.Row="4"
                           Grid.Column="1"
-                          Style="{StaticResource FormComboBox}" />
+                          Style="{StaticResource FormComboBox}"
+                          SelectionChanged="Bank_SelectionChanged" />
                 <Label Grid.Row="5"
+                       Grid.Column="0"
+                       Style="{StaticResource FormLabel}">
+                    <Label.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="BankOutline"
+                                         Style="{StaticResource LabelIcon}" />
+                            <TextBlock Text="Bank city:" />
+                        </StackPanel>
+                    </Label.Content>
+                </Label>
+                <ComboBox x:Name="hBankCity"
+                          Grid.Row="5"
+                          Grid.Column="1"
+                          Style="{StaticResource FormComboBox}"
+                          SelectionChanged="BankCity_SelectionChanged" />
+                <Label Grid.Row="6"
+                       Grid.Column="0"
+                       Style="{StaticResource FormLabel}">
+                    <Label.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="BankOutline"
+                                         Style="{StaticResource LabelIcon}" />
+                            <TextBlock Text="Bank branch:" />
+                        </StackPanel>
+                    </Label.Content>
+                </Label>
+                <ComboBox x:Name="hBankBranch"
+                          Grid.Row="6"
+                          Grid.Column="1"
+                          Style="{StaticResource FormComboBox}" />
+                <Label Grid.Row="7"
                        Grid.Column="0"
                        Style="{StaticResource FormLabel}">
                     <Label.Content>
@@ -128,7 +160,7 @@
                     </Label.Content>
                 </Label>
                 <TextBox x:Name="hRoutingNumber"
-                         Grid.Row="5"
+                         Grid.Row="7"
                          Grid.Column="1"
                          Style="{StaticResource FormTextBox}"
                          PreviewTextInput="Preview_Numbers"

@@ -13,9 +13,9 @@ namespace DAL
         {
             BankBranch clone = new BankBranch
             {
-                BankNumber = original.BankNumber,
+                BankCode = original.BankCode,
                 BankName = original.BankName,
-                BranchNumber = original.BranchNumber,
+                BranchCode = original.BranchCode,
                 BranchAddress = original.BranchAddress,
                 BranchCity = original.BranchCity
             };

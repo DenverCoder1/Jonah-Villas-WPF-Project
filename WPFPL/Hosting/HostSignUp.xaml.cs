@@ -18,6 +18,8 @@ using System.IO;
 using BE;
 using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
+using System.Xml.Linq;
+using System.ComponentModel;
 
 namespace WPFPL
 {
@@ -26,11 +28,19 @@ namespace WPFPL
     /// </summary>
     public partial class HostSignUp : Page
     {
-        public MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
 
-        public static List<Control> SignUpControls;
+        public static List<Control> SignUpControls { get; private set; }
 
-        public static ObservableCollection<string> BankCollection { get; set; }
+        private static XDocument BankBranchXML { get; set; }
+
+        private static ObservableCollection<string> BankCollection { get; set; }
+
+        private static ObservableCollection<string> BankCityCollection { get; set; }
+
+        private static ObservableCollection<string> BankBranchCollection { get; set; }
+
+        private static List<BankBranch> BankBranches { get; set; }
 
         public HostSignUp()
         {
@@ -42,11 +52,15 @@ namespace WPFPL
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             BankCollection = new ObservableCollection<string>();
-            hBranch.ItemsSource = BankCollection;
+            BankCityCollection = new ObservableCollection<string>();
+            BankBranchCollection = new ObservableCollection<string>();
+            hBank.ItemsSource = BankCollection;
+            hBankCity.ItemsSource = BankCityCollection;
+            hBankBranch.ItemsSource = BankBranchCollection;
             ListBanks();
             SignUpControls = new List<Control>{
                 hFirstName, hLastName, hEmail, hPhone,
-                hBranch, hRoutingNumber
+                hBank, hBankBranch, hBankCity, hRoutingNumber
             };
             ShowControls();
         }
@@ -55,12 +69,80 @@ namespace WPFPL
         {
             if (BankCollection != null)
             {
+                Util.Bl.GetBankBranches(GetBranchesCompleted);
+            }
+        }
+
+        /// <summary>
+        /// Get results from bank branch fetch
+        /// </summary>
+        private static void GetBranchesCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            object result = e.Result;
+            if (result is string xml)
+            {
+                BankBranchXML = XDocument.Parse(xml);
+
+                List<string> banks = (from item in BankBranchXML.Descendants("BRANCH")
+                                      select (string)item.Element("Bank_Name").Value.Trim()).Distinct().ToList();
+
                 BankCollection.Clear();
-                foreach (BankBranch item in Util.Bl.GetBankBranches())
+                foreach (string item in banks)
                 {
                     BankCollection.Add(item.ToString());
                 }
             }
+        }
+
+        private void Bank_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (hBank.SelectedItem == null) return;
+
+            List<string> cities = (from item in BankBranchXML.Descendants("BRANCH")
+                                   let bank = hBank.SelectedItem.ToString()
+                                   where (string)item.Element("Bank_Name") == bank 
+                                        && item.Element("City").Value != ""
+                                   select (item.Element("City").Value.Trim())).Distinct().ToList();
+
+            BankCityCollection.Clear();
+            foreach (string item in cities)
+            {
+                BankCityCollection.Add(item.ToString());
+            }
+        }
+
+        private void BankCity_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (hBank.SelectedItem == null || hBankCity.SelectedItem == null) return;
+
+            List<string> branches = (from item in BankBranchXML.Descendants("BRANCH")
+                                     let bank = hBank.SelectedItem.ToString()
+                                     let city = hBankCity.SelectedItem.ToString()
+                                     where (string)item.Element("Bank_Name") == bank
+                                            && (string)item.Element("City") == city
+                                            && item.Element("Address").Value != ""
+                                     select item.Element("Address").Value).ToList();
+
+            BankBranchCollection.Clear();
+            foreach (string item in branches)
+            {
+                BankBranchCollection.Add(item.ToString());
+            }
+
+            // store all info on branches in list
+            BankBranches = (from item in BankBranchXML.Descendants("BRANCH")
+                            let bank = hBank.SelectedItem.ToString()
+                            let city = hBankCity.SelectedItem.ToString()
+                            where (string)item.Element("Bank_Name") == bank
+                                && (string)item.Element("City") == city
+                            select new BankBranch
+                            {
+                                BankCode = item.Element("Bank_Code").Value,
+                                BankName = item.Element("Bank_Name").Value,
+                                BranchCode = item.Element("Branch_Code").Value,
+                                BranchAddress = item.Element("Address").Value,
+                                BranchCity = item.Element("City").Value
+                            }).ToList();
         }
 
         public static void ShowControls()
@@ -79,13 +161,20 @@ namespace WPFPL
             string lname = hLastName.Text;
             string email = hEmail.Text;
             string phone = hPhone.Text;
-            string branch = hBranch.Text;
-            BankBranch bankBranch = Util.Bl.GetBankBranches()[0];
+            int branchIndex = hBankBranch.SelectedIndex;
+            BankBranch bankBranch = new BankBranch
+            {
+                BankCode = BankBranches[branchIndex].BankCode,
+                BankName = BankBranches[branchIndex].BankName,
+                BranchCode = BankBranches[branchIndex].BranchCode,
+                BranchAddress = BankBranches[branchIndex].BranchAddress,
+                BranchCity = BankBranches[branchIndex].BranchCity
+            };
             string routing = hRoutingNumber.Text;
 
             try
             {
-                Util.Bl.ValidateHostSignUp(fname, lname, email, phone, branch, routing);
+                Util.Bl.ValidateHostSignUp(fname, lname, email, phone, bankBranch, routing);
             }
             catch (InvalidDataException error)
             {

@@ -37,7 +37,7 @@ namespace BL
         void CancelDateRange(HostingUnit hostingUnit, DateRange dateRange);
 
         // orders
-        bool CreateOrder(Order order);
+        bool CreateOrder(Order order, RunWorkerCompletedEventHandler RunWorkerCompleted = null);
         bool UpdateOrder(Order newOrder);
         List<Order> GetOrders();
         List<Order> GetHostOrders(long hostKey);
@@ -47,7 +47,7 @@ namespace BL
         int GetNumOrders(HostingUnit hostingUnit);
 
         // bank branches
-        List<BankBranch> GetBankBranches();
+        void GetBankBranches(RunWorkerCompletedEventHandler RunWorkerCompleted = null);
 
         // hosts
         bool CreateHost(Host host);
@@ -75,7 +75,7 @@ namespace BL
             string lname,
             string email,
             string phone,
-            string bankBranch,
+            object bankBranch,
             string routingNum);
 
         bool IsValidName(string name);
@@ -88,9 +88,5 @@ namespace BL
         // misc.
 
         int Duration(DateTime start, DateTime end = default);
-
-        void SendEmail(Order order, RunWorkerCompletedEventHandler completed = null);
-
-        void Worker_DoWork(object sender, DoWorkEventArgs e);
     }
 }

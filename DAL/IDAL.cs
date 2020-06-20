@@ -29,8 +29,5 @@ namespace DAL
         bool CreateHost(Host host);
         bool UpdateHost(Host host);
         List<Host> GetHosts();
-
-        // bank branches
-        List<BankBranch> GetBankBranches();
     }
 }

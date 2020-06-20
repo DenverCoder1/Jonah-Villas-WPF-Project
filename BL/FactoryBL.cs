@@ -8,7 +8,7 @@ namespace BL
 {
     public class FactoryBL
     {
-        public static IBL Build()
+        public static IBL GetBL()
         {
             return BL_Imp.GetBL();
         }

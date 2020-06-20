@@ -12,7 +12,7 @@ namespace DAL
     // Create, Read, Update, Delete on Data Source with list implementation
     public class DAL_Imp : IDAL
     {
-        #region Fields
+        #region Private Fields
 
         // Singleton instance
         private static IDAL instance = null;
@@ -293,41 +293,6 @@ namespace DAL
         List<Host> IDAL.GetHosts()
         {
             return DataSource.Hosts.ConvertAll(x => Cloning.Clone(x));
-        }
-
-        #endregion
-
-        #region BANK BRANCH METHODS
-
-        /// <summary>
-        /// Return a list of bank branches
-        /// </summary>
-        List<BankBranch> IDAL.GetBankBranches()
-        {
-            List<BankBranch> branches = new List<BankBranch> {
-                new BankBranch(1,"Bank Hapoalim",11,"1 Main St.", "Tel Aviv"),
-                new BankBranch(2,"Bank Leumi",21,"2 Main St.", "Tel Aviv"),
-                new BankBranch(3,"Bank Mizrahi-Tefahot",31,"3 Main St.","Ramat Gan"),
-                new BankBranch(4,"International Bank",41,"4 Main St.","Tel Aviv"),
-                new BankBranch(5,"Discount Bank",51,"5 Main St.","Tel Aviv")
-            };
-
-            IEnumerable<BankBranch> matches =
-                from BankBranch item in branches
-                let bankNum = item.BankNumber
-                let name = item.BankName
-                let branchNum = item.BranchNumber
-                let address = item.BranchAddress
-                let city = item.BranchCity
-                select new BankBranch {
-                    BankNumber = bankNum,
-                    BankName = name,
-                    BranchNumber = branchNum,
-                    BranchAddress = address,
-                    BranchCity = city
-                };
-
-            return matches.ToList();
         }
 
         #endregion

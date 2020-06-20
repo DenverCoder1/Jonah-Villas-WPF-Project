@@ -14,7 +14,7 @@ namespace BL
 {
     public class BL_Imp : IBL
     {
-        #region Fields
+        #region Private Fields
 
         // Set up data access connection
         private DAL.IDAL DalInstance;
@@ -22,15 +22,13 @@ namespace BL
         // Singleton Instance
         private static IBL instance = null;
 
-        private BackgroundWorker worker;
-
         #endregion
 
         #region Constructor
 
         public BL_Imp()
         {
-            DalInstance = DAL.FactoryDAL.Build();
+            DalInstance = DAL.FactoryDAL.GetDAL();
         }
 
         #endregion
@@ -58,7 +56,7 @@ namespace BL
             {
                 throw new ArgumentNullException("Hosting unit cannot be null.");
             }
-            try { 
+            try {
                 return DalInstance.CreateHostingUnit(Cloning.Clone(hostingUnit));
             }
             catch (Exception error)
@@ -75,10 +73,10 @@ namespace BL
             try {
                 // Check that there are no open orders in the hosting unit
                 IEnumerable<Order> matches = from Order item in DalInstance.GetOrders()
-                              let s = item.Status
-                              let stillOpen = (s == OrderStatus.NotYetHandled || s == OrderStatus.SentEmail)
-                              where item.HostingUnitKey == hostingUnitKey && stillOpen
-                              select item;
+                                             let s = item.Status
+                                             let stillOpen = (s == OrderStatus.NotYetHandled || s == OrderStatus.SentEmail)
+                                             where item.HostingUnitKey == hostingUnitKey && stillOpen
+                                             select item;
 
                 if (matches.Count() == 0)
                     return DalInstance.DeleteHostingUnit(hostingUnitKey);
@@ -213,7 +211,7 @@ namespace BL
             {
                 throw new ArgumentNullException("Guest request cannot be null.");
             }
-            try { 
+            try {
                 return DalInstance.CreateGuestRequest(Cloning.Clone(guestRequest));
             }
             catch (Exception error)
@@ -268,8 +266,8 @@ namespace BL
         /// </summary>
         IEnumerable<IGrouping<District, GuestRequest>> IBL.GetGuestRequestsByDistrict()
         {
-             return from GuestRequest item in instance.GetGuestRequests()
-                    group item by item.PrefDistrict;
+            return from GuestRequest item in instance.GetGuestRequests()
+                   group item by item.PrefDistrict;
         }
 
         /// <summary>
@@ -394,7 +392,7 @@ namespace BL
             for (int i = 0; i < hostingUnit.Calendar.Count; ++i)
             {
                 // If start and end match current date range
-                if (dateRange.Start == hostingUnit.Calendar[i].Start 
+                if (dateRange.Start == hostingUnit.Calendar[i].Start
                     && dateRange.End == hostingUnit.Calendar[i].End)
                 {
                     // remove date range
@@ -408,9 +406,13 @@ namespace BL
         #region ORDER METHODS
 
         /// <summary>
+        /// Check order, modify statuses, reserve dates, send email
         /// Allow data access layer to handle creation of an order
         /// </summary>
-        bool IBL.CreateOrder(Order order)
+        /// <param name="order">Order to add</param>
+        /// <param name="RunWorkerCompleted">Function to run when email worker completes</param>
+        /// <returns>True if successful</returns>
+        bool IBL.CreateOrder(Order order, RunWorkerCompletedEventHandler RunWorkerCompleted)
         {
             if (order != null)
             {
@@ -494,8 +496,9 @@ namespace BL
                         order.EmailDeliveryDate = DateTime.Today;
 
                         // Send an email
-                        //instance.SendEmail(order);
+                        Mailing.SendEmail(order, RunWorkerCompleted);
 
+                        // add order to data
                         return DalInstance.CreateOrder(Cloning.Clone(order));
                     }
                     else
@@ -534,7 +537,7 @@ namespace BL
                 throw new ArgumentException("Order status can not be changed after transaction is closed.");
 
             // if closing order with transaction, mark off date range as reserved
-            if (oldOrder.Status == OrderStatus.SentEmail && 
+            if (oldOrder.Status == OrderStatus.SentEmail &&
                 newOrder.Status == OrderStatus.ClosedByCustomerResponse)
             {
                 try
@@ -580,7 +583,7 @@ namespace BL
                     throw error;
                 }
             }
-            
+
             // update order in data
             try
             {
@@ -660,16 +663,9 @@ namespace BL
 
         #region BANK BRANCH METHODS
 
-        List<BankBranch> IBL.GetBankBranches()
+        void IBL.GetBankBranches(RunWorkerCompletedEventHandler RunWorkerCompleted)
         {
-            try
-            {
-                return DalInstance.GetBankBranches().ConvertAll(x => Cloning.Clone(x));
-            }
-            catch (Exception error)
-            {
-                throw error;
-            }
+            FetchBanks.GetBankBranches(RunWorkerCompleted);
         }
 
         #endregion
@@ -883,7 +879,7 @@ namespace BL
             string lname,
             string email,
             string phone,
-            string bankBranch,
+            object bankBranch,
             string routingNum)
         {
             if (!instance.IsValidName(fname))
@@ -988,88 +984,6 @@ namespace BL
                 return (int)(end - start).TotalDays;
             else
                 return (int)(DateTime.Today - start).TotalDays;
-        }
-
-        /// <summary>
-        /// Send an email in the background
-        /// </summary>
-        /// <param name="order">Order details</param>
-        void IBL.SendEmail(Order order, RunWorkerCompletedEventHandler completed)
-        {
-            worker = new BackgroundWorker();
-            worker.DoWork += new DoWorkEventHandler(instance.Worker_DoWork);
-            if (completed != null)
-                worker.RunWorkerCompleted += completed;
-            worker.RunWorkerAsync(order);
-        }
-
-        void IBL.Worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            // Get order details
-            Order order = (Order) e.Argument;
-            GuestRequest request = instance.GetGuestRequest(order.GuestRequestKey);
-            HostingUnit hostingUnit = instance.GetHostingUnit(order.HostingUnitKey);
-            Host host = instance.GetHost(hostingUnit.Owner.HostKey);
-
-            // check that all exist
-            if (order == null)
-                throw new ArgumentException("Order cannot be null.");
-            if (request == null)
-                throw new ArgumentException("Guest request was not found.");
-            if (hostingUnit == null)
-                throw new ArgumentException("Hosting unit was not found.");
-            if (host == null)
-                throw new ArgumentException("Host was not found.");
-
-            // MailMessage Create an object
-            MailMessage mail = new MailMessage();
-
-            // address of recipient (more than one can be added)
-            mail.To.Add(request.Email);
-
-            // The address from which the email was sent
-            mail.From = new MailAddress(Config.FROM_EMAIL_ADDRESS);
-
-            // message 
-
-            mail.Subject = $"Jonah's Villas : You have a new offer from {host.FirstName}!";
-
-            // (HTMLMessage content(Suppose the message content is in format
-
-            StringBuilder body = new StringBuilder();
-            body.AppendLine($"<h2>Jonah's Villas</h2><br/>");
-            body.AppendLine($"Hi {request.FirstName},\n");
-            body.Append($"{host.FirstName} {host.LastName} has an offer for you ");
-            body.Append($"in {hostingUnit.UnitCity}, {hostingUnit.UnitDistrict} ");
-            body.Append($"from {request.EntryDate:dd.MM.yyyy} through {request.ReleaseDate:dd.MM.yyyy}.\n\n");
-            body.AppendLine($"{host.FirstName} can be contacted by email at {host.Email} or by phone at {host.PhoneNumber}.");
-            body.AppendLine($"Have a great day!");
-            body.AppendLine($"- Jonah from Jonah's Villas");
-            mail.Body = body.ToString();
-
-            // HTMLDefinition that the message content is in format
-            mail.IsBodyHtml = true;
-
-            // Smtp Create object type
-            SmtpClient smtp = new SmtpClient
-            {
-                // gmailConfigure of server
-                Host = "smtp.gmail.com",
-                // gmailConfigure login information ( username and password ) for account e
-                Credentials = new System.Net.NetworkCredential(Config.FROM_EMAIL_ADDRESS, Config.EMAIL_PASSWORD),
-                // SSLBy " P. Minister requirement , an obligation to allow in this case
-                EnableSsl = true
-            };
-            try
-            {
-                // Send message
-                smtp.Send(mail);
-            }
-            catch (Exception error)
-            {
-                e.Result = false;
-            }
-            e.Result = true;
         }
 
         #endregion

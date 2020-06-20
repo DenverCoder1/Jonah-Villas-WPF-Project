@@ -18,6 +18,7 @@ using BL;
 using BE;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.ComponentModel;
 
 namespace WPFPL
 {
@@ -127,7 +128,7 @@ namespace WPFPL
                                 if (long.TryParse(huKeyMatch.Groups[1].Value, out long huKey))
                                 {
                                     Order order = new Order(huKey, grKey);
-                                    Util.Bl.CreateOrder(order);
+                                    Util.Bl.CreateOrder(order, EmailWorkerCompleted);
                                     Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Success! An email will be sent to the customer.");
                                     Refresh();
                                     return;
@@ -144,6 +145,22 @@ namespace WPFPL
             }
 
             Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+        }
+
+        /// <summary>
+        /// Get results from email attempt, show error if applicable
+        /// </summary>
+        public static void EmailWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            object result = e.Result;
+            if (result is Exception error)
+            {
+                Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+            }
+            else if (result is bool b && b == true)
+            {
+                Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Email was sent successfully.");
+            }
         }
 
         private void Refresh_Event(object sender, RoutedEventArgs e)

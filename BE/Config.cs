@@ -27,10 +27,6 @@ namespace BE
         // Request
         public static int REQUEST_MAX_MONTHS_AHEAD = 11; // Maximum number of months a request can be booked ahead
 
-        // Email
-        public static string FROM_EMAIL_ADDRESS = "jonahsvillas@gmail.com";
-        public static string EMAIL_PASSWORD = "9s5MpXPX2*GfATAV";
-
         // Locations
         public static Dictionary<District, List<City>> GetCities = new Dictionary<District, List<City>>
         {

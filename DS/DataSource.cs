@@ -16,5 +16,6 @@ namespace DS
         public static List<GuestRequest> GuestRequests = new List<GuestRequest>();
         public static List<Order> Orders = new List<Order>();
         public static List<Host> Hosts = new List<Host>();
+        public static List<BankBranch> BankBranches;
     }
 }

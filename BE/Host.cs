@@ -50,5 +50,10 @@ namespace BE
             output.Append($"Bank Clearance: {BankClearance}");
             return output.ToString();
         }
+
+        public static implicit operator string(Host v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

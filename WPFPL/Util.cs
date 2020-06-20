@@ -14,7 +14,7 @@ namespace WPFPL
     class Util
     {
         // Reference to the BL instance
-        public static IBL Bl = BL.FactoryBL.Build();
+        public static IBL Bl = BL.FactoryBL.GetBL();
 
         // Global reference to current signed in host
         public static Host MyHost { get; set; }
