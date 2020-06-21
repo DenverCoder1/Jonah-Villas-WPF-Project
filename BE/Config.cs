@@ -27,6 +27,9 @@ namespace BE
         // Request
         public static int REQUEST_MAX_MONTHS_AHEAD = 11; // Maximum number of months a request can be booked ahead
 
+        // Expiration
+        public static int ORDER_OPEN_LIMIT_DAYS = 30;
+
         // Locations
         public static Dictionary<District, List<City>> GetCities = new Dictionary<District, List<City>>
         {

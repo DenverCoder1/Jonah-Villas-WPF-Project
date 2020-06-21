@@ -718,6 +718,26 @@ namespace BL
         }
 
         /// <summary>
+        /// Get orders matching criteria passed to function as delegate
+        /// </summary>
+        /// <param name="Criteria">Func delegate accepting a Order and returning a bool</param>
+        /// <returns>List of matching orders</returns>
+        List<Order> IBL.GetOrders(Func<Order, bool> Criteria)
+        {
+            try
+            {
+                IEnumerable<Order> matches = from Order item in instance.GetOrders()
+                                                    where Criteria(item)
+                                                    select item;
+                return matches.ToList();
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
+        }
+
+        /// <summary>
         /// Get orders maintained by given host
         /// </summary>
         List<Order> IBL.GetHostOrders(long hostKey)

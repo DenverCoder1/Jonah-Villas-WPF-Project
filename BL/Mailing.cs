@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Configuration;
 using System.Net.Mail;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -20,12 +21,12 @@ namespace BL
         /// Send an email in the background
         /// </summary>
         /// <param name="order">Order details</param>
-        public static void StartEmailBackgroundWorker(Order order, RunWorkerCompletedEventHandler RunWorkerCompleted = null)
+        public static void StartEmailBackgroundWorker(Order order, RunWorkerCompletedEventHandler RunWorkerCompleted, int delay = 0)
         {
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
             worker.RunWorkerCompleted += RunWorkerCompleted;
-            worker.RunWorkerAsync(order);
+            worker.RunWorkerAsync(new List<object>{ order, delay });
         }
 
         /// <summary>
@@ -65,12 +66,11 @@ namespace BL
         /// Send email (called from within the DoWork method)
         /// </summary>
         /// <param name="e">worker arguments</param>
-        private static object SendEmail(DoWorkEventArgs e)
+        private static object SendEmail(Order order)
         {
             IBL Bl = FactoryBL.GetBL();
 
             // Get order details
-            Order order = (Order)e.Argument;
             GuestRequest request = Bl.GetGuestRequest(order.GuestRequestKey);
             HostingUnit hostingUnit = Bl.GetHostingUnit(order.HostingUnitKey);
             Host owner = Bl.GetHost(hostingUnit.Owner.HostKey);
@@ -101,8 +101,7 @@ namespace BL
             }
             catch (Exception error)
             {
-                e.Result = error;
-                return e.Result;
+                return error;
             }
 
             // MailMessage Create an object
@@ -135,15 +134,13 @@ namespace BL
             try
             {
                 // Send message
-                //client.Send(mail);
+                client.Send(mail);
             }
             catch (Exception error)
             {
-                e.Result = error;
-                return e.Result;
+                return error;
             }
-            e.Result = true;
-            return e.Result;
+            return true;
         }
 
         /// <summary>
@@ -151,20 +148,18 @@ namespace BL
         /// </summary>
         public static void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (true)
+            // read arguments
+            Order order = (Order)((List<object>)e.Argument)[0];
+            int delay = (int)((List<object>)e.Argument)[1];
+            // delay (only when retrying)
+            Thread.Sleep(delay);
+            // send email and get back true if successful, otherwise error.
+            // return the order and the result
+            e.Result = new List<object>
             {
-                object result = SendEmail(e);
-                if (result is Exception)
-                {
-                    // sleep 2 seconds and try again
-                    Thread.Sleep(2000);
-                }
-                else
-                {
-                    // exit loop and end thread
-                    break;
-                }
-            }
+                order, // original order
+                SendEmail(order) // get result from sending email
+            };
         }
     }
 }

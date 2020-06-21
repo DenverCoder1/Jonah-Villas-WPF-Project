@@ -48,6 +48,7 @@
     <Compile Include="FetchBanks.cs" />
     <Compile Include="IBL.cs" />
     <Compile Include="Mailing.cs" />
+    <Compile Include="OrderExpiration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

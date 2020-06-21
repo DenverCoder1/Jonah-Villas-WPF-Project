@@ -40,6 +40,7 @@ namespace BL
         bool CreateOrder(Order order, RunWorkerCompletedEventHandler RunWorkerCompleted = null);
         bool UpdateOrder(Order newOrder);
         List<Order> GetOrders();
+        List<Order> GetOrders(Func<Order, bool> Criteria);
         List<Order> GetHostOrders(long hostKey);
         Order GetOrder(long orderKey);
         List<Order> GetOrdersCreatedOutsideNumDays(int numDays);
@@ -58,31 +59,11 @@ namespace BL
         List<HostingUnit> GetAvailableUnits(DateTime start, int numDays);
 
         // validation
-        bool ValidateGuestForm(
-            string fname,
-            string lname,
-            string email,
-            string entryDate,
-            string releaseDate,
-            object district,
-            object city,
-            int numAdults,
-            int numChildren,
-            object prefType);
-
-        bool ValidateHostSignUp(
-            string fname,
-            string lname,
-            string email,
-            string phone,
-            object bankBranch,
-            string routingNum);
-
+        bool ValidateGuestForm(string fname, string lname, string email, string entryDate, string releaseDate, object district, object city, int numAdults, int numChildren, object prefType);
+        bool ValidateHostSignUp(string fname, string lname, string email, string phone, object bankBranch, string routingNum);
         bool IsValidName(string name);
         bool IsValidEmail(string email);
-
         bool IsValidPhoneNumber(string phone);
-
         bool IsValidRoutingNumber(string routing);
 
         // Helper Methods

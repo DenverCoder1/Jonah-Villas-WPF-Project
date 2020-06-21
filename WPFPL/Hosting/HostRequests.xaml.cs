@@ -160,13 +160,25 @@ namespace WPFPL
         public static void EmailWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             object result = e.Result;
-            if (result is Exception error)
+            if (result is List<object> resList)
             {
-                Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
-            }
-            else if (result is bool b && b == true)
-            {
-                Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Email was sent successfully.");
+                // get results from list
+                Order order = (Order) resList[0];
+                object outcome = resList[1];
+
+                if (outcome is Exception error)
+                {
+                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message+$" Retrying in 3 seconds.");
+                    // wait a few seconds and retry sending email (delay happens in the background worker)
+                    Mailing.StartEmailBackgroundWorker(order, EmailWorkerCompleted, delay: 3000);
+                    return;
+                }
+                else if (outcome is bool b && b == true)
+                {
+                    // Success!
+                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Email was sent successfully.");
+                    return;
+                }
             }
         }
 

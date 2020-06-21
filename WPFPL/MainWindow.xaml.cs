@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -55,6 +56,10 @@ namespace WPFPL
             MyDialog.IsOpen = false;
             this.SizeChanged += ChooseAmenityListBoxStyle;
             this.DataContext = this;
+
+            // start thread for expiring orders daily
+            Thread thr = new Thread(BL.OrderExpiration.StartJob);
+            thr.Start();
 
             // DEBUG - generate test data for testing
             //GenerateTestData();
