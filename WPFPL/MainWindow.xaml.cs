@@ -378,7 +378,7 @@ namespace WPFPL
 
                 Util.Bl.CreateGuestRequest(guest);
 
-                Dialog("Success! Your request has been added.");
+                Dialog("Success! Your request has been submitted.");
             }
             catch (InvalidDataException error)
             {

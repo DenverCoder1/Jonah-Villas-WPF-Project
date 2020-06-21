@@ -20,7 +20,7 @@ namespace DAL
         private static IDAL instance = null;
 
         // XML configuration
-        private readonly XElement ConfigXElement;
+        private readonly XElement ConfigElement;
 
         private readonly string GuestRequestPath = @"guestRequests.xml";
         private readonly string HostingUnitPath = @"hostingUnits.xml";
@@ -61,20 +61,20 @@ namespace DAL
             // check for config files
             if (!File.Exists(ConfigPath))
             {
-                ConfigXElement = new XElement("CONFIG");
-                ConfigXElement.Add(new XElement("INITIAL_ORDER_KEY", Config.INITIAL_ORDER_KEY));
-                ConfigXElement.Add(new XElement("INITIAL_HOST_KEY", Config.INITIAL_HOST_KEY));
-                ConfigXElement.Add(new XElement("INITIAL_HOSTING_UNIT_KEY", Config.INITIAL_HOSTING_UNIT_KEY));
-                ConfigXElement.Add(new XElement("INITIAL_GUEST_REQUEST_KEY", Config.INITIAL_GUEST_REQUEST_KEY));
-                ConfigXElement.Save(ConfigPath);
+                ConfigElement = new XElement("Config");
+                ConfigElement.Add(new XElement("INITIAL_ORDER_KEY", Config.INITIAL_ORDER_KEY));
+                ConfigElement.Add(new XElement("INITIAL_HOST_KEY", Config.INITIAL_HOST_KEY));
+                ConfigElement.Add(new XElement("INITIAL_HOSTING_UNIT_KEY", Config.INITIAL_HOSTING_UNIT_KEY));
+                ConfigElement.Add(new XElement("INITIAL_GUEST_REQUEST_KEY", Config.INITIAL_GUEST_REQUEST_KEY));
+                ConfigElement.Save(ConfigPath);
             }
             else
             {
-                ConfigXElement = XElement.Load(ConfigPath);
-                long.TryParse(ConfigXElement.Element("INITIAL_ORDER_KEY").Value, out Config.INITIAL_ORDER_KEY);
-                long.TryParse(ConfigXElement.Element("INITIAL_HOST_KEY").Value, out Config.INITIAL_HOST_KEY);
-                long.TryParse(ConfigXElement.Element("INITIAL_HOSTING_UNIT_KEY").Value, out Config.INITIAL_HOSTING_UNIT_KEY);
-                long.TryParse(ConfigXElement.Element("INITIAL_GUEST_REQUEST_KEY").Value, out Config.INITIAL_GUEST_REQUEST_KEY);
+                ConfigElement = XElement.Load(ConfigPath);
+                long.TryParse(ConfigElement.Element("INITIAL_ORDER_KEY").Value, out Config.INITIAL_ORDER_KEY);
+                long.TryParse(ConfigElement.Element("INITIAL_HOST_KEY").Value, out Config.INITIAL_HOST_KEY);
+                long.TryParse(ConfigElement.Element("INITIAL_HOSTING_UNIT_KEY").Value, out Config.INITIAL_HOSTING_UNIT_KEY);
+                long.TryParse(ConfigElement.Element("INITIAL_GUEST_REQUEST_KEY").Value, out Config.INITIAL_GUEST_REQUEST_KEY);
             }
 
             SaveList(DataSource.GuestRequests, GuestRequestPath);
@@ -159,8 +159,8 @@ namespace DAL
                 DataSource.GuestRequests.Add(Cloning.Clone(guestRequest));
                 // save xml
                 SaveList(DataSource.GuestRequests, GuestRequestPath);
-                ConfigXElement.Element("INITIAL_GUEST_REQUEST_KEY").Value = Config.stGuestRequestKey.ToString();
-                ConfigXElement.Save(ConfigPath);
+                ConfigElement.Element("INITIAL_GUEST_REQUEST_KEY").Value = Config.stGuestRequestKey.ToString();
+                ConfigElement.Save(ConfigPath);
                 return true;
             }
 
@@ -235,8 +235,8 @@ namespace DAL
                 DataSource.HostingUnits.Add(Cloning.Clone(hostingUnit));
                 // save xml
                 SaveList(DataSource.HostingUnits, HostingUnitPath);
-                ConfigXElement.Element("INITIAL_HOSTING_UNIT_KEY").Value = Config.stHostingUnitKey.ToString();
-                ConfigXElement.Save(ConfigPath);
+                ConfigElement.Element("INITIAL_HOSTING_UNIT_KEY").Value = Config.stHostingUnitKey.ToString();
+                ConfigElement.Save(ConfigPath);
                 return true;
             }
             throw new ArgumentException($"Hosting Unit with key {hostingUnit.HostingUnitKey} already exists.");
@@ -334,8 +334,8 @@ namespace DAL
                 DataSource.Orders.Add(Cloning.Clone(order));
                 // save xml
                 SaveList(DataSource.Orders, OrderPath);
-                ConfigXElement.Element("INITIAL_ORDER_KEY").Value = Config.stOrderKey.ToString();
-                ConfigXElement.Save(ConfigPath);
+                ConfigElement.Element("INITIAL_ORDER_KEY").Value = Config.stOrderKey.ToString();
+                ConfigElement.Save(ConfigPath);
                 return true;
             }
 
@@ -410,8 +410,8 @@ namespace DAL
                 DataSource.Hosts.Add(Cloning.Clone(host));
                 // save xml
                 SaveList(DataSource.Hosts, HostPath);
-                ConfigXElement.Element("INITIAL_HOST_KEY").Value = Config.stHostKey.ToString();
-                ConfigXElement.Save(ConfigPath);
+                ConfigElement.Element("INITIAL_HOST_KEY").Value = Config.stHostKey.ToString();
+                ConfigElement.Save(ConfigPath);
                 return true;
             }
 

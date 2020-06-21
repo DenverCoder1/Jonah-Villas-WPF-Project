@@ -34,6 +34,8 @@ namespace WPFPL
             SignInControls = new List<Control>{
                 HostID
             };
+            if (Util.MyHost != null && Util.MyHost.HostKey > 0)
+                HostID.Text = Util.MyHost.HostKey.ToString();
             ShowControls();
         }
 

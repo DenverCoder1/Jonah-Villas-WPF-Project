@@ -15,7 +15,7 @@ namespace WPFPL
         public static string Convert(object value)
         {
             if (value == null) return "";
-            return value.ToString().ToLower();
+            return value.ToString().ToLower().Replace(" ","");
         }
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
