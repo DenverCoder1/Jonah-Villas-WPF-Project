@@ -15,6 +15,7 @@ namespace BE
         public GuestStatus Status { get; set; }
         public int NumAdults { get; set; }
         public int NumChildren { get; set; }
+        public DateTime InquiryDate { get; set; }
 
         // Guest info
         public string FirstName { get; set; }
@@ -32,6 +33,7 @@ namespace BE
             GuestRequestKey = Config.stGuestRequestKey++;
             Status = GuestStatus.Open;
             PrefAmenities = new SerializableDictionary<Amenity, PrefLevel>();
+            InquiryDate = DateTime.Today;
         }
         
         public GuestRequest(
@@ -51,6 +53,7 @@ namespace BE
             Status = GuestStatus.Open;
             EntryDate = entry;
             ReleaseDate = release;
+            InquiryDate = DateTime.Today;
             FirstName = fname;
             LastName = lname;
             Email = email;
@@ -66,9 +69,10 @@ namespace BE
         {
             StringBuilder output = new StringBuilder();
             output.Append($"#{GuestRequestKey} : {LastName}, {FirstName} | ");
-            output.Append($"{NumAdults} Adults, {NumChildren} Children | ");
-            output.Append($"{PrefType} in {PrefCity}, {PrefDistrict} | ");
-            output.Append($"{EntryDate:dd.MM.yyyy} - {ReleaseDate:dd.MM.yyyy} | ");
+            output.Append($"{NumAdults} Adult {NumChildren} Children | ");
+            output.Append($"{PrefType} | {PrefCity}, {PrefDistrict} | ");
+            output.Append($"{EntryDate:dd.MM.yyyy}-{ReleaseDate:dd.MM.yyyy} | ");
+            output.Append($"Inquiry: {InquiryDate:dd.MM.yyyy} | ");
             output.Append($"Status: {Status}\n");
             IEnumerable<Amenity> matches = from KeyValuePair<Amenity, PrefLevel> item in PrefAmenities
                                            where item.Value == PrefLevel.Required

@@ -9,6 +9,7 @@ using System.Net.Configuration;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BL
@@ -19,7 +20,7 @@ namespace BL
         /// Send an email in the background
         /// </summary>
         /// <param name="order">Order details</param>
-        public static void SendEmail(Order order, RunWorkerCompletedEventHandler RunWorkerCompleted = null)
+        public static void StartEmailBackgroundWorker(Order order, RunWorkerCompletedEventHandler RunWorkerCompleted = null)
         {
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
@@ -61,9 +62,10 @@ namespace BL
         }
 
         /// <summary>
-        /// Send an email and set background worker result
+        /// Send email (called from within the DoWork method)
         /// </summary>
-        public static void Worker_DoWork(object sender, DoWorkEventArgs e)
+        /// <param name="e">worker arguments</param>
+        private static object SendEmail(DoWorkEventArgs e)
         {
             IBL Bl = FactoryBL.GetBL();
 
@@ -100,7 +102,7 @@ namespace BL
             catch (Exception error)
             {
                 e.Result = error;
-                return;
+                return e.Result;
             }
 
             // MailMessage Create an object
@@ -138,9 +140,31 @@ namespace BL
             catch (Exception error)
             {
                 e.Result = error;
-                return;
+                return e.Result;
             }
             e.Result = true;
+            return e.Result;
+        }
+
+        /// <summary>
+        /// Send an email and set background worker result
+        /// </summary>
+        public static void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                object result = SendEmail(e);
+                if (result is Exception)
+                {
+                    // sleep 2 seconds and try again
+                    Thread.Sleep(2000);
+                }
+                else
+                {
+                    // exit loop and end thread
+                    break;
+                }
+            }
         }
     }
 }

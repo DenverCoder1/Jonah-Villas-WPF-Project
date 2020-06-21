@@ -595,7 +595,7 @@ namespace BL
                         order.EmailDeliveryDate = DateTime.Today;
 
                         // Send an email
-                        Mailing.SendEmail(order, RunWorkerCompleted);
+                        Mailing.StartEmailBackgroundWorker(order, RunWorkerCompleted);
 
                         // add order to data
                         return DalInstance.CreateOrder(Cloning.Clone(order));

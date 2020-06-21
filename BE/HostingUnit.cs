@@ -10,7 +10,7 @@ namespace BE
     {
         // Serial key
         public long HostingUnitKey { get; set; }
-        // Calendar
+        // Calendar of reserved dates - This method of storing reserved dates was approved by the professor
         public List<DateRange> Calendar { get; set; }
         // Owner
         public Host Owner { get; set; }

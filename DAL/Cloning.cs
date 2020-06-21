@@ -33,6 +33,7 @@ namespace DAL
                 Status = original.Status,
                 NumAdults = original.NumAdults,
                 NumChildren = original.NumChildren,
+                InquiryDate = original.InquiryDate,
 
                 // Guest info
                 FirstName = original.FirstName,
