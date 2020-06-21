@@ -1,4 +1,5 @@
-﻿using BL;
+﻿using BE;
+using BL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,6 +29,8 @@ namespace WPFPL.Admin
 
         public static string Search { get; set; }
 
+        private static int SortIndex { get; set; }
+
         public AdminHosts()
         {
             InitializeComponent();
@@ -48,8 +51,24 @@ namespace WPFPL.Admin
                     else { search = ""; }
                     // clear collection
                     HostCollection.Clear();
-                    // get items and filter by search
-                    foreach (BE.Host item in Util.Bl.GetHosts())
+                    // list of orders
+                    List<Host> sortedHosts = new List<Host>();
+                    // get orders and sort
+                    switch (SortIndex)
+                    {
+                        case -1:
+                        // Oldest first
+                        case 0: sortedHosts = Util.Bl.GetHosts().OrderBy(item => item.HostKey).ToList(); break;
+                        // Newest first
+                        case 1: sortedHosts = Util.Bl.GetHosts().OrderByDescending(item => item.HostKey).ToList(); break;
+                        // Last name A-Z
+                        case 2: sortedHosts = Util.Bl.GetHosts().OrderBy(item => item.LastName).ToList(); break;
+                        // First name A-Z
+                        case 3: sortedHosts = Util.Bl.GetHosts().OrderBy(item => item.FirstName).ToList(); break;
+                        default: sortedHosts = Util.Bl.GetHosts().OrderBy(item => item.HostKey).ToList(); break;
+                    }
+                    // add items to list and filter by search
+                    foreach (Host item in sortedHosts)
                     {
                         // search by all public fields
                         if (Normalize.Convert(item).Contains(search))
@@ -79,6 +98,12 @@ namespace WPFPL.Admin
         private void Clear_Search(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
+            Refresh();
+        }
+
+        private void Sort_Selection_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            SortIndex = sortBy.SelectedIndex;
             Refresh();
         }
     }

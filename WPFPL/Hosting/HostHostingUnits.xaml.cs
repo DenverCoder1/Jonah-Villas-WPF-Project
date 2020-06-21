@@ -28,7 +28,7 @@ namespace WPFPL
     /// </summary>
     public partial class HostHostingUnits : Page
     {
-        public MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
 
         public static ObservableCollection<string> HostingUnitCollection { get; set; }
 
@@ -36,7 +36,9 @@ namespace WPFPL
 
         public static ObservableCollection<string> CitiesCollection { get; set; }
 
-        public static string Search { get; set; }
+        private static string Search { get; set; }
+
+        private static int SortIndex { get; set; }
 
         public HostHostingUnits()
         {
@@ -58,8 +60,27 @@ namespace WPFPL
                     else { search = ""; }
                     // clear collection
                     HostingUnitCollection.Clear();
-                    // get items and filter by search
-                    foreach (BE.HostingUnit item in Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey))
+                    // list of hosting units
+                    List<HostingUnit> orderedHostingUnits = new List<HostingUnit>();
+                    // get hosting units and sort
+                    switch (SortIndex)
+                    {
+                        // Oldest first
+                        case -1:
+                        case 0: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderBy(item => item.HostingUnitKey).ToList(); break;
+                        // Newest first
+                        case 1: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderByDescending(item => item.HostingUnitKey).ToList(); break;   
+                        // Unit name A-Z
+                        case 2: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderBy(item => item.UnitName).ToList(); break;
+                        // Unit city A-Z
+                        case 3: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderBy(item => item.UnitCity.ToString()).ToList(); break;
+                        // Unit district A-Z
+                        case 4: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderBy(item => item.UnitDistrict.ToString()).ToList(); break;
+                        // Newest first
+                        default: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderBy(item => item.HostingUnitKey).ToList(); break;
+                    }
+                    // add items to list and filter by search
+                    foreach (HostingUnit item in orderedHostingUnits)
                     {
                         // search by all public fields
                         if (Normalize.Convert(item).Contains(search))
@@ -260,6 +281,12 @@ namespace WPFPL
         private void Clear_Search(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
+            Refresh();
+        }
+
+        private void Sort_Selection_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            SortIndex = sortBy.SelectedIndex;
             Refresh();
         }
     }

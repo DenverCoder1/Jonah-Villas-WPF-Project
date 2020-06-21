@@ -20,11 +20,29 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
-            <TextBlock FontFamily="{StaticResource OpenSans}"
-                       FontSize="16px"
-                       Margin="0 5 0 10">
-                All Hosting Units
-            </TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontFamily="{StaticResource OpenSans}"
+                           FontSize="16px"
+                           Margin="0 5 0 10">
+                    All Hosting Units
+                </TextBlock>
+                <md:PackIcon Kind="Sort"
+                             VerticalAlignment="Center"
+                             Style="{StaticResource LabelIcon}"
+                             Margin="11 0 4 2" />
+                <ComboBox x:Name="sortBy"
+                          VerticalAlignment="Center"
+                          Width="114"
+                          SelectionChanged="Sort_Selection_Changed"
+                          SelectedIndex="0"
+                          Margin="0 0 0 2">
+                    <ComboBoxItem>Oldest first</ComboBoxItem>
+                    <ComboBoxItem>Newest first</ComboBoxItem>
+                    <ComboBoxItem>Unit name A-Z</ComboBoxItem>
+                    <ComboBoxItem>Unit city A-Z</ComboBoxItem>
+                    <ComboBoxItem>Unit district A-Z</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
             <ListBox x:Name="HostingUnits"
                      Width="270"
                      Height="280"

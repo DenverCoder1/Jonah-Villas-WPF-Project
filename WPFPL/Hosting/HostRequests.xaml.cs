@@ -35,6 +35,8 @@ namespace WPFPL
 
         public static string Search { get; set; }
 
+        private static int SortIndex { get; set; }
+
         public HostRequests()
         {
             InitializeComponent();
@@ -56,8 +58,40 @@ namespace WPFPL
                     else { search = ""; }
                     // clear collection
                     RequestCollection.Clear();
-                    // get items and filter by search
-                    foreach (GuestRequest item in Util.Bl.GetOpenGuestRequests())
+                    // list of requests
+                    List<GuestRequest> orderedRequests = new List<GuestRequest>();
+                    // get requests and sort
+                    switch (SortIndex)
+                    {
+                        case -1:
+                        // Oldest first
+                        case 0: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
+                        // Newest first
+                        case 1: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderByDescending(item => item.GuestRequestKey).ToList(); break;
+                        // Last name A-Z
+                        case 2: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.LastName).ToList(); break;
+                        // First name A-Z
+                        case 3: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.FirstName).ToList(); break;
+                        // Fewest guests first
+                        case 4: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.NumAdults + item.NumChildren).ToList(); break;
+                        // Most guests first
+                        case 5: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderByDescending(item => item.NumAdults + item.NumChildren).ToList(); break;
+                        // Unit Type A-Z
+                        case 6: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.PrefType.ToString()).ToList(); break;
+                        // Unit City A-Z
+                        case 7: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.PrefCity.ToString()).ToList(); break;
+                        // Unit District A-Z
+                        case 8: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.PrefDistrict.ToString()).ToList(); break;
+                        // Entry date soonest first
+                        case 9: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.EntryDate).ToList(); break;
+                        // Entry date furthest first
+                        case 10: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderByDescending(item => item.EntryDate).ToList(); break;
+                        // Request Status A-Z
+                        case 11: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.Status.ToString()).ToList(); break;
+                        default: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
+                    }
+                    // add items to list and filter by search
+                    foreach (GuestRequest item in orderedRequests)
                     {
                         // search by all public fields
                         if (Normalize.Convert(item).Contains(search))
@@ -191,6 +225,12 @@ namespace WPFPL
         private void Clear_Search(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
+            Refresh();
+        }
+
+        private void Sort_Selection_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            SortIndex = sortBy.SelectedIndex;
             Refresh();
         }
     }

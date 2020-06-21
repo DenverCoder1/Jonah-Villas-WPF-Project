@@ -33,6 +33,8 @@ namespace WPFPL
 
         public object PascalCaseConverter { get; private set; }
 
+        private static int SortIndex { get; set; }
+
         public HostOrders()
         {
             InitializeComponent();
@@ -53,8 +55,34 @@ namespace WPFPL
                     else { search = ""; }
                     // clear collection
                     OrdersCollection.Clear();
-                    // get items and filter by search
-                    foreach (BE.Order item in Util.Bl.GetHostOrders(Util.MyHost.HostKey))
+                    // list of orders
+                    List<Order> sortedOrders = new List<Order>();
+                    // get orders and sort
+                    switch (SortIndex)
+                    {
+                        case -1:
+                        // Oldest first
+                        case 0: sortedOrders = Util.Bl.GetHostOrders(Util.MyHost.HostKey).OrderBy(item => item.OrderKey).ToList(); break;
+                        // Newest first
+                        case 1: sortedOrders = Util.Bl.GetHostOrders(Util.MyHost.HostKey).OrderByDescending(item => item.OrderKey).ToList(); break;
+                        // Hosting Unit ID increasing
+                        case 2: sortedOrders = Util.Bl.GetHostOrders(Util.MyHost.HostKey).OrderBy(item => item.HostingUnitKey).ToList(); break;
+                        // Hosting Unit ID decreasing
+                        case 3: sortedOrders = Util.Bl.GetHostOrders(Util.MyHost.HostKey).OrderByDescending(item => item.HostingUnitKey).ToList(); break;
+                        // Guest Request ID increasing
+                        case 4: sortedOrders = Util.Bl.GetHostOrders(Util.MyHost.HostKey).OrderBy(item => item.GuestRequestKey).ToList(); break;
+                        // Guest Request ID decreasing
+                        case 5: sortedOrders = Util.Bl.GetHostOrders(Util.MyHost.HostKey).OrderByDescending(item => item.GuestRequestKey).ToList(); break;
+                        // Email date first to last
+                        case 6: sortedOrders = Util.Bl.GetHostOrders(Util.MyHost.HostKey).OrderBy(item => item.EmailDeliveryDate).ToList(); break;
+                        // Email date last to first
+                        case 7: sortedOrders = Util.Bl.GetHostOrders(Util.MyHost.HostKey).OrderByDescending(item => item.EmailDeliveryDate).ToList(); break;
+                        // Order Status A-Z
+                        case 8: sortedOrders = Util.Bl.GetHostOrders(Util.MyHost.HostKey).OrderBy(item => item.Status.ToString()).ToList(); break;
+                        default: sortedOrders = Util.Bl.GetHostOrders(Util.MyHost.HostKey).OrderBy(item => item.OrderKey).ToList(); break;
+                    }
+                    // add items to list and filter by search
+                    foreach (Order item in sortedOrders)
                     {
                         // search by all public fields
                         if (Normalize.Convert(item).Contains(search))
@@ -150,6 +178,12 @@ namespace WPFPL
         private void Clear_Search(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
+            Refresh();
+        }
+
+        private void Sort_Selection_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            SortIndex = sortBy.SelectedIndex;
             Refresh();
         }
     }

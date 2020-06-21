@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:WPFPL.Admin"
       xmlns:p="clr-namespace:WPFPL"
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d"
       d:DesignHeight="450"
       d:DesignWidth="800"
@@ -14,11 +15,28 @@
     </Page.Resources>
     <Grid>
         <StackPanel>
-            <TextBlock FontFamily="{StaticResource OpenSans}"
-                       FontSize="16px"
-                       Margin="0 5 0 10">
-                All Hosts
-            </TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontFamily="{StaticResource OpenSans}"
+                           FontSize="16px"
+                           Margin="0 5 0 10">
+                    All Hosts
+                </TextBlock>
+                <md:PackIcon Kind="Sort"
+                             VerticalAlignment="Center"
+                             Style="{StaticResource LabelIcon}"
+                             Margin="11 0 4 2" />
+                <ComboBox x:Name="sortBy"
+                          VerticalAlignment="Center"
+                          Width="170"
+                          SelectionChanged="Sort_Selection_Changed"
+                          SelectedIndex="0"
+                          Margin="0 0 0 2">
+                    <ComboBoxItem>Oldest first</ComboBoxItem>
+                    <ComboBoxItem>Newest first</ComboBoxItem>
+                    <ComboBoxItem>Last name A-Z</ComboBoxItem>
+                    <ComboBoxItem>First name A-Z</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
             <ListBox x:Name="Hosts"
                      Width="Auto"
                      Height="280"

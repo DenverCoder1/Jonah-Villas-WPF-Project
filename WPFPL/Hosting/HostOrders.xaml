@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:p="clr-namespace:WPFPL"
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HostOrders">
@@ -12,11 +13,33 @@
     </Page.Resources>
     <Grid>
         <StackPanel>
-            <TextBlock FontFamily="{StaticResource OpenSans}"
-                       FontSize="16px"
-                       Margin="0 5 0 10">
-                Your Orders
-            </TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontFamily="{StaticResource OpenSans}"
+                           FontSize="16px"
+                           Margin="0 5 0 10">
+                    Your Orders
+                </TextBlock>
+                <md:PackIcon Kind="Sort"
+                             VerticalAlignment="Center"
+                             Style="{StaticResource LabelIcon}"
+                             Margin="11 0 4 2" />
+                <ComboBox x:Name="sortBy"
+                          VerticalAlignment="Center"
+                          Width="170"
+                          SelectionChanged="Sort_Selection_Changed"
+                          SelectedIndex="0"
+                          Margin="0 0 0 3">
+                    <ComboBoxItem>Oldest first</ComboBoxItem>
+                    <ComboBoxItem>Newest first</ComboBoxItem>
+                    <ComboBoxItem>Hosting Unit ID increasing</ComboBoxItem>
+                    <ComboBoxItem>Hosting Unit ID decreasing</ComboBoxItem>
+                    <ComboBoxItem>Guest Request ID increasing</ComboBoxItem>
+                    <ComboBoxItem>Guest Request ID decreasing</ComboBoxItem>
+                    <ComboBoxItem>Email date first to last</ComboBoxItem>
+                    <ComboBoxItem>Email date last to first</ComboBoxItem>
+                    <ComboBoxItem>Order Status A-Z</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
             <ListBox x:Name="Orders"
                      Width="Auto"
                      Height="240"
