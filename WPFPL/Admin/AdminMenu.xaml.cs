@@ -47,5 +47,10 @@ namespace WPFPL.Admin
         {
             mainWindow.AdminFrame.Navigate(new AdminHosts());
         }
+
+        private void Exit_Button_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindow.AdminFrame.Navigate(new AdminSignIn());
+        }
     }
 }

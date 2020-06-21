@@ -14,9 +14,10 @@
             <TextBlock x:Name="YourHostID"
                        FontFamily="{StaticResource OpenSans}"
                        FontSize="16px"
-                       Margin="0 8 0 0" />
+                       FontWeight="Light"
+                       Margin="0 12 0 4" />
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                    Width="188px"
+                    Width="190px"
                     HorizontalAlignment="Left"
                     Margin="0 15 0 0"
                     Click="View_Hosting_Units_Page">
@@ -27,7 +28,7 @@
                 </StackPanel>
             </Button>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                    Width="188px"
+                    Width="190px"
                     HorizontalAlignment="Left"
                     Margin="0 15 0 0"
                     Click="View_Requests">
@@ -38,7 +39,7 @@
                 </StackPanel>
             </Button>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                    Width="188px"
+                    Width="190px"
                     HorizontalAlignment="Left"
                     Margin="0 15 0 0"
                     Click="View_Orders">
@@ -49,11 +50,15 @@
                 </StackPanel>
             </Button>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                    Width="188px"
+                    Width="190px"
                     HorizontalAlignment="Left"
                     Margin="0 15 0 0"
-                    Click="Return_To_Sign_In"
-                    Content="🡄  EXIT HOSTING AREA">
+                    Click="Return_To_Sign_In">
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="ExitRun"
+                                 Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Text="EXIT HOSTING AREA" />
+                </StackPanel>
             </Button>
         </StackPanel>
     </Grid>

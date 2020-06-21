@@ -31,8 +31,6 @@ namespace WPFPL
     {
         private readonly MainWindow mainWindow;
 
-        public static List<Control> SignUpControls { get; private set; }
-
         private static XDocument BankBranchXML { get; set; }
 
         private static ObservableCollection<string> BankCollection { get; set; }
@@ -59,11 +57,6 @@ namespace WPFPL
             hBankCity.ItemsSource = BankCityCollection;
             hBankBranch.ItemsSource = BankBranchCollection;
             ListBanks();
-            SignUpControls = new List<Control>{
-                hFirstName, hLastName, hEmail, hPhone,
-                hBank, hBankBranch, hBankCity, hRoutingNumber
-            };
-            ShowControls();
         }
 
         public static void ListBanks()
@@ -156,16 +149,6 @@ namespace WPFPL
                                 BranchAddress = item.Element("Address").Value,
                                 BranchCity = item.Element("City").Value
                             }).ToList();
-        }
-
-        public static void ShowControls()
-        {
-            Util.SetTabControlsVisibility(SignUpControls, true);
-        }
-
-        public static void HideControls()
-        {
-            Util.SetTabControlsVisibility(SignUpControls, false);
         }
 
         private void Create_Account(object sender, RoutedEventArgs e)

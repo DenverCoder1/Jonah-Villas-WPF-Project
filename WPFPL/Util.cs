@@ -41,19 +41,5 @@ namespace WPFPL
             }
             return mainWindow;
         }
-
-        /// <summary>
-        /// Set all input control borders from a given tab
-        /// to be visible or not visible
-        /// </summary>
-        public static void SetTabControlsVisibility(List<Control> TabControls, bool visible)
-        {
-            int VISIBLE_CONTROL_WIDTH = 160;
-            foreach (Control ctrl in TabControls)
-            {
-                ctrl.Width = visible ? VISIBLE_CONTROL_WIDTH : 0;
-                ctrl.BorderThickness = visible ? new Thickness(0, 0, 0, 1) : new Thickness(0);
-            }
-        }
     }
 }

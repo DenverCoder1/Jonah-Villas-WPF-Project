@@ -30,18 +30,20 @@
                              VerticalAlignment="Center"
                              Style="{StaticResource LabelIcon}"
                              Margin="11 0 4 2" />
-                <ComboBox x:Name="sortBy"
-                          VerticalAlignment="Center"
-                          Width="114"
-                          SelectionChanged="Sort_Selection_Changed"
-                          SelectedIndex="0"
-                          Margin="0 0 0 2">
-                    <ComboBoxItem>Oldest first</ComboBoxItem>
-                    <ComboBoxItem>Newest first</ComboBoxItem>
-                    <ComboBoxItem>Unit name A-Z</ComboBoxItem>
-                    <ComboBoxItem>Unit city A-Z</ComboBoxItem>
-                    <ComboBoxItem>Unit district A-Z</ComboBoxItem>
-                </ComboBox>
+                <AdornerDecorator>
+                    <ComboBox x:Name="sortBy"
+                              VerticalAlignment="Center"
+                              Width="114"
+                              SelectionChanged="Sort_Selection_Changed"
+                              SelectedIndex="0"
+                              Margin="0 0 0 2">
+                        <ComboBoxItem>Oldest first</ComboBoxItem>
+                        <ComboBoxItem>Newest first</ComboBoxItem>
+                        <ComboBoxItem>Unit name A-Z</ComboBoxItem>
+                        <ComboBoxItem>Unit city A-Z</ComboBoxItem>
+                        <ComboBoxItem>Unit district A-Z</ComboBoxItem>
+                    </ComboBox>
+                </AdornerDecorator>
             </StackPanel>
             <ListBox x:Name="HostingUnits"
                      Width="270"
@@ -94,8 +96,12 @@
                     Width="Auto"
                     HorizontalAlignment="Left"
                     Margin="0 10 0 0"
-                    Click="Return_To_Menu"
-                    Content="🡄  RETURN TO MENU">
+                    Click="Return_To_Menu">
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="ArrowLeft"
+                                 Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Text="RETURN TO MENU" />
+                </StackPanel>
             </Button>
         </StackPanel>
         <StackPanel Grid.Column="1"

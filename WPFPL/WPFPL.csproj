@@ -56,6 +56,7 @@
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -92,6 +93,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Admin\AdminRequests.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Admin\AdminSignIn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -134,6 +139,9 @@
     </Compile>
     <Compile Include="Admin\AdminRequests.xaml.cs">
       <DependentUpon>AdminRequests.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AdminSignIn.xaml.cs">
+      <DependentUpon>AdminSignIn.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -196,6 +204,7 @@
     <Resource Include="Fonts\OpenSans-Light.ttf" />
     <Resource Include="Fonts\OpenSans-LightItalic.ttf" />
     <Resource Include="Fonts\OpenSans-Regular.ttf" />
+    <Resource Include="Fonts\password.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

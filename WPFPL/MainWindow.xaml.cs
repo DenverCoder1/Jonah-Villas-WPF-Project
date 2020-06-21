@@ -52,7 +52,7 @@ namespace WPFPL
             DynamicCityList = new ObservableCollection<string> { "Select district first." };
             gPrefCity.ItemsSource = DynamicCityList;
             HostingFrame.Navigate(new HostSignIn());
-            AdminFrame.Navigate(new AdminMenu());
+            AdminFrame.Navigate(new AdminSignIn());
             MyDialog.IsOpen = false;
             this.SizeChanged += ChooseAmenityListBoxStyle;
             this.DataContext = this;
@@ -60,124 +60,6 @@ namespace WPFPL
             // start thread for expiring orders daily
             Thread thr = new Thread(BL.OrderExpiration.StartJob);
             thr.Start();
-
-            // DEBUG - generate test data for testing
-            //GenerateTestData();
-        }
-
-        /// <summary>
-        /// Create entries on startup for testing purposes
-        /// </summary>
-        private void GenerateTestData()
-        {
-            /* DEBUG */
-            try
-            {
-                DateTime entry = DateTime.Today.AddDays(5);
-                DateTime release = DateTime.Today.AddDays(10);
-                string fname = "Jonah";
-                string lname = "Lawrence";
-                string email = "lawrence@g.jct.ac.il";
-                District region = District.TelAviv;
-                City city = City.BneiBrak;
-                BE.TypeOfPlace type = BE.TypeOfPlace.Apartment;
-                SerializableDictionary<Amenity, PrefLevel> amenities = new SerializableDictionary<Amenity, PrefLevel>
-                {
-                    [Amenity.TV] = PrefLevel.Required,
-                    [Amenity.Kitchen] = PrefLevel.Required,
-                    [Amenity.AirConditioning] = PrefLevel.Required,
-                    [Amenity.Breakfast] = PrefLevel.Required,
-                    [Amenity.PrivateBathroom] = PrefLevel.Required,
-                    [Amenity.SmokeAlarm] = PrefLevel.Required,
-                    [Amenity.Towels] = PrefLevel.Required,
-                    [Amenity.Workspace] = PrefLevel.Required
-                };
-
-                GuestRequest guest1 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 2, 1, amenities);
-
-                Util.Bl.CreateGuestRequest(guest1);
-
-                entry = DateTime.Today.AddDays(8);
-                release = DateTime.Today.AddDays(9);
-                fname = "Yonah";
-                lname = "Lawrence";
-                email = "lawrence@g.jct.ac.il";
-                region = District.Haifa;
-                city = City.Hadera;
-                type = BE.TypeOfPlace.PrivateRoom;
-                amenities = new SerializableDictionary<Amenity, PrefLevel>
-                {
-                    [Amenity.TV] = PrefLevel.Required,
-                    [Amenity.Pool] = PrefLevel.Required,
-                    [Amenity.Kitchen] = PrefLevel.Required
-                };
-
-                GuestRequest guest2 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 4, 3, amenities);
-
-                Util.Bl.CreateGuestRequest(guest2);
-
-                entry = DateTime.Today.AddDays(7);
-                release = DateTime.Today.AddDays(17);
-                fname = "Jonasan";
-                lname = "Lawrence";
-                email = "lawrence@g.jct.ac.il";
-                region = District.Jerusalem;
-                city = City.BeitShemesh;
-                type = BE.TypeOfPlace.EntireHome;
-                amenities = new SerializableDictionary<Amenity, PrefLevel>
-                {
-                    [Amenity.Laundry] = PrefLevel.Required,
-                    [Amenity.Gym] = PrefLevel.Required,
-                    [Amenity.Kitchen] = PrefLevel.Required
-                };
-
-
-                GuestRequest guest3 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 2, 0, amenities);
-
-                Util.Bl.CreateGuestRequest(guest3);
-
-                entry = DateTime.Today.AddDays(18);
-                release = DateTime.Today.AddDays(20);
-                fname = "Jonasan";
-                lname = "Rorensu";
-                email = "lawrence@g.jct.ac.il";
-                region = District.Jerusalem;
-                city = City.BeitShemesh;
-                type = BE.TypeOfPlace.Shared;
-                amenities = new SerializableDictionary<Amenity, PrefLevel>
-                {
-                    [Amenity.Laundry] = PrefLevel.Required,
-                    [Amenity.Pool] = PrefLevel.Required,
-                    [Amenity.TV] = PrefLevel.Required
-                };
-
-
-                GuestRequest guest4 = new GuestRequest(entry, release, fname, lname, email, region, city, type, 1, 0, amenities);
-
-                Util.Bl.CreateGuestRequest(guest4);
-
-                Host host1 = new Host("Dave", "Summers", "dave@email.com", 6456346343, new BankBranch(), 543646545);
-
-                Util.Bl.CreateHost(host1);
-
-                Host host2 = new Host("Saul", "Black", "saul@email.com", 4363466463, new BankBranch(), 6364636456);
-
-                Util.Bl.CreateHost(host2);
-
-                HostingUnit hostingUnit1 = new HostingUnit(host1, "myUnit", region, city);
-                Util.Bl.CreateHostingUnit(hostingUnit1);
-
-                HostingUnit hostingUnit2 = new HostingUnit(host2, "myUnit2", District.Haifa, City.Hadera);
-                Util.Bl.CreateHostingUnit(hostingUnit2);
-
-                Order order1 = new Order(hostingUnit1.HostingUnitKey, guest3.GuestRequestKey);
-                Util.Bl.CreateOrder(order1);
-            }
-            catch (Exception error)
-            {
-                MySnackbar.MessageQueue.Enqueue(error.Message);
-            }
-            /* DEBUG */
         }
 
         /// <summary>
@@ -251,7 +133,7 @@ namespace WPFPL
         }
 
         /// <summary>
-        /// Change to a different tab in Main Tab Control
+        /// Programmatically change to a different tab in Main Tab Control
         /// Modifies the SelectedIndex attribute based on sender's tag
         /// </summary>
         private void ChangeTab(object sender, RoutedEventArgs e)
@@ -267,37 +149,22 @@ namespace WPFPL
         /// other tabs that should not be visible and refetch list data
         /// </summary>
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // List of input controls in Tab 1
-            List<Control> Tab1Controls = new List<Control>{
-                gFirstName, gLastName, gEmail,
-                gEntryDate, gReleaseDate, gPrefDistrict,
-                gPrefCity, gNumAdults, gNumChildren, gPrefType
-            };
-
+        { 
             // Home
             if (CurrentTab != Tab0 && Tab0.IsSelected)
             {
                 CurrentTab = Tab0;
-                Util.SetTabControlsVisibility(Tab1Controls, false);
-                if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
-                if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
             }
             // Guest Request
             else if (CurrentTab != Tab1 && Tab1.IsSelected)
             {
                 CurrentTab = Tab1;
-                Util.SetTabControlsVisibility(Tab1Controls, true);
-                if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
-                if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
             }
             // Hosting
             else if (CurrentTab != Tab2 && Tab2.IsSelected)
             {
                 CurrentTab = Tab2;
-                Util.SetTabControlsVisibility(Tab1Controls, false);
-                if (HostSignUp.SignUpControls != null) HostSignUp.ShowControls();
-                if (HostSignIn.SignInControls != null) HostSignIn.ShowControls();
+                // refresh lists in case they have changed since last tab visit
                 HostRequests.Refresh();
                 HostOrders.Refresh();
                 HostHostingUnits.Refresh();
@@ -306,9 +173,7 @@ namespace WPFPL
             else if (CurrentTab != Tab3 && Tab3.IsSelected)
             {
                 CurrentTab = Tab3;
-                Util.SetTabControlsVisibility(Tab1Controls, false);
-                if (HostSignUp.SignUpControls != null) HostSignUp.HideControls();
-                if (HostSignIn.SignInControls != null) HostSignIn.HideControls();
+                // refresh lists in case they have changed since last tab visit
                 AdminRequests.Refresh();
                 AdminOrders.Refresh();
                 AdminHostingUnits.Refresh();

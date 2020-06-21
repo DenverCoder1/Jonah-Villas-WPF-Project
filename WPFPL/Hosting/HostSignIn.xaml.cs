@@ -25,28 +25,12 @@ namespace WPFPL
     public partial class HostSignIn : Page
     {
         public MainWindow mainWindow;
-
-        public static List<Control> SignInControls;
         public HostSignIn()
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
-            SignInControls = new List<Control>{
-                HostID
-            };
             if (Util.MyHost != null && Util.MyHost.HostKey > 0)
                 HostID.Text = Util.MyHost.HostKey.ToString();
-            ShowControls();
-        }
-
-        public static void ShowControls()
-        {
-            Util.SetTabControlsVisibility(SignInControls, true);
-        }
-
-        public static void HideControls()
-        {
-            Util.SetTabControlsVisibility(SignInControls, false);
         }
 
         private void Host_Enter_Button_Click(object sender, RoutedEventArgs e)

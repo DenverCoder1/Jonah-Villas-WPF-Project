@@ -1,0 +1,63 @@
+﻿<Page x:Class="WPFPL.Admin.AdminSignIn"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WPFPL.Admin"
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:p="clr-namespace:WPFPL"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AdminSignIn">
+
+    <Grid>
+        <StackPanel>
+            <TextBlock FontFamily="{StaticResource OpenSans}"
+                       FontWeight="Light"
+                       FontSize="16px"
+                       Margin="0 12 0 12">
+			    Enter your credentials
+            </TextBlock>
+            <AdornerDecorator Margin="0 0 0 12">
+                <TextBox x:Name="AdminUsername"
+                         HorizontalAlignment="Left"
+                         Width="140"
+                         Height="26"
+                         VerticalAlignment="Center">
+                    <p:PlaceholderService.Placeholder>
+                        <TextBlock>Username</TextBlock>
+                    </p:PlaceholderService.Placeholder>
+                </TextBox>
+            </AdornerDecorator>
+            <AdornerDecorator Margin="0 0 0 10">
+                <TextBox x:Name="AdminPassword"
+                         HorizontalAlignment="Left"
+                         Width="140"
+                         Height="26"
+                         VerticalAlignment="Center"
+                         FontFamily="{StaticResource Password}"
+                         FontSize="14">
+                    <p:PlaceholderService.Placeholder>
+                        <TextBlock>Password</TextBlock>
+                    </p:PlaceholderService.Placeholder>
+                </TextBox>
+            </AdornerDecorator>
+            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                    Width="Auto"
+                    HorizontalAlignment="Left"
+                    Margin="0 15 0 0"
+                    Click="Admin_Enter_Button_Click">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="ENTER ADMIN PANEL" />
+                    <md:PackIcon Kind="ArrowRight"
+                                 Style="{StaticResource ButtonIconRight}" />
+                </StackPanel>
+            </Button>
+            <TextBlock Text="Hint: Username is 'admin' and password is 'admin'." 
+                       Foreground="#333"
+                       Margin="0 20 0 0"
+                       FontFamily="{StaticResource OpenSans}"
+                       FontWeight="Light"/>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -134,6 +134,15 @@
                 <Setter Property="Margin"
                         Value="0 0 8 0" />
             </Style>
+            <Style x:Key="ButtonIconRight"
+                   TargetType="{x:Type md:PackIcon}">
+                <Setter Property="Width"
+                        Value="18px" />
+                <Setter Property="Height"
+                        Value="18px" />
+                <Setter Property="Margin"
+                        Value="8 0 0 0" />
+            </Style>
 
             <!-- Custom list box styles -->
             <Style x:Key="MyMaterialDesignListBox"
@@ -150,6 +159,9 @@
 
             <!-- Include Open Sans Font -->
             <FontFamily x:Key="OpenSans">pack://application:,,,/Fonts/#Open Sans</FontFamily>
+
+            <!-- Include Password Font -->
+            <FontFamily x:Key="Password">pack://application:,,,/Fonts/#password</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

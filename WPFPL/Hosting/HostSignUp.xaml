@@ -50,10 +50,11 @@
                         </StackPanel>
                     </Label.Content>
                 </Label>
-                <TextBox x:Name="hFirstName"
-                         Grid.Row="0"
-                         Grid.Column="1"
-                         Style="{StaticResource FormTextBox}" />
+                <AdornerDecorator Grid.Row="0"
+                                  Grid.Column="1">
+                    <TextBox x:Name="hFirstName"
+                             Style="{StaticResource FormTextBox}" />
+                </AdornerDecorator>
                 <Label Grid.Row="1"
                        Grid.Column="0"
                        Style="{StaticResource FormLabel}">
@@ -65,10 +66,11 @@
                         </StackPanel>
                     </Label.Content>
                 </Label>
-                <TextBox x:Name="hLastName"
-                         Grid.Row="1"
-                         Grid.Column="1"
-                         Style="{StaticResource FormTextBox}" />
+                <AdornerDecorator Grid.Row="1"
+                                  Grid.Column="1">
+                    <TextBox x:Name="hLastName"
+                             Style="{StaticResource FormTextBox}" />
+                </AdornerDecorator>
                 <Label Grid.Row="2"
                        Grid.Column="0"
                        Style="{StaticResource FormLabel}">
@@ -80,10 +82,11 @@
                         </StackPanel>
                     </Label.Content>
                 </Label>
-                <TextBox x:Name="hEmail"
-                         Grid.Row="2"
-                         Grid.Column="1"
-                         Style="{StaticResource FormTextBox}" />
+                <AdornerDecorator Grid.Row="2"
+                                  Grid.Column="1">
+                    <TextBox x:Name="hEmail"
+                             Style="{StaticResource FormTextBox}" />
+                </AdornerDecorator>
                 <Label Grid.Row="3"
                        Grid.Column="0"
                        Style="{StaticResource FormLabel}">
@@ -95,12 +98,13 @@
                         </StackPanel>
                     </Label.Content>
                 </Label>
-                <TextBox x:Name="hPhone"
-                         Grid.Row="3"
-                         Grid.Column="1"
-                         Style="{StaticResource FormTextBox}"
-                         PreviewTextInput="Preview_Numbers"
-                         DataObject.Pasting="Pasting_Numbers"/>
+                <AdornerDecorator Grid.Row="3"
+                                  Grid.Column="1">
+                    <TextBox x:Name="hPhone"
+                             Style="{StaticResource FormTextBox}"
+                             PreviewTextInput="Preview_Numbers"
+                             DataObject.Pasting="Pasting_Numbers" />
+                </AdornerDecorator>
                 <Label Grid.Row="4"
                        Grid.Column="0"
                        Style="{StaticResource FormLabel}">
@@ -112,11 +116,12 @@
                         </StackPanel>
                     </Label.Content>
                 </Label>
-                <ComboBox x:Name="hBank"
-                          Grid.Row="4"
-                          Grid.Column="1"
-                          Style="{StaticResource FormComboBox}"
-                          SelectionChanged="Bank_SelectionChanged" />
+                <AdornerDecorator Grid.Row="4"
+                                  Grid.Column="1">
+                    <ComboBox x:Name="hBank"
+                              Style="{StaticResource FormComboBox}"
+                              SelectionChanged="Bank_SelectionChanged" />
+                </AdornerDecorator>
                 <Label Grid.Row="5"
                        Grid.Column="0"
                        Style="{StaticResource FormLabel}">
@@ -128,11 +133,12 @@
                         </StackPanel>
                     </Label.Content>
                 </Label>
-                <ComboBox x:Name="hBankCity"
-                          Grid.Row="5"
-                          Grid.Column="1"
-                          Style="{StaticResource FormComboBox}"
-                          SelectionChanged="BankCity_SelectionChanged" />
+                <AdornerDecorator Grid.Row="5"
+                                  Grid.Column="1">
+                    <ComboBox x:Name="hBankCity"
+                              Style="{StaticResource FormComboBox}"
+                              SelectionChanged="BankCity_SelectionChanged" />
+                </AdornerDecorator>
                 <Label Grid.Row="6"
                        Grid.Column="0"
                        Style="{StaticResource FormLabel}">
@@ -144,10 +150,11 @@
                         </StackPanel>
                     </Label.Content>
                 </Label>
-                <ComboBox x:Name="hBankBranch"
-                          Grid.Row="6"
-                          Grid.Column="1"
-                          Style="{StaticResource FormComboBox}" />
+                <AdornerDecorator Grid.Row="6"
+                                  Grid.Column="1">
+                    <ComboBox x:Name="hBankBranch"
+                              Style="{StaticResource FormComboBox}" />
+                </AdornerDecorator>
                 <Label Grid.Row="7"
                        Grid.Column="0"
                        Style="{StaticResource FormLabel}">
@@ -159,12 +166,13 @@
                         </StackPanel>
                     </Label.Content>
                 </Label>
-                <TextBox x:Name="hRoutingNumber"
-                         Grid.Row="7"
-                         Grid.Column="1"
-                         Style="{StaticResource FormTextBox}"
-                         PreviewTextInput="Preview_Numbers"
-                         DataObject.Pasting="Pasting_Numbers" />
+                <AdornerDecorator Grid.Row="7"
+                                  Grid.Column="1">
+                    <TextBox x:Name="hRoutingNumber"
+                             Style="{StaticResource FormTextBox}"
+                             PreviewTextInput="Preview_Numbers"
+                             DataObject.Pasting="Pasting_Numbers" />
+                </AdornerDecorator>
             </Grid>
 
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
@@ -182,8 +190,12 @@
                     HorizontalAlignment="Left"
                     Margin="0 15 0 0"
                     Click="Return_To_Sign_In"
-                    Width="165px"
-                    Content="🡄  BACK TO SIGN IN">
+                    Width="170px">
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="ArrowLeft"
+                                 Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Text="BACK TO SIGN IN" />
+                </StackPanel>
             </Button>
         </StackPanel>
     </Grid>

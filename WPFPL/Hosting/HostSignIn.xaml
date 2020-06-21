@@ -14,8 +14,8 @@
             <TextBlock FontFamily="{StaticResource OpenSans}"
                        FontWeight="Light"
                        FontSize="16px"
-                       Margin="0 20 0 12">
-			    Enter your Host ID:
+                       Margin="0 12 0 12">
+			    Enter your Host ID
             </TextBlock>
             <AdornerDecorator>
                 <TextBox x:Name="HostID"
@@ -36,7 +36,11 @@
                     HorizontalAlignment="Left"
                     Margin="0 15 0 0"
                     Click="Host_Enter_Button_Click">
-                ENTER HOSTING AREA 🡆
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="ENTER HOSTING AREA" />
+                    <md:PackIcon Kind="ArrowRight"
+                                 Style="{StaticResource ButtonIconRight}" />
+                </StackPanel>
             </Button>
             <TextBlock FontFamily="{StaticResource OpenSans}"
                        FontWeight="Light"

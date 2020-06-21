@@ -55,6 +55,17 @@
                     <TextBlock Text="QUERY HOSTS" />
                 </StackPanel>
             </Button>
+            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                    Width="215"
+                    HorizontalAlignment="Left"
+                    Margin="0 15 0 0"
+                    Click="Exit_Button_Click">
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="ExitRun"
+                                 Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Text="EXIT ADMIN PANEL" />
+                </StackPanel>
+            </Button>
         </StackPanel>
     </Grid>
 </Page>
