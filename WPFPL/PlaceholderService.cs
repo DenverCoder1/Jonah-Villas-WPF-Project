@@ -54,7 +54,7 @@ namespace WPFPL
         }
 
         /// <summary>
-        /// Handles changes to the Placeholder property.
+        /// Handles changes to the Placeholder dependency property
         /// </summary>
         /// <param name="d">Object that fired the event</param>
         /// <param name="e">event data</param>
@@ -94,7 +94,7 @@ namespace WPFPL
         #region Event Handlers
 
         /// <summary>
-        /// Handle GotFocus event
+        /// Handle GotKeyboardFocus event
         /// </summary>
         private static void Control_GotKeyboardFocus(object sender, RoutedEventArgs e)
         {
@@ -106,7 +106,7 @@ namespace WPFPL
         }
 
         /// <summary>
-        /// Handle Loaded and LostFocus event
+        /// Handle Loaded and LostKeyboardFocus event
         /// </summary>
         private static void Control_Loaded(object sender, RoutedEventArgs e)
         {
@@ -116,7 +116,7 @@ namespace WPFPL
         }
 
         /// <summary>
-        /// Event handler for the itemsSource changed event
+        /// Event handler for the ItemsSource changed event
         /// </summary>
         private static void ItemsSourceChanged(object sender, EventArgs e)
         {
@@ -217,7 +217,7 @@ namespace WPFPL
         #region Private Fields
 
         /// <summary>
-        /// ContentPresenter to holds placeholder
+        /// ContentPresenter to hold placeholder
         /// </summary>
         private readonly ContentPresenter contentPresenter;
 
@@ -231,20 +231,20 @@ namespace WPFPL
         public PlaceholderAdorner(UIElement adornedElement, object placeholder) :
            base(adornedElement)
         {
-            this.IsHitTestVisible = false;
+            IsHitTestVisible = false;
 
-            this.contentPresenter = new ContentPresenter
+            contentPresenter = new ContentPresenter
             {
                 Content = placeholder,
-                Opacity = 0.5,
                 Margin = new Thickness(Control.Margin.Left + Control.Padding.Left, Control.Margin.Top + Control.Padding.Top, 0, 0),
-                VerticalAlignment = VerticalAlignment.Center
+                VerticalAlignment = VerticalAlignment.Center,
+                Opacity = 0.5
             };
 
-            if (this.Control is ItemsControl && !(this.Control is ComboBox))
+            if (Control is ItemsControl && !(Control is ComboBox))
             {
-                this.contentPresenter.VerticalAlignment = VerticalAlignment.Center;
-                this.contentPresenter.HorizontalAlignment = HorizontalAlignment.Center;
+                contentPresenter.VerticalAlignment = VerticalAlignment.Center;
+                contentPresenter.HorizontalAlignment = HorizontalAlignment.Center;
             }
 
             // Hide the control adorner when the adorned element is hidden
@@ -307,7 +307,7 @@ namespace WPFPL
         /// </summary>
         protected override Size ArrangeOverride(Size finalSize)
         {
-            this.contentPresenter.Arrange(new Rect(finalSize));
+            contentPresenter.Arrange(new Rect(finalSize));
             return finalSize;
         }
 

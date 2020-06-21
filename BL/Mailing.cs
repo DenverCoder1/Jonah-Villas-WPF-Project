@@ -133,7 +133,7 @@ namespace BL
             try
             {
                 // Send message
-                client.Send(mail);
+                //client.Send(mail);
             }
             catch (Exception error)
             {

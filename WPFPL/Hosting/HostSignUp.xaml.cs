@@ -86,6 +86,8 @@ namespace WPFPL
                 List<string> banks = (from item in BankBranchXML.Descendants("BRANCH")
                                       select (string)item.Element("Bank_Name").Value.Trim()).Distinct().ToList();
 
+                banks.Sort();
+
                 BankCollection.Clear();
                 foreach (string item in banks)
                 {
@@ -98,11 +100,14 @@ namespace WPFPL
         {
             if (hBank.SelectedItem == null) return;
 
+            // Get a list of cities for selected Bank
             List<string> cities = (from item in BankBranchXML.Descendants("BRANCH")
                                    let bank = hBank.SelectedItem.ToString()
                                    where (string)item.Element("Bank_Name") == bank 
                                         && item.Element("City").Value != ""
                                    select (item.Element("City").Value.Trim())).Distinct().ToList();
+
+            cities.Sort();
 
             BankCityCollection.Clear();
             foreach (string item in cities)
@@ -115,13 +120,14 @@ namespace WPFPL
         {
             if (hBank.SelectedItem == null || hBankCity.SelectedItem == null) return;
 
+            // Get a list of branches for selected Bank/City
             List<string> branches = (from item in BankBranchXML.Descendants("BRANCH")
                                      let bank = hBank.SelectedItem.ToString()
                                      let city = hBankCity.SelectedItem.ToString()
                                      where (string)item.Element("Bank_Name") == bank
                                             && (string)item.Element("City") == city
                                             && item.Element("Address").Value != ""
-                                     select item.Element("Address").Value).ToList();
+                                     select $"#{item.Element("Branch_Code").Value} - {item.Element("Address").Value}").ToList();
 
             BankBranchCollection.Clear();
             foreach (string item in branches)

@@ -103,6 +103,8 @@ namespace WPFPL.Admin
                             if (Enum.TryParse(selection.ToString().Replace(" ", ""), out OrderStatus status))
                             {
                                 Order order = Util.Bl.GetOrder(orderKey);
+                                if (order.Status == status)
+                                    throw new Exception("Status was not changed.");
                                 order.Status = status;
                                 if (Util.Bl.UpdateOrder(order))
                                     Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Order was successfully updated.");

@@ -544,6 +544,7 @@ namespace BL
                 {
                     HostingUnit hostingUnit = instance.GetHostingUnit(newOrder.HostingUnitKey);
                     GuestRequest guestRequest = instance.GetGuestRequest(newOrder.GuestRequestKey);
+
                     // reserve dates in the hosting unit
                     if (instance.CheckOrReserveDates(hostingUnit, guestRequest, true))
                     {
