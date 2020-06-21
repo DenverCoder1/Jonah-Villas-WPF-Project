@@ -645,7 +645,7 @@ namespace BL
         {
             var matches = from Order item in instance.GetOrders()
                           where item.GuestRequestKey == guestRequest.GuestRequestKey
-                          select new byte();
+                          select new int();
             return matches.Count();
         }
 
@@ -656,7 +656,7 @@ namespace BL
         {
             var matches = from Order item in instance.GetOrders()
                           where item.HostingUnitKey == hostingUnit.HostingUnitKey
-                          select new byte();
+                          select new int();
             return matches.Count();
         }
 
@@ -971,7 +971,7 @@ namespace BL
 
         #endregion
 
-        #region OTHER METHODS
+        #region Helper Methods
 
         /// <summary>
         /// A function that accepts one or two dates.

@@ -85,7 +85,7 @@ namespace BL
 
         bool IsValidRoutingNumber(string routing);
 
-        // misc.
+        // Helper Methods
 
         int Duration(DateTime start, DateTime end = default);
     }
