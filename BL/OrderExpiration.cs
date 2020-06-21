@@ -23,7 +23,7 @@ namespace BL
                 // get the last time the file was written to
                 DateTime lastRunTime = new System.IO.FileInfo(lastRunFile).LastWriteTime;
                 // get time span since last run
-                TimeSpan sinceLastRunTime = DateTime.Now - lastRunTime;
+                TimeSpan sinceLastRunTime = DateTime.Today - lastRunTime.Date;
                 // if a day has passed
                 if (sinceLastRunTime.Days >= 1)
                 {
