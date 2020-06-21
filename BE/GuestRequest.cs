@@ -25,13 +25,13 @@ namespace BE
         public District PrefDistrict { get; set; }
         public City PrefCity { get; set; }
         public TypeOfPlace PrefType { get; set; }
-        public Dictionary<Amenity, PrefLevel> PrefAmenities { get; set; }
+        public SerializableDictionary<Amenity, PrefLevel> PrefAmenities { get; set; }
 
         public GuestRequest()
         {
             GuestRequestKey = Config.stGuestRequestKey++;
             Status = GuestStatus.Open;
-            PrefAmenities = new Dictionary<Amenity, PrefLevel>();
+            PrefAmenities = new SerializableDictionary<Amenity, PrefLevel>();
         }
         
         public GuestRequest(
@@ -45,7 +45,7 @@ namespace BE
             TypeOfPlace type,
             int numAdults,
             int numChildren,
-            Dictionary<Amenity, PrefLevel> amenities)
+            SerializableDictionary<Amenity, PrefLevel> amenities)
         {
             GuestRequestKey = Config.stGuestRequestKey++;
             Status = GuestStatus.Open;

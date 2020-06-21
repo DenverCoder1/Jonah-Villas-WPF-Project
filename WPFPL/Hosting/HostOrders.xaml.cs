@@ -46,19 +46,26 @@ namespace WPFPL
         {
             if (OrdersCollection != null)
             {
-                // normalize search
-                if (search != null) { search = Normalize.Convert(search); }
-                else { search = ""; }
-                // clear collection
-                OrdersCollection.Clear();
-                // get items and filter by search
-                foreach (BE.Order item in Util.Bl.GetHostOrders(Util.MyHost.HostKey))
+                try
                 {
-                    // search by all public fields
-                    if (Normalize.Convert(item).Contains(search))
+                    // normalize search
+                    if (search != null) { search = Normalize.Convert(search); }
+                    else { search = ""; }
+                    // clear collection
+                    OrdersCollection.Clear();
+                    // get items and filter by search
+                    foreach (BE.Order item in Util.Bl.GetHostOrders(Util.MyHost.HostKey))
                     {
-                        OrdersCollection.Add(item.ToString());
+                        // search by all public fields
+                        if (Normalize.Convert(item).Contains(search))
+                        {
+                            OrdersCollection.Add(item.ToString());
+                        }
                     }
+                }
+                catch (Exception error)
+                {
+                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }
@@ -78,16 +85,23 @@ namespace WPFPL
             Match match = new Regex(@"^#(\d+) .*").Match(Orders.SelectedItem.ToString());
             if (match.Success)
             {
-                if (long.TryParse(match.Groups[1].Value, out long orderKey))
+                try
                 {
-                    ObservableCollection<string> StatusesCollection = new ObservableCollection<string>();
-                    foreach (string status in Enum.GetNames(typeof(OrderStatus)))
+                    if (long.TryParse(match.Groups[1].Value, out long orderKey))
                     {
-                        StatusesCollection.Add(PascalCaseToText.Convert(status));
+                        ObservableCollection<string> StatusesCollection = new ObservableCollection<string>();
+                        foreach (string status in Enum.GetNames(typeof(OrderStatus)))
+                        {
+                            StatusesCollection.Add(PascalCaseToText.Convert(status));
+                        }
+                        mainWindow.MyDialogComboBox1.ItemsSource = StatusesCollection;
+                        string oldStatus = PascalCaseToText.Convert(Util.Bl.GetOrder(orderKey).Status.ToString());
+                        MainWindow.Dialog($"Select a new status for Order #{orderKey}.", "HostUpdateOrder", null, oldStatus);
                     }
-                    mainWindow.MyDialogComboBox1.ItemsSource = StatusesCollection;
-                    string oldStatus = PascalCaseToText.Convert(Util.Bl.GetOrder(orderKey).Status.ToString());
-                    MainWindow.Dialog($"Select a new status for Order #{orderKey}.", "HostUpdateOrder", null, oldStatus);
+                }
+                catch (Exception error)
+                {
+                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }

@@ -55,14 +55,22 @@ namespace WPFPL
             }
             else if (long.TryParse(HostID.Text, out long hKey))
             {
-                Host host = Util.Bl.GetHost(hKey);
-                if (host == null)
+                try
                 {
-                    MainWindow.Dialog("Host ID does not exist.");
+                    Host host = Util.Bl.GetHost(hKey);
+                    if (host == null)
+                    {
+                        MainWindow.Dialog("Host ID does not exist.");
+                        return;
+                    }
+                    Util.MyHost = host;
+                    mainWindow.HostingFrame.Navigate(new HostMenu());
+                }
+                catch (Exception error)
+                {
+                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
                     return;
                 }
-                Util.MyHost = host;
-                mainWindow.HostingFrame.Navigate(new HostMenu());
             }
             else
             {

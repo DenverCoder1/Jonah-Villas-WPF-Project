@@ -20,6 +20,7 @@ using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
 using System.Xml.Linq;
 using System.ComponentModel;
+using MaterialDesignThemes.Wpf;
 
 namespace WPFPL
 {
@@ -69,7 +70,13 @@ namespace WPFPL
         {
             if (BankCollection != null)
             {
-                Util.Bl.GetBankBranches(GetBranchesCompleted);
+                try
+                {
+                    Util.Bl.GetBankBranches(GetBranchesCompleted);
+                } catch (Exception error)
+                {
+                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                }
             }
         }
 

@@ -43,7 +43,7 @@ namespace DAL
                 PrefDistrict = original.PrefDistrict,
                 PrefCity = original.PrefCity,
                 PrefType = original.PrefType,
-                PrefAmenities = new Dictionary<Amenity, PrefLevel>()
+                PrefAmenities = new SerializableDictionary<Amenity, PrefLevel>()
             };
             foreach (KeyValuePair<Amenity, PrefLevel> item in original.PrefAmenities)
             {

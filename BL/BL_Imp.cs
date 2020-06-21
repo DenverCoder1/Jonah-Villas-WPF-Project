@@ -17,7 +17,7 @@ namespace BL
         #region Private Fields
 
         // Set up data access connection
-        private DAL.IDAL DalInstance;
+        private readonly IDAL DalInstance;
 
         // Singleton Instance
         private static IBL instance = null;
@@ -72,7 +72,7 @@ namespace BL
         {
             try {
                 // Check that there are no open orders in the hosting unit
-                IEnumerable<Order> matches = from Order item in DalInstance.GetOrders()
+                IEnumerable<Order> matches = from Order item in instance.GetOrders()
                                              let s = item.Status
                                              let stillOpen = (s == OrderStatus.NotYetHandled || s == OrderStatus.SentEmail)
                                              where item.HostingUnitKey == hostingUnitKey && stillOpen
@@ -114,7 +114,14 @@ namespace BL
         /// <returns>List of all hosting units</returns>
         List<HostingUnit> IBL.GetHostingUnits()
         {
-            return DalInstance.GetHostingUnits().ConvertAll(x => Cloning.Clone(x));
+            try
+            {
+                return DalInstance.GetHostingUnits().ConvertAll(x => Cloning.Clone(x));
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -124,11 +131,18 @@ namespace BL
         /// <returns>List of host's hosting units</returns>
         List<HostingUnit> IBL.GetHostHostingUnits(long hostKey)
         {
-            List<HostingUnit> hostingUnits = DalInstance.GetHostingUnits().ConvertAll(x => Cloning.Clone(x));
-            IEnumerable<HostingUnit> matches = from HostingUnit item in hostingUnits
-                                               where item.Owner.HostKey == hostKey
-                                               select item;
-            return matches.ToList();
+            try
+            {
+                List<HostingUnit> hostingUnits = instance.GetHostingUnits().ConvertAll(x => Cloning.Clone(x));
+                IEnumerable<HostingUnit> matches = from HostingUnit item in hostingUnits
+                                                   where item.Owner.HostKey == hostKey
+                                                   select item;
+                return matches.ToList();
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -139,10 +153,10 @@ namespace BL
         /// <returns>List of available hosting units</returns>
         List<HostingUnit> IBL.GetAvailableHostHostingUnits(long hostKey, long guestRequestKey)
         {
-            List<HostingUnit> hostingUnits = DalInstance.GetHostingUnits().ConvertAll(x => Cloning.Clone(x));
-            GuestRequest guestRequest = instance.GetGuestRequest(guestRequestKey);
             try
             {
+                List<HostingUnit> hostingUnits = instance.GetHostingUnits().ConvertAll(x => Cloning.Clone(x));
+                GuestRequest guestRequest = instance.GetGuestRequest(guestRequestKey);
                 IEnumerable<HostingUnit> matches = from HostingUnit item in hostingUnits
                                                    where item.Owner.HostKey == hostKey
                                                     && item.UnitDistrict == guestRequest.PrefDistrict
@@ -162,8 +176,15 @@ namespace BL
         /// </summary>
         IEnumerable<IGrouping<District, HostingUnit>> IBL.GetHostingUnitsByDistrict()
         {
-            return from HostingUnit item in instance.GetHostingUnits()
-                   group item by item.UnitDistrict;
+            try
+            {
+                return from HostingUnit item in instance.GetHostingUnits()
+                       group item by item.UnitDistrict;
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -171,8 +192,15 @@ namespace BL
         /// </summary>
         IEnumerable<IGrouping<City, HostingUnit>> IBL.GetHostingUnitsByCity()
         {
-            return from HostingUnit item in instance.GetHostingUnits()
-                   group item by item.UnitCity;
+            try
+            {
+                return from HostingUnit item in instance.GetHostingUnits()
+                       group item by item.UnitCity;
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
 
         }
 
@@ -183,10 +211,17 @@ namespace BL
         /// <returns>Calendar</returns>
         List<DateRange> IBL.GetDateRanges(long huKey)
         {
-            HostingUnit hostingUnit = instance.GetHostingUnit(huKey);
-            if (hostingUnit == null)
-                throw new Exception($"Hosting unit with ID {huKey} was not found.");
-            return hostingUnit.Calendar;
+            try
+            {
+                HostingUnit hostingUnit = instance.GetHostingUnit(huKey);
+                if (hostingUnit == null)
+                    throw new Exception($"Hosting unit with ID {huKey} was not found.");
+                return hostingUnit.Calendar;
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -194,8 +229,15 @@ namespace BL
         /// </summary>
         HostingUnit IBL.GetHostingUnit(long huKey)
         {
-            HostingUnit hostingUnit = DalInstance.GetHostingUnits().FirstOrDefault(hu => hu.HostingUnitKey == huKey);
-            return hostingUnit;
+            try
+            {
+                HostingUnit hostingUnit = instance.GetHostingUnits().FirstOrDefault(hu => hu.HostingUnitKey == huKey);
+                return hostingUnit;
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         #endregion
@@ -244,7 +286,14 @@ namespace BL
         /// </summary>
         List<GuestRequest> IBL.GetGuestRequests()
         {
-            return DalInstance.GetGuestRequests().ConvertAll(x => Cloning.Clone(x));
+            try
+            {
+                return DalInstance.GetGuestRequests().ConvertAll(x => Cloning.Clone(x));
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -254,10 +303,17 @@ namespace BL
         /// <returns>List of matching guest requests</returns>
         List<GuestRequest> IBL.GetGuestRequests(Func<GuestRequest, bool> Criteria)
         {
-            IEnumerable<GuestRequest> matches = from GuestRequest item in instance.GetGuestRequests()
-                                                where Criteria(item)
-                                                select item;
-            return matches.ToList();
+            try
+            {
+                IEnumerable<GuestRequest> matches = from GuestRequest item in instance.GetGuestRequests()
+                                                    where Criteria(item)
+                                                    select item;
+                return matches.ToList();
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
 
@@ -266,8 +322,15 @@ namespace BL
         /// </summary>
         IEnumerable<IGrouping<District, GuestRequest>> IBL.GetGuestRequestsByDistrict()
         {
-            return from GuestRequest item in instance.GetGuestRequests()
-                   group item by item.PrefDistrict;
+            try
+            {
+                return from GuestRequest item in instance.GetGuestRequests()
+                       group item by item.PrefDistrict;
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -275,8 +338,15 @@ namespace BL
         /// </summary>
         IEnumerable<IGrouping<City, GuestRequest>> IBL.GetGuestRequestsByCity()
         {
-            return from GuestRequest item in instance.GetGuestRequests()
-                   group item by item.PrefCity;
+            try
+            {
+                return from GuestRequest item in instance.GetGuestRequests()
+                       group item by item.PrefCity;
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
 
         }
 
@@ -285,8 +355,15 @@ namespace BL
         /// </summary>
         IEnumerable<IGrouping<int, GuestRequest>> IBL.GetGuestRequestsByPersonCount()
         {
-            return from GuestRequest item in instance.GetGuestRequests()
-                   group item by (item.NumAdults + item.NumChildren);
+            try
+            {
+                return from GuestRequest item in instance.GetGuestRequests()
+                       group item by (item.NumAdults + item.NumChildren);
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -294,9 +371,17 @@ namespace BL
         /// </summary>
         List<GuestRequest> IBL.GetOpenGuestRequests()
         {
-            return instance.GetGuestRequests(delegate (GuestRequest gr) {
-                return gr.Status == GuestStatus.Open || gr.Status == GuestStatus.Pending;
-            });
+            try
+            {
+                return instance.GetGuestRequests(delegate (GuestRequest gr)
+                {
+                    return gr.Status == GuestStatus.Open || gr.Status == GuestStatus.Pending;
+                });
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -304,8 +389,15 @@ namespace BL
         /// </summary>
         GuestRequest IBL.GetGuestRequest(long grKey)
         {
-            GuestRequest guestRequest = DalInstance.GetGuestRequests().FirstOrDefault(gr => gr.GuestRequestKey == grKey);
-            return guestRequest;
+            try
+            {
+                GuestRequest guestRequest = instance.GetGuestRequests().FirstOrDefault(gr => gr.GuestRequestKey == grKey);
+                return guestRequest;
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -314,12 +406,19 @@ namespace BL
         /// </summary>
         List<HostingUnit> IBL.GetAvailableUnits(DateTime start, int numDays)
         {
-            GuestRequest dates = new GuestRequest { EntryDate = start, ReleaseDate = start.AddDays(numDays) };
-            // check date range on each hosting unit
-            IEnumerable<HostingUnit> matches = from HostingUnit item in instance.GetHostingUnits()
-                                               where instance.CheckOrReserveDates(item, dates, false)
-                                               select item;
-            return matches.ToList();
+            try
+            {
+                GuestRequest dates = new GuestRequest { EntryDate = start, ReleaseDate = start.AddDays(numDays) };
+                // check date range on each hosting unit
+                IEnumerable<HostingUnit> matches = from HostingUnit item in instance.GetHostingUnits()
+                                                   where instance.CheckOrReserveDates(item, dates, false)
+                                                   select item;
+                return matches.ToList();
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -442,7 +541,7 @@ namespace BL
                         throw new Exception("Could not find a host matching the hosting unit's owner ID.");
 
                     // Make sure the Order key is unique
-                    if (DalInstance.GetOrders().Exists((Order o) => o.OrderKey == order.OrderKey))
+                    if (instance.GetOrders().Exists((Order o) => o.OrderKey == order.OrderKey))
                     {
                         throw new ArgumentException($"Order with key {order.OrderKey} already exists.");
                     }
@@ -522,73 +621,80 @@ namespace BL
         /// </summary>
         bool IBL.UpdateOrder(Order newOrder)
         {
-            if (newOrder == null)
-                throw new ArgumentNullException("Order cannot be null.");
-
-            Order oldOrder = instance.GetOrder(newOrder.OrderKey);
-
-            if (oldOrder == null)
-                throw new ArgumentException("Order with this key does not yet exist.");
-
-            // check that old status is not closed if changing status
-            if (((oldOrder.Status == OrderStatus.ClosedByCustomerResponse) ||
-                (oldOrder.Status == OrderStatus.ClosedByNoCustomerResponse)) &&
-                (newOrder.Status != oldOrder.Status))
-                throw new ArgumentException("Order status can not be changed after transaction is closed.");
-
-            // if closing order with transaction, mark off date range as reserved
-            if (oldOrder.Status == OrderStatus.SentEmail &&
-                newOrder.Status == OrderStatus.ClosedByCustomerResponse)
+            try
             {
+                if (newOrder == null)
+                    throw new ArgumentNullException("Order cannot be null.");
+
+                Order oldOrder = instance.GetOrder(newOrder.OrderKey);
+
+                if (oldOrder == null)
+                    throw new ArgumentException("Order with this key does not yet exist.");
+
+                // check that old status is not closed if changing status
+                if (((oldOrder.Status == OrderStatus.ClosedByCustomerResponse) ||
+                    (oldOrder.Status == OrderStatus.ClosedByNoCustomerResponse)) &&
+                    (newOrder.Status != oldOrder.Status))
+                    throw new ArgumentException("Order status can not be changed after transaction is closed.");
+
+                // if closing order with transaction, mark off date range as reserved
+                if (oldOrder.Status == OrderStatus.SentEmail &&
+                    newOrder.Status == OrderStatus.ClosedByCustomerResponse)
+                {
+                    try
+                    {
+                        HostingUnit hostingUnit = instance.GetHostingUnit(newOrder.HostingUnitKey);
+                        GuestRequest guestRequest = instance.GetGuestRequest(newOrder.GuestRequestKey);
+
+                        // reserve dates in the hosting unit
+                        if (instance.CheckOrReserveDates(hostingUnit, guestRequest, true))
+                        {
+                            // if successfully reserved
+                            // update hosting unit calendar
+                            instance.UpdateHostingUnit(hostingUnit);
+
+                            // change Guest request status
+                            guestRequest.Status = GuestStatus.Complete;
+                            instance.UpdateGuestRequest(guestRequest);
+
+                            // change back status of other orders for this guest request
+                            IEnumerable<Order> matches = from Order item in instance.GetOrders()
+                                                         where item.GuestRequestKey == newOrder.GuestRequestKey
+                                                                && item.OrderKey != newOrder.OrderKey
+                                                         select item;
+                            foreach (Order item in matches)
+                            {
+                                item.Status = OrderStatus.NotYetHandled;
+                                instance.UpdateOrder(item);
+                            }
+
+                            // calculate transaction fee
+                            DateRange dateRange = new DateRange(guestRequest.EntryDate, guestRequest.ReleaseDate);
+                            // multiply number of accomodation nights by fee
+                            float transactionFeeNIS = (dateRange.Duration - 1) * Config.TRANSACTION_FEE_NIS;
+
+                            // TODO: Charge transaction fee to bank account
+                        }
+                        else
+                        {
+                            throw new Exception("The requested dates are no longer available in the hosting unit.");
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        throw error;
+                    }
+                }
+
+                // update order in data
                 try
                 {
-                    HostingUnit hostingUnit = instance.GetHostingUnit(newOrder.HostingUnitKey);
-                    GuestRequest guestRequest = instance.GetGuestRequest(newOrder.GuestRequestKey);
-
-                    // reserve dates in the hosting unit
-                    if (instance.CheckOrReserveDates(hostingUnit, guestRequest, true))
-                    {
-                        // if successfully reserved
-                        // update hosting unit calendar
-                        instance.UpdateHostingUnit(hostingUnit);
-
-                        // change Guest request status
-                        guestRequest.Status = GuestStatus.Complete;
-                        instance.UpdateGuestRequest(guestRequest);
-
-                        // change back status of other orders for this guest request
-                        IEnumerable<Order> matches = from Order item in instance.GetOrders()
-                                                     where item.GuestRequestKey == newOrder.GuestRequestKey
-                                                            && item.OrderKey != newOrder.OrderKey
-                                                     select item;
-                        foreach (Order item in matches)
-                        {
-                            item.Status = OrderStatus.NotYetHandled;
-                            instance.UpdateOrder(item);
-                        }
-
-                        // calculate transaction fee
-                        DateRange dateRange = new DateRange(guestRequest.EntryDate, guestRequest.ReleaseDate);
-                        // multiply number of accomodation nights by fee
-                        float transactionFeeNIS = (dateRange.Duration - 1) * Config.TRANSACTION_FEE_NIS;
-
-                        // TODO: Charge transaction fee to bank account
-                    }
-                    else
-                    {
-                        throw new Exception("The requested dates are no longer available in the hosting unit.");
-                    }
+                    return DalInstance.UpdateOrder(Cloning.Clone(newOrder));
                 }
                 catch (Exception error)
                 {
                     throw error;
                 }
-            }
-
-            // update order in data
-            try
-            {
-                return DalInstance.UpdateOrder(Cloning.Clone(newOrder));
             }
             catch (Exception error)
             {
@@ -601,7 +707,14 @@ namespace BL
         /// </summary>
         List<Order> IBL.GetOrders()
         {
-            return DalInstance.GetOrders().ConvertAll(x => Cloning.Clone(x));
+            try
+            {
+                return DalInstance.GetOrders().ConvertAll(x => Cloning.Clone(x));
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -609,12 +722,19 @@ namespace BL
         /// </summary>
         List<Order> IBL.GetHostOrders(long hostKey)
         {
-            List<Order> orders = DalInstance.GetOrders().ConvertAll(x => Cloning.Clone(x));
-            List<long> hostHostingUnitKeys = instance.GetHostHostingUnits(hostKey).ConvertAll(x => x.HostingUnitKey);
-            IEnumerable<Order> matches = from Order item in orders
-                                         where hostHostingUnitKeys.IndexOf(item.HostingUnitKey) > -1
-                                         select item;
-            return matches.ToList();
+            try
+            {
+                List<Order> orders = instance.GetOrders().ConvertAll(x => Cloning.Clone(x));
+                List<long> hostHostingUnitKeys = instance.GetHostHostingUnits(hostKey).ConvertAll(x => x.HostingUnitKey);
+                IEnumerable<Order> matches = from Order item in orders
+                                             where hostHostingUnitKeys.IndexOf(item.HostingUnitKey) > -1
+                                             select item;
+                return matches.ToList();
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -622,8 +742,15 @@ namespace BL
         /// </summary>
         Order IBL.GetOrder(long orderKey)
         {
-            Order order = DalInstance.GetOrders().FirstOrDefault(o => o.OrderKey == orderKey);
-            return order;
+            try
+            {
+                Order order = instance.GetOrders().FirstOrDefault(o => o.OrderKey == orderKey);
+                return order;
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -632,10 +759,17 @@ namespace BL
         /// </summary>
         List<Order> IBL.GetOrdersCreatedOutsideNumDays(int numDays)
         {
-            IEnumerable<Order> matches = from Order item in instance.GetOrders()
-                                         where instance.Duration(item.CreationDate) >= numDays
-                                         select item;
-            return matches.ToList();
+            try
+            {
+                IEnumerable<Order> matches = from Order item in instance.GetOrders()
+                                             where instance.Duration(item.CreationDate) >= numDays
+                                             select item;
+                return matches.ToList();
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -643,10 +777,17 @@ namespace BL
         /// </summary>
         int IBL.GetNumOrders(GuestRequest guestRequest)
         {
-            var matches = from Order item in instance.GetOrders()
-                          where item.GuestRequestKey == guestRequest.GuestRequestKey
-                          select new int();
-            return matches.Count();
+            try
+            {
+                var matches = from Order item in instance.GetOrders()
+                              where item.GuestRequestKey == guestRequest.GuestRequestKey
+                              select new int();
+                return matches.Count();
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -654,10 +795,17 @@ namespace BL
         /// </summary>
         int IBL.GetNumOrders(HostingUnit hostingUnit)
         {
-            var matches = from Order item in instance.GetOrders()
-                          where item.HostingUnitKey == hostingUnit.HostingUnitKey
-                          select new int();
-            return matches.Count();
+            try
+            {
+                var matches = from Order item in instance.GetOrders()
+                              where item.HostingUnitKey == hostingUnit.HostingUnitKey
+                              select new int();
+                return matches.Count();
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         #endregion
@@ -698,7 +846,14 @@ namespace BL
         /// <returns></returns>
         List<Host> IBL.GetHosts()
         {
-            return DalInstance.GetHosts().ConvertAll(x => Cloning.Clone(x));
+            try
+            {
+                return DalInstance.GetHosts().ConvertAll(x => Cloning.Clone(x));
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -706,9 +861,16 @@ namespace BL
         /// </summary>
         IEnumerable<IGrouping<int, Host>> IBL.GetHostsByNumHostingUnits()
         {
-            return from Host item in instance.GetHosts()
-                   let numUnits = instance.GetHostHostingUnits(item.HostKey).Count()
-                   group item by numUnits;
+            try
+            {
+                return from Host item in instance.GetHosts()
+                       let numUnits = instance.GetHostHostingUnits(item.HostKey).Count()
+                       group item by numUnits;
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>
@@ -716,8 +878,15 @@ namespace BL
         /// </summary>
         Host IBL.GetHost(long hostKey)
         {
-            Host host = DalInstance.GetHosts().FirstOrDefault(h => h.HostKey == hostKey);
-            return host;
+            try
+            {
+                Host host = instance.GetHosts().FirstOrDefault(h => h.HostKey == hostKey);
+                return host;
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
         }
 
         /// <summary>

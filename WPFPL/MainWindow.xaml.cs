@@ -57,7 +57,7 @@ namespace WPFPL
             this.DataContext = this;
 
             // DEBUG - generate test data for testing
-            GenerateTestData();
+            //GenerateTestData();
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace WPFPL
                 District region = District.TelAviv;
                 City city = City.BneiBrak;
                 BE.TypeOfPlace type = BE.TypeOfPlace.Apartment;
-                Dictionary<Amenity, PrefLevel> amenities = new Dictionary<Amenity, PrefLevel>
+                SerializableDictionary<Amenity, PrefLevel> amenities = new SerializableDictionary<Amenity, PrefLevel>
                 {
                     [Amenity.TV] = PrefLevel.Required,
                     [Amenity.Kitchen] = PrefLevel.Required,
@@ -100,7 +100,7 @@ namespace WPFPL
                 region = District.Haifa;
                 city = City.Hadera;
                 type = BE.TypeOfPlace.PrivateRoom;
-                amenities = new Dictionary<Amenity, PrefLevel>
+                amenities = new SerializableDictionary<Amenity, PrefLevel>
                 {
                     [Amenity.TV] = PrefLevel.Required,
                     [Amenity.Pool] = PrefLevel.Required,
@@ -119,7 +119,7 @@ namespace WPFPL
                 region = District.Jerusalem;
                 city = City.BeitShemesh;
                 type = BE.TypeOfPlace.EntireHome;
-                amenities = new Dictionary<Amenity, PrefLevel>
+                amenities = new SerializableDictionary<Amenity, PrefLevel>
                 {
                     [Amenity.Laundry] = PrefLevel.Required,
                     [Amenity.Gym] = PrefLevel.Required,
@@ -139,7 +139,7 @@ namespace WPFPL
                 region = District.Jerusalem;
                 city = City.BeitShemesh;
                 type = BE.TypeOfPlace.Shared;
-                amenities = new Dictionary<Amenity, PrefLevel>
+                amenities = new SerializableDictionary<Amenity, PrefLevel>
                 {
                     [Amenity.Laundry] = PrefLevel.Required,
                     [Amenity.Pool] = PrefLevel.Required,
@@ -359,7 +359,7 @@ namespace WPFPL
                 int numChildren = gNumChildren.SelectedIndex;
                 object prefTypeObj = gPrefType.SelectedItem;
                 System.Collections.IList selectedAmenities = gAmenities.SelectedItems;
-                Dictionary<Amenity, PrefLevel> amenities = new Dictionary<Amenity, PrefLevel>();
+                SerializableDictionary<Amenity, PrefLevel> amenities = new SerializableDictionary<Amenity, PrefLevel>();
                 foreach (Amenity amenity in Enum.GetValues(typeof(Amenity)))
                 {
                     if (selectedAmenities.IndexOf(amenity) > -1)

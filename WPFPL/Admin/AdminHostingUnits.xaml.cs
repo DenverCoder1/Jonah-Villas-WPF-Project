@@ -42,19 +42,26 @@ namespace WPFPL.Admin
         {
             if (HostingUnitCollection != null)
             {
-                // normalize search
-                if (search != null) { search = Normalize.Convert(search); }
-                else { search = ""; }                    
-                // clear collection
-                HostingUnitCollection.Clear();
-                // get items and filter by search
-                foreach (BE.HostingUnit item in Util.Bl.GetHostingUnits())
+                try
                 {
-                    // search by all public fields
-                    if (Normalize.Convert(item).Contains(search))
+                    // normalize search
+                    if (search != null) { search = Normalize.Convert(search); }
+                    else { search = ""; }
+                    // clear collection
+                    HostingUnitCollection.Clear();
+                    // get items and filter by search
+                    foreach (BE.HostingUnit item in Util.Bl.GetHostingUnits())
                     {
-                        HostingUnitCollection.Add(item.ToString());
+                        // search by all public fields
+                        if (Normalize.Convert(item).Contains(search))
+                        {
+                            HostingUnitCollection.Add(item.ToString());
+                        }
                     }
+                }
+                catch (Exception error)
+                {
+                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }

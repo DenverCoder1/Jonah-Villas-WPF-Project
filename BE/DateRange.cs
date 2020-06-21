@@ -8,16 +8,40 @@ namespace BE
 {
     public class DateRange
     {
-        public DateTime Start { get; private set; }
-        public DateTime End { get; private set; }
-        public int Duration { get; private set; }
+        public DateTime _start;
+        public DateTime _end;
+
+        public DateTime Start
+        {
+            get { return _start; }
+            set { _start = value; UpdateDuration(); }
+        }
+        public DateTime End
+        {
+            get { return _end; }
+            set { _end = value; UpdateDuration(); }
+        }
+        public int Duration { get; set; }
+
+        public DateRange()
+        {
+            UpdateDuration();
+        }
 
         public DateRange(DateTime start, DateTime end)
         {
             Start = start;
             End = end;
             // get duration
-            Duration = (int)(End - Start).TotalDays;
+            UpdateDuration();
+        }
+
+        private void UpdateDuration()
+        {
+            if (_end != default && _start != default)
+                Duration = (int)(End - Start).TotalDays;
+            else
+                Duration = 0;
         }
 
         public override string ToString()

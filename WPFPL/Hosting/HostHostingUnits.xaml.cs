@@ -51,19 +51,26 @@ namespace WPFPL
         {
             if (HostingUnitCollection != null)
             {
-                // normalize search
-                if (search != null) { search = Normalize.Convert(search); }
-                else { search = ""; }
-                // clear collection
-                HostingUnitCollection.Clear();
-                // get items and filter by search
-                foreach (BE.HostingUnit item in Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey))
+                try
                 {
-                    // search by all public fields
-                    if (Normalize.Convert(item).Contains(search))
+                    // normalize search
+                    if (search != null) { search = Normalize.Convert(search); }
+                    else { search = ""; }
+                    // clear collection
+                    HostingUnitCollection.Clear();
+                    // get items and filter by search
+                    foreach (BE.HostingUnit item in Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey))
                     {
-                        HostingUnitCollection.Add(item.ToString());
+                        // search by all public fields
+                        if (Normalize.Convert(item).Contains(search))
+                        {
+                            HostingUnitCollection.Add(item.ToString());
+                        }
                     }
+                }
+                catch (Exception error)
+                {
+                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }
@@ -85,26 +92,33 @@ namespace WPFPL
             {
                 if (long.TryParse(match.Groups[1].Value, out long huKey))
                 {
-                    DistrictsCollection = new ObservableCollection<string>();
-                    foreach (District district in Enum.GetValues(typeof(District)))
+                    try
                     {
-                        DistrictsCollection.Add(PascalCaseToText.Convert(district.ToString()));
+                        DistrictsCollection = new ObservableCollection<string>();
+                        foreach (District district in Enum.GetValues(typeof(District)))
+                        {
+                            DistrictsCollection.Add(PascalCaseToText.Convert(district.ToString()));
+                        }
+                        var oldHostingUnit = Util.Bl.GetHostingUnit(huKey);
+                        District oldDistrict = oldHostingUnit.UnitDistrict;
+                        City oldCity = oldHostingUnit.UnitCity;
+                        var citiesInOldDistrict = Config.GetCities[oldDistrict];
+                        CitiesCollection = new ObservableCollection<string>();
+                        foreach (City city in citiesInOldDistrict)
+                        {
+                            CitiesCollection.Add(PascalCaseToText.Convert(city.ToString()));
+                        }
+                        string textBoxDefault = oldHostingUnit.UnitName;
+                        mainWindow.MyDialogComboBox1.ItemsSource = DistrictsCollection;
+                        string combo1Default = PascalCaseToText.Convert(oldDistrict.ToString());
+                        mainWindow.MyDialogComboBox2.ItemsSource = CitiesCollection;
+                        string combo2Default = PascalCaseToText.Convert(oldCity.ToString());
+                        MainWindow.Dialog($"Enter the new name, district, and city for Hosting Unit {huKey}?", "HostUpdateHostingUnit", textBoxDefault, combo1Default, combo2Default);
                     }
-                    var oldHostingUnit = Util.Bl.GetHostingUnit(huKey);
-                    District oldDistrict = oldHostingUnit.UnitDistrict;
-                    City oldCity = oldHostingUnit.UnitCity;
-                    var citiesInOldDistrict = Config.GetCities[oldDistrict];
-                    CitiesCollection = new ObservableCollection<string>();
-                    foreach (City city in citiesInOldDistrict)
+                    catch (Exception error)
                     {
-                        CitiesCollection.Add(PascalCaseToText.Convert(city.ToString()));
+                        Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
                     }
-                    string textBoxDefault = oldHostingUnit.UnitName;
-                    mainWindow.MyDialogComboBox1.ItemsSource = DistrictsCollection;
-                    string combo1Default = PascalCaseToText.Convert(oldDistrict.ToString());
-                    mainWindow.MyDialogComboBox2.ItemsSource = CitiesCollection;
-                    string combo2Default = PascalCaseToText.Convert(oldCity.ToString());
-                    MainWindow.Dialog($"Enter the new name, district, and city for Hosting Unit {huKey}?", "HostUpdateHostingUnit", textBoxDefault, combo1Default, combo2Default);
                 }
             }
         }

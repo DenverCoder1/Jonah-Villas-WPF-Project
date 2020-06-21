@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Cloning.cs" />
     <Compile Include="DAL_Imp.cs" />
+    <Compile Include="DAL_XML_Imp.cs" />
     <Compile Include="FactoryDAL.cs" />
     <Compile Include="IDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

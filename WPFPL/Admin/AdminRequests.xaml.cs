@@ -44,19 +44,26 @@ namespace WPFPL.Admin
         {
             if (RequestCollection != null)
             {
-                // normalize search
-                if (search != null) { search = Normalize.Convert(search); }
-                else { search = ""; }
-                // clear collection
-                RequestCollection.Clear();
-                // add items
-                foreach (BE.GuestRequest item in Util.Bl.GetGuestRequests())
+                try
                 {
-                    // search by all public fields
-                    if (Normalize.Convert(item).Contains(search))
+                    // normalize search
+                    if (search != null) { search = Normalize.Convert(search); }
+                    else { search = ""; }
+                    // clear collection
+                    RequestCollection.Clear();
+                    // add items
+                    foreach (BE.GuestRequest item in Util.Bl.GetGuestRequests())
                     {
-                        RequestCollection.Add(item.ToString());
+                        // search by all public fields
+                        if (Normalize.Convert(item).Contains(search))
+                        {
+                            RequestCollection.Add(item.ToString());
+                        }
                     }
+                }
+                catch (Exception error)
+                {
+                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }

@@ -11,6 +11,8 @@ namespace BE
         BankBranch Branch { get; set; }
         public long RoutingNumber { get; set; }
 
+        public BankAccount() { }
+
         public BankAccount(BankBranch branch, long routing)
         {
             Branch = branch;
