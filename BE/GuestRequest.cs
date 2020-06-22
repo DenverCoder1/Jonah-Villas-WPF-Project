@@ -30,10 +30,9 @@ namespace BE
 
         public GuestRequest()
         {
-            GuestRequestKey = Config.stGuestRequestKey++;
             Status = GuestStatus.Open;
             PrefAmenities = new SerializableDictionary<Amenity, PrefLevel>();
-            InquiryDate = DateTime.Today;
+            InquiryDate = DateTime.Now;
         }
         
         public GuestRequest(
@@ -49,11 +48,11 @@ namespace BE
             int numChildren,
             SerializableDictionary<Amenity, PrefLevel> amenities)
         {
-            GuestRequestKey = Config.stGuestRequestKey++;
+            GuestRequestKey = Config.NextGuestRequestKey++;
             Status = GuestStatus.Open;
             EntryDate = entry;
             ReleaseDate = release;
-            InquiryDate = DateTime.Today;
+            InquiryDate = DateTime.Now;
             FirstName = fname;
             LastName = lname;
             Email = email;

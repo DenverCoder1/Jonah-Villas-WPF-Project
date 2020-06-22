@@ -95,7 +95,6 @@ namespace DAL
         /// <returns>List of entities from file</returns>
         private static List<T> LoadList<T>(string xmlPath)
         {
-            FileStream file = new FileStream(xmlPath, FileMode.OpenOrCreate);
             List<T> result = new List<T>();
             if (!File.Exists(xmlPath))
             {
@@ -108,6 +107,7 @@ namespace DAL
             }
             else
             {
+                FileStream file = new FileStream(xmlPath, FileMode.OpenOrCreate);
                 try
                 {
                     // deserialize xml and get result as list
@@ -159,7 +159,7 @@ namespace DAL
                 DataSource.GuestRequests.Add(Cloning.Clone(guestRequest));
                 // save xml
                 SaveList(DataSource.GuestRequests, GuestRequestPath);
-                ConfigElement.Element("INITIAL_GUEST_REQUEST_KEY").Value = Config.stGuestRequestKey.ToString();
+                ConfigElement.Element("INITIAL_GUEST_REQUEST_KEY").Value = Config.NextGuestRequestKey.ToString();
                 ConfigElement.Save(ConfigPath);
                 return true;
             }
@@ -235,7 +235,7 @@ namespace DAL
                 DataSource.HostingUnits.Add(Cloning.Clone(hostingUnit));
                 // save xml
                 SaveList(DataSource.HostingUnits, HostingUnitPath);
-                ConfigElement.Element("INITIAL_HOSTING_UNIT_KEY").Value = Config.stHostingUnitKey.ToString();
+                ConfigElement.Element("INITIAL_HOSTING_UNIT_KEY").Value = Config.NextHostingUnitKey.ToString();
                 ConfigElement.Save(ConfigPath);
                 return true;
             }
@@ -334,7 +334,7 @@ namespace DAL
                 DataSource.Orders.Add(Cloning.Clone(order));
                 // save xml
                 SaveList(DataSource.Orders, OrderPath);
-                ConfigElement.Element("INITIAL_ORDER_KEY").Value = Config.stOrderKey.ToString();
+                ConfigElement.Element("INITIAL_ORDER_KEY").Value = Config.NextOrderKey.ToString();
                 ConfigElement.Save(ConfigPath);
                 return true;
             }
@@ -410,7 +410,7 @@ namespace DAL
                 DataSource.Hosts.Add(Cloning.Clone(host));
                 // save xml
                 SaveList(DataSource.Hosts, HostPath);
-                ConfigElement.Element("INITIAL_HOST_KEY").Value = Config.stHostKey.ToString();
+                ConfigElement.Element("INITIAL_HOST_KEY").Value = Config.NextHostKey.ToString();
                 ConfigElement.Save(ConfigPath);
                 return true;
             }

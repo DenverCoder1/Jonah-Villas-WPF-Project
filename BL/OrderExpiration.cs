@@ -51,9 +51,12 @@ namespace BL
             // iterate through expired orders
             foreach (Order item in expiredOrders)
             {
-                // update status
-                item.Status = OrderStatus.ClosedByNoCustomerResponse;
-                Bl.UpdateOrder(item);
+                if (item.Status == OrderStatus.SentEmail)
+                {
+                    // update status
+                    item.Status = OrderStatus.ClosedByNoCustomerResponse;
+                    Bl.UpdateOrder(item);
+                }
             }
         }
     }

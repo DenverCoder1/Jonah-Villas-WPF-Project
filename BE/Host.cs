@@ -19,8 +19,6 @@ namespace BE
 
         public Host()
         {
-            // set host key
-            HostKey = Config.stHostKey++;
             BankClearance = true;
         }
 
@@ -32,7 +30,7 @@ namespace BE
             BankBranch branch,
             long routing)
         {
-            HostKey = Config.stHostKey++;
+            HostKey = Config.NextHostKey++;
             FirstName = fname;
             LastName = lname;
             Email = email;

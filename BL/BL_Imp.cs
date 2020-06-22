@@ -440,10 +440,10 @@ namespace BL
             if (guestRequest.EntryDate >= guestRequest.ReleaseDate)
                 throw new ArgumentException("At least one night must be reserved.");
             // request entry date is before today
-            if (guestRequest.EntryDate < DateTime.Today)
+            if (guestRequest.EntryDate.Date < DateTime.Today)
                 throw new ArgumentException("Dates in the past cannot be reserved.");
             // requested release date is more than 11 months from now
-            if (guestRequest.ReleaseDate > DateTime.Today.AddMonths(11))
+            if (guestRequest.ReleaseDate.Date > DateTime.Today.AddMonths(11))
                 throw new ArgumentException("Dates more than 11 months in the future cannot be reserved.");
 
             // go through calendar until reserved
@@ -591,8 +591,8 @@ namespace BL
 
                         // Create order
                         order.Status = OrderStatus.SentEmail;
-                        order.CreationDate = DateTime.Today;
-                        order.EmailDeliveryDate = DateTime.Today;
+                        order.CreationDate = DateTime.Now;
+                        order.EmailDeliveryDate = DateTime.Now;
 
                         // Send an email
                         Mailing.StartEmailBackgroundWorker(order, RunWorkerCompleted);
@@ -963,7 +963,7 @@ namespace BL
             }
             else if (!instance.IsValidName(lname))
             {
-                throw new InvalidDataException("Last name must be at least 2 characters long and contain only letters and whitespace.");
+                throw new InvalidDataException("Last name must be at least 2 characters long and contain only letters.");
             }
             else if (!instance.IsValidEmail(email))
             {
@@ -1074,11 +1074,11 @@ namespace BL
         {
             if (!instance.IsValidName(fname))
             {
-                throw new InvalidDataException("First name must be at least 2 characters long and contain only letters and whitespace.");
+                throw new InvalidDataException("First name must be at least 2 characters long and contain only letters.");
             }
             else if (!instance.IsValidName(lname))
             {
-                throw new InvalidDataException("Last name must be at least 2 characters long and contain only letters and whitespace.");
+                throw new InvalidDataException("Last name must be at least 2 characters long and contain only letters.");
             }
             else if (!instance.IsValidEmail(email))
             {
@@ -1171,9 +1171,9 @@ namespace BL
         int IBL.Duration(DateTime start, DateTime end)
         {
             if (end != default)
-                return (int)(end - start).TotalDays;
+                return (int)(end.Date - start.Date).TotalDays;
             else
-                return (int)(DateTime.Today - start).TotalDays;
+                return (int)(DateTime.Today - start.Date).TotalDays;
         }
 
         #endregion

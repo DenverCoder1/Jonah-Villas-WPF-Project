@@ -16,10 +16,32 @@ namespace BE
         public static long INITIAL_GUEST_REQUEST_KEY = 1;
 
         // Static counters for serial keys
-        public static long stOrderKey = INITIAL_ORDER_KEY;
-        public static long stHostKey = INITIAL_HOST_KEY;
-        public static long stHostingUnitKey = INITIAL_HOSTING_UNIT_KEY;
-        public static long stGuestRequestKey = INITIAL_GUEST_REQUEST_KEY;
+        private static long _nextOrderKey;
+        private static long _nextHostKey;
+        private static long _nextHostingUnitKey;
+        private static long _nextGuestRequestKey;
+
+        // set to make sure no duplicate keys given
+        public static long NextOrderKey
+        {
+            get { if (_nextOrderKey < INITIAL_ORDER_KEY) { _nextOrderKey = INITIAL_ORDER_KEY; } return _nextOrderKey; }
+            set => _nextOrderKey = value;
+        }
+        public static long NextHostKey
+        {
+            get { if (_nextHostKey < INITIAL_ORDER_KEY) { _nextHostKey = INITIAL_ORDER_KEY; } return _nextHostKey; }
+            set => _nextHostKey = value;
+        }
+        public static long NextHostingUnitKey
+        {
+            get { if (_nextHostingUnitKey < INITIAL_ORDER_KEY) { _nextHostingUnitKey = INITIAL_ORDER_KEY; } return _nextHostingUnitKey; }
+            set => _nextHostingUnitKey = value;
+        }
+        public static long NextGuestRequestKey
+        {
+            get { if (_nextGuestRequestKey < INITIAL_ORDER_KEY) { _nextGuestRequestKey = INITIAL_ORDER_KEY; } return _nextGuestRequestKey; }
+            set => _nextGuestRequestKey = value;
+        }
 
         // Banking
         public static float TRANSACTION_FEE_NIS = 10;

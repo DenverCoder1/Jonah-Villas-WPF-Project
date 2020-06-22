@@ -17,15 +17,13 @@ namespace BE
 
         public Order()
         {
-            // get next available serial number
-            OrderKey = Config.stOrderKey++;
             Status = OrderStatus.NotYetHandled;
         }
 
         public Order(long huKey, long grKey)
         {
             // get next available serial number
-            OrderKey = Config.stOrderKey++;
+            OrderKey = Config.NextOrderKey++;
             HostingUnitKey = huKey;
             GuestRequestKey = grKey;
             Status = OrderStatus.NotYetHandled;
