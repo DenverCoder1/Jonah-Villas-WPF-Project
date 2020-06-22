@@ -21,21 +21,26 @@ namespace WPFPL.Admin
     /// </summary>
     public partial class AdminSignIn : Page
     {
-        public MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
+
         public AdminSignIn()
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
         }
 
+        /// <summary>
+        /// Submit form button click
+        /// Check login info and go to menu if valid
+        /// </summary>
         private void Admin_Enter_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrEmpty(AdminUsername.Text))
+            if (string.IsNullOrEmpty(AdminUsername.Text))
             {
                 MainWindow.Dialog("You have not entered your username.");
                 return;
             }
-            else if(String.IsNullOrEmpty(AdminPassword.Text))
+            else if(string.IsNullOrEmpty(AdminPassword.Text))
             {
                 MainWindow.Dialog("You have not entered your password.");
                 return;
@@ -51,6 +56,19 @@ namespace WPFPL.Admin
                 MainWindow.Dialog("Username or password is incorrect.");
                 return;
             }
+        }
+
+        /// <summary>
+        /// submit form when enter key pressed from password box
+        /// </summary>
+        private void AdminPassword_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.Enter)
+                return;
+
+            // Enter key pressed
+            e.Handled = true;
+            Admin_Enter_Button_Click(sender, e);
         }
     }
 }

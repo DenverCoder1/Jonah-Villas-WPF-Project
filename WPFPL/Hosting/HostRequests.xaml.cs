@@ -27,13 +27,13 @@ namespace WPFPL
     /// </summary>
     public partial class HostRequests : Page
     {
-        public MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
 
         public static ObservableCollection<string> RequestCollection { get; set; }
 
         public static ObservableCollection<string> HostingUnitCollection { get; set; }
 
-        public static string Search { get; set; }
+        private static string Search { get; set; }
 
         private static int SortIndex { get; set; }
 
@@ -47,6 +47,10 @@ namespace WPFPL
             Refresh();
         }
 
+        /// <summary>
+        /// Refresh items in list and apply search and filters
+        /// </summary>
+        /// <param name="search">search to filter on</param>
         public static void Refresh(string search = "")
         {
             if (RequestCollection != null)
@@ -107,6 +111,10 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Generate a list of hosting units that the selected request can go to
+        /// </summary>
+        /// <param name="grKey">Guest request to check for availability</param>
         private void UpdateAvailableHostingUnits(long grKey)
         {
             try
@@ -128,11 +136,18 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Button to return to host menu
+        /// </summary>
         private void Return_To_Options(object sender, RoutedEventArgs e)
         {
             mainWindow.HostingFrame.Navigate(new HostMenu());
         }
 
+        /// <summary>
+        /// Prompt for creating an order
+        /// Ask host for the hosting unit
+        /// </summary>
         private void Create_Order(object sender, RoutedEventArgs e)
         {
             if (Requests.SelectedItem == null)
@@ -152,6 +167,11 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Finish creation of order when dialog closed
+        /// </summary>
+        /// <param name="dialogText">Text from dialog prompt</param>
+        /// <param name="selection">Selected hosting unit</param>
         public static void Finish_Create_Order(string dialogText, object selection)
         {
             if (selection != null)
@@ -216,18 +236,28 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Button to force refresh of list
+        /// </summary>
         private void Refresh_Event(object sender, RoutedEventArgs e)
         {
             Search = SearchBox.Text;
             Refresh(Search);
         }
 
+        /// <summary>
+        /// Empty search text box
+        /// </summary>
         private void Clear_Search(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
             Refresh();
         }
 
+        /// <summary>
+        /// On change sort method in comboBox,
+        /// refresh the list
+        /// </summary>
         private void Sort_Selection_Changed(object sender, SelectionChangedEventArgs e)
         {
             SortIndex = sortBy.SelectedIndex;

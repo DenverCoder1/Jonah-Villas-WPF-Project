@@ -21,33 +21,49 @@ namespace WPFPL.Admin
     /// </summary>
     public partial class AdminMenu : Page
     {
-        public MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
+
         public AdminMenu()
         {
             InitializeComponent();
             mainWindow = Util.GetMainWindow();
         }
 
+        /// <summary>
+        /// Go to hosting unit list view
+        /// </summary>
         private void View_Hosting_Units_Page(object sender, RoutedEventArgs e)
         {
             mainWindow.AdminFrame.Navigate(new AdminHostingUnits());
         }
 
+        /// <summary>
+        /// Go to request list view
+        /// </summary>
         private void View_Requests(object sender, RoutedEventArgs e)
         {
             mainWindow.AdminFrame.Navigate(new AdminRequests());
         }
 
+        /// <summary>
+        /// Go to order list view
+        /// </summary>
         private void View_Orders(object sender, RoutedEventArgs e)
         {
             mainWindow.AdminFrame.Navigate(new AdminOrders());
         }
 
+        /// <summary>
+        /// Go to host list view
+        /// </summary>
         private void View_Hosts(object sender, RoutedEventArgs e)
         {
             mainWindow.AdminFrame.Navigate(new AdminHosts());
         }
 
+        /// <summary>
+        /// Return to sign in page when exit clicked
+        /// </summary>
         private void Exit_Button_Click(object sender, RoutedEventArgs e)
         {
             mainWindow.AdminFrame.Navigate(new AdminSignIn());

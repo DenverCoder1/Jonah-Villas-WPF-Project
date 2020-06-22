@@ -22,7 +22,8 @@ namespace WPFPL
     public partial class HostMenu : Page
     {
 
-        public MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
+
         public HostMenu()
         {
             InitializeComponent();
@@ -30,24 +31,36 @@ namespace WPFPL
             YourHostID.Text = $"Your host ID is {Util.MyHost.HostKey}";
         }
 
+        /// <summary>
+        /// Go to hosting unit list
+        /// </summary>
         private void View_Hosting_Units_Page(object sender, RoutedEventArgs e)
         {
             mainWindow.HostingFrame.Navigate(new HostHostingUnits());
         }
 
-        private void Return_To_Sign_In(object sender, RoutedEventArgs e)
-        {
-            mainWindow.HostingFrame.Navigate(new HostSignIn());
-        }
-
+        /// <summary>
+        /// Go to requests list
+        /// </summary>
         private void View_Requests(object sender, RoutedEventArgs e)
         {
             mainWindow.HostingFrame.Navigate(new HostRequests());
         }
 
+        /// <summary>
+        /// Go to orders list
+        /// </summary>
         private void View_Orders(object sender, RoutedEventArgs e)
         {
             mainWindow.HostingFrame.Navigate(new HostOrders());
+        }
+
+        /// <summary>
+        /// Go back to host sign in page
+        /// </summary>
+        private void Return_To_Sign_In(object sender, RoutedEventArgs e)
+        {
+            mainWindow.HostingFrame.Navigate(new HostSignIn());
         }
     }
 }

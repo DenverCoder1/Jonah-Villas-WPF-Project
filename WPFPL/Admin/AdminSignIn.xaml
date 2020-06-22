@@ -36,7 +36,8 @@
                          Height="26"
                          VerticalAlignment="Center"
                          FontFamily="{StaticResource Password}"
-                         FontSize="14">
+                         FontSize="14"
+                         KeyUp="AdminPassword_KeyUp">
                     <p:PlaceholderService.Placeholder>
                         <TextBlock>Password</TextBlock>
                     </p:PlaceholderService.Placeholder>

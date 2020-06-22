@@ -23,11 +23,11 @@ namespace WPFPL.Admin
     /// </summary>
     public partial class AdminHosts : Page
     {
-        public MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
 
         public static ObservableCollection<string> HostCollection { get; set; }
 
-        public static string Search { get; set; }
+        private static string Search { get; set; }
 
         private static int SortIndex { get; set; }
 
@@ -40,6 +40,10 @@ namespace WPFPL.Admin
             Refresh();
         }
 
+        /// <summary>
+        /// Refresh items in list and apply search and filters
+        /// </summary>
+        /// <param name="search">search to filter on</param>
         public static void Refresh(string search = "")
         {
             if (HostCollection != null)
@@ -84,23 +88,36 @@ namespace WPFPL.Admin
             }
         }
 
+        /// <summary>
+        /// Button to return to admin menu
+        /// </summary>
         private void Return_To_Menu(object sender, RoutedEventArgs e)
         {
             mainWindow.AdminFrame.Navigate(new AdminMenu());
         }
 
+        /// <summary>
+        /// Button to force refresh of list
+        /// </summary>
         private void Refresh_Event(object sender, RoutedEventArgs e)
         {
             Search = SearchBox.Text;
             Refresh(Search);
         }
 
+        /// <summary>
+        /// Empty search text box
+        /// </summary>
         private void Clear_Search(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
             Refresh();
         }
 
+        /// <summary>
+        /// On change sort method in comboBox,
+        /// refresh the list
+        /// </summary>
         private void Sort_Selection_Changed(object sender, SelectionChangedEventArgs e)
         {
             SortIndex = sortBy.SelectedIndex;

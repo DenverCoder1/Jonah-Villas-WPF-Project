@@ -59,6 +59,9 @@ namespace WPFPL
             ListBanks();
         }
 
+        /// <summary>
+        /// Get a list of bank branches (using background worker)
+        /// </summary>
         public static void ListBanks()
         {
             if (BankCollection != null)
@@ -95,7 +98,7 @@ namespace WPFPL
                 }
             }
         }
-
+        
         private void Bank_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (hBank.SelectedItem == null) return;

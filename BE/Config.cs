@@ -24,22 +24,22 @@ namespace BE
         // set to make sure no duplicate keys given
         public static long NextOrderKey
         {
-            get { if (_nextOrderKey < INITIAL_ORDER_KEY) { _nextOrderKey = INITIAL_ORDER_KEY; } return _nextOrderKey; }
+            get { if (_nextOrderKey < INITIAL_ORDER_KEY) { _nextOrderKey = INITIAL_ORDER_KEY + 1; } return _nextOrderKey; }
             set => _nextOrderKey = value;
         }
         public static long NextHostKey
         {
-            get { if (_nextHostKey < INITIAL_ORDER_KEY) { _nextHostKey = INITIAL_ORDER_KEY; } return _nextHostKey; }
+            get { if (_nextHostKey <= INITIAL_ORDER_KEY) { _nextHostKey = INITIAL_ORDER_KEY + 1; } return _nextHostKey; }
             set => _nextHostKey = value;
         }
         public static long NextHostingUnitKey
         {
-            get { if (_nextHostingUnitKey < INITIAL_ORDER_KEY) { _nextHostingUnitKey = INITIAL_ORDER_KEY; } return _nextHostingUnitKey; }
+            get { if (_nextHostingUnitKey <= INITIAL_ORDER_KEY) { _nextHostingUnitKey = INITIAL_ORDER_KEY + 1; } return _nextHostingUnitKey; }
             set => _nextHostingUnitKey = value;
         }
         public static long NextGuestRequestKey
         {
-            get { if (_nextGuestRequestKey < INITIAL_ORDER_KEY) { _nextGuestRequestKey = INITIAL_ORDER_KEY; } return _nextGuestRequestKey; }
+            get { if (_nextGuestRequestKey <= INITIAL_ORDER_KEY) { _nextGuestRequestKey = INITIAL_ORDER_KEY + 1; } return _nextGuestRequestKey; }
             set => _nextGuestRequestKey = value;
         }
 

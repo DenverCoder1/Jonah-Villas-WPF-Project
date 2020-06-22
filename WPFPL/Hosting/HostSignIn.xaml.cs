@@ -24,7 +24,8 @@ namespace WPFPL
     /// </summary>
     public partial class HostSignIn : Page
     {
-        public MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
+
         public HostSignIn()
         {
             InitializeComponent();
@@ -33,6 +34,9 @@ namespace WPFPL
                 HostID.Text = Util.MyHost.HostKey.ToString();
         }
 
+        /// <summary>
+        /// Check ID and go to menu if valid
+        /// </summary>
         private void Host_Enter_Button_Click(object sender, RoutedEventArgs e)
         {
             if (String.IsNullOrEmpty(HostID.Text))
@@ -64,11 +68,18 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Go to sign up page
+        /// </summary>
         private void Host_Sign_Up_Button_Click(object sender, RoutedEventArgs e)
         {
             mainWindow.HostingFrame.Navigate(new HostSignUp());
         }
 
+        /// <summary>
+        /// Detect enter key pressed in the ID field
+        /// Submit form if enter pressed
+        /// </summary>
         private void HostID_TextBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key != System.Windows.Input.Key.Enter)
@@ -79,18 +90,24 @@ namespace WPFPL
             Host_Enter_Button_Click(sender, e);
         }
 
-        private static readonly Regex NumbersRegex = new Regex("[^0-9]+"); //regex that matches disallowed text
+        //regex that matches disallowed text for ID field
+        private static readonly Regex NumbersRegex = new Regex("[^0-9]+"); 
+
+        // return whether string contains all numbers
         private static bool IsTextAllowed(string text)
         {
             return !NumbersRegex.IsMatch(text);
         }
 
-        // Use the DataObject.Pasting Handler 
+        /// <summary>
+        ///  Use the DataObject.Pasting Handler to disallow
+        ///  pasting text that contains non-numeric characters
+        /// </summary>
         private void HostID_Pasting(object sender, DataObjectPastingEventArgs e)
         {
-            if (e.DataObject.GetDataPresent(typeof(String)))
+            if (e.DataObject.GetDataPresent(typeof(string)))
             {
-                String text = (String)e.DataObject.GetData(typeof(String));
+                string text = (string)e.DataObject.GetData(typeof(string));
                 if (!IsTextAllowed(text))
                 {
                     e.CancelCommand();
@@ -102,6 +119,9 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Display text only if it is numeric
+        /// </summary>
         private void HostID_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !IsTextAllowed(e.Text);

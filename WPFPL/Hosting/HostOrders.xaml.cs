@@ -25,13 +25,11 @@ namespace WPFPL
     /// </summary>
     public partial class HostOrders : Page
     {
-        public MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
 
         public static ObservableCollection<string> OrdersCollection { get; set; }
 
-        public static string Search { get; set; }
-
-        public object PascalCaseConverter { get; private set; }
+        private static string Search { get; set; }
 
         private static int SortIndex { get; set; }
 
@@ -44,6 +42,10 @@ namespace WPFPL
             Refresh();
         }
 
+        /// <summary>
+        /// Refresh items in list and apply search and filters
+        /// </summary>
+        /// <param name="search">search to filter on</param>
         public static void Refresh(string search = "")
         {
             if (OrdersCollection != null)
@@ -98,11 +100,17 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Button to return to host menu
+        /// </summary>
         private void Return_To_Options(object sender, RoutedEventArgs e)
         {
             mainWindow.HostingFrame.Navigate(new HostMenu());
         }
 
+        /// <summary>
+        /// Prompt for updating order details
+        /// </summary>
         private void Update_Order(object sender, RoutedEventArgs e)
         {
             if (Orders.SelectedItem == null)
@@ -134,6 +142,11 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Finish update of order when dialog closed
+        /// </summary>
+        /// <param name="dialogText">Text from dialog prompt</param>
+        /// <param name="selection">Selected status</param>
         public static void Finish_Update_Order(string dialogText, object selection)
         {
             if (selection != null)
@@ -169,18 +182,28 @@ namespace WPFPL
             Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
         }
 
+        /// <summary>
+        /// Button to force refresh of list
+        /// </summary>
         private void Refresh_Event(object sender, RoutedEventArgs e)
         {
             Search = SearchBox.Text;
             Refresh(Search);
         }
 
+        /// <summary>
+        /// Empty search text box
+        /// </summary>
         private void Clear_Search(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
             Refresh();
         }
 
+        /// <summary>
+        /// On change sort method in comboBox,
+        /// refresh the list
+        /// </summary>
         private void Sort_Selection_Changed(object sender, SelectionChangedEventArgs e)
         {
             SortIndex = sortBy.SelectedIndex;

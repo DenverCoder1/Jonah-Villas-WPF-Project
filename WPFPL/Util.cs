@@ -25,21 +25,7 @@ namespace WPFPL
         /// <returns>Reference to main window</returns>
         public static MainWindow GetMainWindow()
         {
-            MainWindow mainWindow = null;
-
-            foreach (Window window in Application.Current.Windows)
-            {
-                Type type = typeof(MainWindow);
-                if (window != null && window.DependencyObjectType.Name == type.Name)
-                {
-                    mainWindow = (MainWindow)window;
-                    if (mainWindow != null)
-                    {
-                        break;
-                    }
-                }
-            }
-            return mainWindow;
+            return (MainWindow)Application.Current.MainWindow;
         }
     }
 }

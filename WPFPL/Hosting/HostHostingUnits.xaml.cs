@@ -49,6 +49,10 @@ namespace WPFPL
             Refresh();
         }
 
+        /// <summary>
+        /// Refresh items in list and apply search and filters
+        /// </summary>
+        /// <param name="search">search to filter on</param>
         public static void Refresh(string search = "")
         {
             if (HostingUnitCollection != null)
@@ -96,11 +100,17 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Button to return to host menu
+        /// </summary>
         private void Return_To_Options(object sender, RoutedEventArgs e)
         {
             mainWindow.HostingFrame.Navigate(new HostMenu());
         }
 
+        /// <summary>
+        /// Prompt for changing hosting unit
+        /// </summary>
         private void Update_Hosting_Unit(object sender, RoutedEventArgs e)
         {
             if (HostingUnits.SelectedItem == null)
@@ -144,6 +154,11 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Finish hosting unit update when prompt closed
+        /// </summary>
+        /// <param name="dialogText">Text from the dialog prompt</param>
+        /// <param name="name">Inputted name</param>
         public static void Update_Hosting_Unit_Name(string dialogText, string name)
         {
             MainWindow mainWindow = Util.GetMainWindow();
@@ -188,6 +203,9 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Prompt for deleting hosting unit
+        /// </summary>
         private void Delete_Hosting_Unit(object sender, RoutedEventArgs e)
         {
             if (HostingUnits.SelectedItem == null)
@@ -203,6 +221,11 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// finish deletion when prompt closed
+        /// </summary>
+        /// <param name="dialogText">Text from the dialog prompt</param>
+        /// <param name="checkedBox">Bool whether checked box or not</param>
         public static void Confirm_Delete(string dialogText, bool? checkedBox)
         {
             Match match = new Regex(@".*Unit #(\d+).*").Match(dialogText);
@@ -230,6 +253,9 @@ namespace WPFPL
             }
         }
 
+        /// <summary>
+        /// Prompt for adding hosting unit
+        /// </summary>
         private void Add_Hosting_Unit(object sender, RoutedEventArgs e)
         {
             DistrictsCollection = new ObservableCollection<string> { "Select a district" };
@@ -243,6 +269,10 @@ namespace WPFPL
             MainWindow.Dialog("Enter the name, district and city of the new hosting unit.", "HostAddHostingUnit", "Name", "Select a district", "Select a city");
         }
 
+        /// <summary>
+        /// finish add unit when prompt closed
+        /// </summary>
+        /// <param name="name">Inputted name</param>
         public static void Add_Hosting_Unit_Named(string name)
         {
             MainWindow mainWindow = Util.GetMainWindow();
@@ -272,18 +302,28 @@ namespace WPFPL
             Refresh();
         }
 
+        /// <summary>
+        /// Button to force refresh of list
+        /// </summary>
         private void Refresh_Event(object sender, RoutedEventArgs e)
         {
             Search = SearchBox.Text;
             Refresh(Search);
         }
 
+        /// <summary>
+        /// Empty search text box
+        /// </summary>
         private void Clear_Search(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
             Refresh();
         }
 
+        /// <summary>
+        /// On change sort method in comboBox,
+        /// refresh the list
+        /// </summary>
         private void Sort_Selection_Changed(object sender, SelectionChangedEventArgs e)
         {
             SortIndex = sortBy.SelectedIndex;
