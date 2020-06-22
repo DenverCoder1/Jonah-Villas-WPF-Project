@@ -135,7 +135,7 @@
                                          x:Name="MainTabControl"
                                          SelectionChanged="TabControl_SelectionChanged">
                     <dragablz:TabablzControl.InterTabController>
-                        <dragablz:InterTabController/>
+                        <dragablz:InterTabController />
                     </dragablz:TabablzControl.InterTabController>
                     <TabItem x:Name="Tab0">
                         <TabItem.Header>
@@ -153,90 +153,89 @@
                         </TabItem.Header>
                         <md:Card Padding="32"
                                  Margin="16">
-                            <StackPanel>
-                                <Image Source="Images/mountains.jpg"
-                                       Margin="0 0 0 10"
-                                       MaxHeight="270px"></Image>
-                                <TextBlock Style="{StaticResource MainHeading}">
-								Welcome to Jonah's Rentals!
-                                </TextBlock>
-                                <TextBlock Style="{StaticResource SubHeading}"
-                                           Margin="0 10 0 20">
-								Click a button below to begin
-                                </TextBlock>
-                                <Grid HorizontalAlignment="Left"
-                                      Margin="0 0 0 0"
-                                      Width="540">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="190"/>
-                                        <ColumnDefinition Width="190"/>
-                                        <ColumnDefinition Width="190" />
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Left">
-                                        <md:PackIcon Kind="HomeSearchOutline"
-                                                     Style="{StaticResource LargeHomeIcon}"/>
-                                        <TextBlock FontFamily="{StaticResource OpenSans}"
-                                                   Style="{StaticResource HomeButtonLabel}">
-										CUSTOMERS
-                                        </TextBlock>
-                                        <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                                                Width="172px"
-                                                HorizontalAlignment="Left"
-                                                Click="ChangeTab"
-                                                Tag="1">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="RETURN TO MENU" />
-                                                <md:PackIcon Kind="ArrowRight"
-                                                             Style="{StaticResource ButtonIconRight}" />
-                                            </StackPanel>
-                                        </Button>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Left">
-                                        <md:PackIcon Kind="CardAccountPhoneOutline"
-                                                     Style="{StaticResource LargeHomeIcon}"/>
-                                        <TextBlock FontFamily="{StaticResource OpenSans}"
-                                                   Style="{StaticResource HomeButtonLabel}">
-										HOSTS
-                                        </TextBlock>
-                                        <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                                                Width="172px"
-                                                HorizontalAlignment="Left"
-                                                Click="ChangeTab"
-                                                Tag="2">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="HOSTING AREA" />
-                                                <md:PackIcon Kind="ArrowRight"
-                                                             Style="{StaticResource ButtonIconRight}" />
-                                            </StackPanel>
-                                        </Button>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="2"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Left">
-                                        <md:PackIcon Kind="AccountKeyOutline"
-                                                     Style="{StaticResource LargeHomeIcon}" />
-                                        <TextBlock FontFamily="{StaticResource OpenSans}"
-                                                   Style="{StaticResource HomeButtonLabel}">
-										ADMIN
-                                        </TextBlock>
-                                        <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                                                Width="172px"
-                                                HorizontalAlignment="Left"
-                                                Click="ChangeTab"
-                                                Tag="3">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="ADMIN PANEL" />
-                                                <md:PackIcon Kind="ArrowRight"
-                                                             Style="{StaticResource ButtonIconRight}" />
-                                            </StackPanel>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
+                            <ScrollViewer Height="Auto"
+                                          VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <Image Source="Images/mountains.jpg"
+                                           Margin="0 0 0 10"
+                                           MaxHeight="270px"></Image>
+                                    <TextBlock Style="{StaticResource MainHeading}">
+								        Welcome to Jonah's Rentals!
+                                    </TextBlock>
+                                    <TextBlock Style="{StaticResource SubHeading}"
+                                               Margin="0 10 0 20">
+								        Click a button below to begin
+                                    </TextBlock>
+                                    <WrapPanel>
+                                        <StackPanel Width="190"
+                                                    Margin="0 0 0 15"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Left">
+                                            <md:PackIcon Kind="HomeSearchOutline"
+                                                         Style="{StaticResource LargeHomeIcon}" />
+                                            <TextBlock FontFamily="{StaticResource OpenSans}"
+                                                       Style="{StaticResource HomeButtonLabel}">
+										        CUSTOMERS
+                                            </TextBlock>
+                                            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                                                    Width="172px"
+                                                    HorizontalAlignment="Left"
+                                                    Click="ChangeTab"
+                                                    Tag="1">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="RETURN TO MENU" />
+                                                    <md:PackIcon Kind="ArrowRight"
+                                                                 Style="{StaticResource ButtonIconRight}" />
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel Width="190"
+                                                    Margin="0 0 0 15"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Left">
+                                            <md:PackIcon Kind="CardAccountPhoneOutline"
+                                                         Style="{StaticResource LargeHomeIcon}" />
+                                            <TextBlock FontFamily="{StaticResource OpenSans}"
+                                                       Style="{StaticResource HomeButtonLabel}">
+										        HOSTS
+                                            </TextBlock>
+                                            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                                                    Width="172px"
+                                                    HorizontalAlignment="Left"
+                                                    Click="ChangeTab"
+                                                    Tag="2">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="HOSTING AREA" />
+                                                    <md:PackIcon Kind="ArrowRight"
+                                                                 Style="{StaticResource ButtonIconRight}" />
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel Width="190"
+                                                    Margin="0 0 0 15"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Left">
+                                            <md:PackIcon Kind="AccountKeyOutline"
+                                                         Style="{StaticResource LargeHomeIcon}" />
+                                            <TextBlock FontFamily="{StaticResource OpenSans}"
+                                                       Style="{StaticResource HomeButtonLabel}">
+										        ADMIN
+                                            </TextBlock>
+                                            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                                                    Width="172px"
+                                                    HorizontalAlignment="Left"
+                                                    Click="ChangeTab"
+                                                    Tag="3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="ADMIN PANEL" />
+                                                    <md:PackIcon Kind="ArrowRight"
+                                                                 Style="{StaticResource ButtonIconRight}" />
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </ScrollViewer>
                         </md:Card>
                     </TabItem>
                     <TabItem x:Name="Tab1">
@@ -255,277 +254,271 @@
                         </TabItem.Header>
                         <md:Card Padding="32"
                                  Margin="16">
-                            <StackPanel>
-                                <TextBlock Style="{StaticResource MainHeading}">
-							    Welcome, guest!
-                                </TextBlock>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
+                            <ScrollViewer Height="Auto"
+                                          VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource MainHeading}">
+							            Welcome, guest!
+                                    </TextBlock>
 
-                                    <Grid x:Name="guestForm"
-                                          HorizontalAlignment="Left"
-                                          Margin="0 20 0 0"
-                                          VerticalAlignment="Top"
-                                          Width="320"
-                                          Grid.Column="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
+                                    <WrapPanel>
+                                        <Grid x:Name="guestForm"
+                                              HorizontalAlignment="Left"
+                                              Margin="0 20 0 0"
+                                              VerticalAlignment="Top"
+                                              Width="320">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
 
-                                        <Label Grid.Row="0"
-                                               Grid.Column="0"
-                                               Style="{StaticResource FormLabel}">
-                                            <Label.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <md:PackIcon Kind="AccountOutline"
-                                                                 Style="{StaticResource LabelIcon}" />
-                                                    <TextBlock Text="First name:" />
-                                                </StackPanel>
-                                            </Label.Content>
-                                        </Label>
-                                        <AdornerDecorator Grid.Row="0"
-                                                          Grid.Column="1">
-                                            <TextBox x:Name="gFirstName"
-                                                     Style="{StaticResource FormTextBox}" />
-                                        </AdornerDecorator>
-                                        <Label Grid.Row="1"
-                                               Grid.Column="0"
-                                               Style="{StaticResource FormLabel}">
-                                            <Label.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <md:PackIcon Kind="AccountOutline"
-                                                                 Style="{StaticResource LabelIcon}" />
-                                                    <TextBlock Text="Last name:" />
-                                                </StackPanel>
-                                            </Label.Content>
-                                        </Label>
-                                        <AdornerDecorator Grid.Row="1"
-                                                          Grid.Column="1">
-                                            <TextBox x:Name="gLastName"
-                                                     Style="{StaticResource FormTextBox}" />
-                                        </AdornerDecorator>
-                                        <Label Grid.Row="2"
-                                               Grid.Column="0"
-                                               Style="{StaticResource FormLabel}">
-                                            <Label.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <md:PackIcon Kind="EmailOutline"
-                                                                 Style="{StaticResource LabelIcon}"/>
-                                                    <TextBlock Text="Email:" />
-                                                </StackPanel>
-                                            </Label.Content>
-                                        </Label>
-                                        <AdornerDecorator Grid.Row="2"
-                                                          Grid.Column="1">
-                                            <TextBox x:Name="gEmail"
-                                                     Style="{StaticResource FormTextBox}" />
-                                        </AdornerDecorator>
-                                        <Label Grid.Row="3"
-                                               Grid.Column="0"
-                                               Style="{StaticResource FormLabel}">
-                                            <Label.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <md:PackIcon Kind="CalendarArrowRight"
-                                                                 Style="{StaticResource LabelIcon}" />
-                                                    <TextBlock Text="Entry date:" />
-                                                </StackPanel>
-                                            </Label.Content>
-                                        </Label>
-                                        <AdornerDecorator Grid.Row="3"
-                                                          Grid.Column="1">
-                                            <DatePicker x:Name="gEntryDate"
-                                                        Style="{StaticResource FormDatePicker}"
-                                                        DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                                                        DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
-                                        </AdornerDecorator>
-                                        <Label Grid.Row="4"
-                                               Grid.Column="0"
-                                               Style="{StaticResource FormLabel}">
-                                            <Label.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <md:PackIcon Kind="CalendarArrowLeft"
-                                                                 Style="{StaticResource LabelIcon}" />
-                                                    <TextBlock Text="Departure date:" />
-                                                </StackPanel>
-                                            </Label.Content>
-                                        </Label>
-                                        <AdornerDecorator Grid.Row="4"
-                                                          Grid.Column="1">
-                                            <DatePicker x:Name="gReleaseDate"
-                                                        Style="{StaticResource FormDatePicker}"
-                                                        DisplayDateStart="{Binding ElementName=gEntryDate, Path=SelectedDate, Converter={StaticResource ConvertToNextDay}}"
-                                                        DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
-                                        </AdornerDecorator>
-                                        <Label Grid.Row="5"
-                                               Grid.Column="0"
-                                               Style="{StaticResource FormLabel}">
-                                            <Label.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <md:PackIcon Kind="MapOutline"
-                                                                 Style="{StaticResource LabelIcon}" />
-                                                    <TextBlock Text="Vacation district:" />
-                                                </StackPanel>
-                                            </Label.Content>
-                                        </Label>
-                                        <AdornerDecorator Grid.Row="5"
-                                                          Grid.Column="1">
-                                            <ComboBox x:Name="gPrefDistrict"
-                                                      ItemsSource="{Binding Source={StaticResource District}}"
-                                                      Style="{StaticResource FormComboBox}"
-                                                      SelectionChanged="DistrictComboBox_Changed">
-                                                <ComboBox.ItemTemplate>
+                                            <Label Grid.Row="0"
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource FormLabel}">
+                                                <Label.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <md:PackIcon Kind="AccountOutline"
+                                                                     Style="{StaticResource LabelIcon}" />
+                                                        <TextBlock Text="First name:" />
+                                                    </StackPanel>
+                                                </Label.Content>
+                                            </Label>
+                                            <AdornerDecorator Grid.Row="0"
+                                                              Grid.Column="1">
+                                                <TextBox x:Name="gFirstName"
+                                                         Style="{StaticResource FormTextBox}" />
+                                            </AdornerDecorator>
+                                            <Label Grid.Row="1"
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource FormLabel}">
+                                                <Label.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <md:PackIcon Kind="AccountOutline"
+                                                                     Style="{StaticResource LabelIcon}" />
+                                                        <TextBlock Text="Last name:" />
+                                                    </StackPanel>
+                                                </Label.Content>
+                                            </Label>
+                                            <AdornerDecorator Grid.Row="1"
+                                                              Grid.Column="1">
+                                                <TextBox x:Name="gLastName"
+                                                         Style="{StaticResource FormTextBox}" />
+                                            </AdornerDecorator>
+                                            <Label Grid.Row="2"
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource FormLabel}">
+                                                <Label.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <md:PackIcon Kind="EmailOutline"
+                                                                     Style="{StaticResource LabelIcon}" />
+                                                        <TextBlock Text="Email:" />
+                                                    </StackPanel>
+                                                </Label.Content>
+                                            </Label>
+                                            <AdornerDecorator Grid.Row="2"
+                                                              Grid.Column="1">
+                                                <TextBox x:Name="gEmail"
+                                                         Style="{StaticResource FormTextBox}" />
+                                            </AdornerDecorator>
+                                            <Label Grid.Row="3"
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource FormLabel}">
+                                                <Label.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <md:PackIcon Kind="CalendarArrowRight"
+                                                                     Style="{StaticResource LabelIcon}" />
+                                                        <TextBlock Text="Entry date:" />
+                                                    </StackPanel>
+                                                </Label.Content>
+                                            </Label>
+                                            <AdornerDecorator Grid.Row="3"
+                                                              Grid.Column="1">
+                                                <DatePicker x:Name="gEntryDate"
+                                                            Style="{StaticResource FormDatePicker}"
+                                                            DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
+                                                            DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
+                                            </AdornerDecorator>
+                                            <Label Grid.Row="4"
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource FormLabel}">
+                                                <Label.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <md:PackIcon Kind="CalendarArrowLeft"
+                                                                     Style="{StaticResource LabelIcon}" />
+                                                        <TextBlock Text="Departure date:" />
+                                                    </StackPanel>
+                                                </Label.Content>
+                                            </Label>
+                                            <AdornerDecorator Grid.Row="4"
+                                                              Grid.Column="1">
+                                                <DatePicker x:Name="gReleaseDate"
+                                                            Style="{StaticResource FormDatePicker}"
+                                                            DisplayDateStart="{Binding ElementName=gEntryDate, Path=SelectedDate, Converter={StaticResource ConvertToNextDay}}"
+                                                            DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
+                                            </AdornerDecorator>
+                                            <Label Grid.Row="5"
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource FormLabel}">
+                                                <Label.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <md:PackIcon Kind="MapOutline"
+                                                                     Style="{StaticResource LabelIcon}" />
+                                                        <TextBlock Text="Vacation district:" />
+                                                    </StackPanel>
+                                                </Label.Content>
+                                            </Label>
+                                            <AdornerDecorator Grid.Row="5"
+                                                              Grid.Column="1">
+                                                <ComboBox x:Name="gPrefDistrict"
+                                                          ItemsSource="{Binding Source={StaticResource District}}"
+                                                          Style="{StaticResource FormComboBox}"
+                                                          SelectionChanged="DistrictComboBox_Changed">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
+                                            </AdornerDecorator>
+                                            <Label Grid.Row="6"
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource FormLabel}">
+                                                <Label.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <md:PackIcon Kind="MapMarkerRadiusOutline"
+                                                                     Style="{StaticResource LabelIcon}" />
+                                                        <TextBlock Text="Vacation city:" />
+                                                    </StackPanel>
+                                                </Label.Content>
+                                            </Label>
+                                            <AdornerDecorator Grid.Row="6"
+                                                              Grid.Column="1">
+                                                <ComboBox x:Name="gPrefCity"
+                                                          Style="{StaticResource FormComboBox}">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
+                                            </AdornerDecorator>
+                                            <Label Grid.Row="7"
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource FormLabel}">
+                                                <Label.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <md:PackIcon Kind="HumanMaleFemale"
+                                                                     Style="{StaticResource LabelIcon}" />
+                                                        <TextBlock Text="Number of adults:" />
+                                                    </StackPanel>
+                                                </Label.Content>
+                                            </Label>
+                                            <AdornerDecorator Grid.Row="7"
+                                                              Grid.Column="1">
+                                                <ComboBox x:Name="gNumAdults"
+                                                          Style="{StaticResource FormComboBox}">
+                                                    <ComboBoxItem>1</ComboBoxItem>
+                                                    <ComboBoxItem>2</ComboBoxItem>
+                                                    <ComboBoxItem>3</ComboBoxItem>
+                                                    <ComboBoxItem>4</ComboBoxItem>
+                                                    <ComboBoxItem>5</ComboBoxItem>
+                                                    <ComboBoxItem>6</ComboBoxItem>
+                                                    <ComboBoxItem>7</ComboBoxItem>
+                                                    <ComboBoxItem>8</ComboBoxItem>
+                                                </ComboBox>
+                                            </AdornerDecorator>
+                                            <Label Grid.Row="8"
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource FormLabel}">
+                                                <Label.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <md:PackIcon Kind="HumanMaleChild"
+                                                                     Style="{StaticResource LabelIcon}" />
+                                                        <TextBlock Text="Number of children:" />
+                                                    </StackPanel>
+                                                </Label.Content>
+                                            </Label>
+                                            <AdornerDecorator Grid.Row="8"
+                                                              Grid.Column="1">
+                                                <ComboBox x:Name="gNumChildren"
+                                                          Style="{StaticResource FormComboBox}">
+                                                    <ComboBoxItem>0</ComboBoxItem>
+                                                    <ComboBoxItem>1</ComboBoxItem>
+                                                    <ComboBoxItem>2</ComboBoxItem>
+                                                    <ComboBoxItem>3</ComboBoxItem>
+                                                    <ComboBoxItem>4</ComboBoxItem>
+                                                    <ComboBoxItem>5</ComboBoxItem>
+                                                    <ComboBoxItem>6</ComboBoxItem>
+                                                    <ComboBoxItem>7</ComboBoxItem>
+                                                    <ComboBoxItem>8</ComboBoxItem>
+                                                </ComboBox>
+                                            </AdornerDecorator>
+                                            <Label Grid.Row="9"
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource FormLabel}">
+                                                <Label.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <md:PackIcon Kind="MapMarkerQuestionOutline"
+                                                                     Style="{StaticResource LabelIcon}" />
+                                                        <TextBlock Text="Rental type:" />
+                                                    </StackPanel>
+                                                </Label.Content>
+                                            </Label>
+                                            <AdornerDecorator Grid.Row="9"
+                                                              Grid.Column="1">
+                                                <ComboBox x:Name="gPrefType"
+                                                          ItemsSource="{Binding Source={StaticResource TypeOfPlace }}"
+                                                          Style="{StaticResource FormComboBox}">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
+                                            </AdornerDecorator>
+                                        </Grid>
+                                        <StackPanel Margin="20 0 0 0">
+                                            <Label Content="Which amenities are most important to you?"
+                                                   Margin="0 24 0 8" />
+                                            <ListBox x:Name="gAmenities"
+                                                     MaxWidth="420"
+                                                     Height="292"
+                                                     SelectionMode="Multiple"
+                                                     ItemsSource="{Binding Source={StaticResource Amenity }}"
+                                                     Style="{StaticResource MyMaterialDesignFilterChipListBox}">
+                                                <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
                                                     </DataTemplate>
-                                                </ComboBox.ItemTemplate>
-                                            </ComboBox>
-                                        </AdornerDecorator>
-                                        <Label Grid.Row="6"
-                                               Grid.Column="0"
-                                               Style="{StaticResource FormLabel}">
-                                            <Label.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <md:PackIcon Kind="MapMarkerRadiusOutline"
-                                                                 Style="{StaticResource LabelIcon}" />
-                                                    <TextBlock Text="Vacation city:" />
-                                                </StackPanel>
-                                            </Label.Content>
-                                        </Label>
-                                        <AdornerDecorator Grid.Row="6"
-                                                          Grid.Column="1">
-                                            <ComboBox x:Name="gPrefCity"
-                                                      Style="{StaticResource FormComboBox}">
-                                                <ComboBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
-                                                    </DataTemplate>
-                                                </ComboBox.ItemTemplate>
-                                            </ComboBox>
-                                        </AdornerDecorator>
-                                        <Label Grid.Row="7"
-                                               Grid.Column="0"
-                                               Style="{StaticResource FormLabel}">
-                                            <Label.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <md:PackIcon Kind="HumanMaleFemale"
-                                                                 Style="{StaticResource LabelIcon}" />
-                                                    <TextBlock Text="Number of adults:" />
-                                                </StackPanel>
-                                            </Label.Content>
-                                        </Label>
-                                        <AdornerDecorator Grid.Row="7"
-                                                          Grid.Column="1">
-                                            <ComboBox x:Name="gNumAdults"
-                                                      Style="{StaticResource FormComboBox}">
-                                                <ComboBoxItem>1</ComboBoxItem>
-                                                <ComboBoxItem>2</ComboBoxItem>
-                                                <ComboBoxItem>3</ComboBoxItem>
-                                                <ComboBoxItem>4</ComboBoxItem>
-                                                <ComboBoxItem>5</ComboBoxItem>
-                                                <ComboBoxItem>6</ComboBoxItem>
-                                                <ComboBoxItem>7</ComboBoxItem>
-                                                <ComboBoxItem>8</ComboBoxItem>
-                                            </ComboBox>
-                                        </AdornerDecorator>
-                                        <Label Grid.Row="8"
-                                               Grid.Column="0"
-                                               Style="{StaticResource FormLabel}">
-                                            <Label.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <md:PackIcon Kind="HumanMaleChild"
-                                                                 Style="{StaticResource LabelIcon}" />
-                                                    <TextBlock Text="Number of children:" />
-                                                </StackPanel>
-                                            </Label.Content>
-                                        </Label>
-                                        <AdornerDecorator Grid.Row="8"
-                                                          Grid.Column="1">
-                                            <ComboBox x:Name="gNumChildren"
-                                                      Style="{StaticResource FormComboBox}">
-                                                <ComboBoxItem>0</ComboBoxItem>
-                                                <ComboBoxItem>1</ComboBoxItem>
-                                                <ComboBoxItem>2</ComboBoxItem>
-                                                <ComboBoxItem>3</ComboBoxItem>
-                                                <ComboBoxItem>4</ComboBoxItem>
-                                                <ComboBoxItem>5</ComboBoxItem>
-                                                <ComboBoxItem>6</ComboBoxItem>
-                                                <ComboBoxItem>7</ComboBoxItem>
-                                                <ComboBoxItem>8</ComboBoxItem>
-                                            </ComboBox>
-                                        </AdornerDecorator>
-                                        <Label Grid.Row="9"
-                                               Grid.Column="0"
-                                               Style="{StaticResource FormLabel}">
-                                            <Label.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <md:PackIcon Kind="MapMarkerQuestionOutline"
-                                                                 Style="{StaticResource LabelIcon}" />
-                                                    <TextBlock Text="Rental type:" />
-                                                </StackPanel>
-                                            </Label.Content>
-                                        </Label>
-                                        <AdornerDecorator Grid.Row="9"
-                                                          Grid.Column="1">
-                                            <ComboBox x:Name="gPrefType"
-                                                      ItemsSource="{Binding Source={StaticResource TypeOfPlace }}"     
-                                                      Style="{StaticResource FormComboBox}">
-                                                <ComboBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
-                                                    </DataTemplate>
-                                                </ComboBox.ItemTemplate>
-                                            </ComboBox>
-                                        </AdornerDecorator>
-                                    </Grid>
-                                    <StackPanel Grid.Column="1"
-                                                Margin="20 0 0 0">
-                                        <Label Content="Which amenities are most important to you?"
-                                               Margin="0 24 0 8" />
-                                        <ListBox x:Name="gAmenities"
-                                                 MaxWidth="420"
-                                                 Height="292"
-                                                 SelectionMode="Multiple"
-                                                 ItemsSource="{Binding Source={StaticResource Amenity }}"
-                                                 Style="{StaticResource MyMaterialDesignFilterChipListBox}">
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
-                                    </StackPanel>
-                                </Grid>
-                                <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                                        Width="Auto"
-                                        HorizontalAlignment="Left"
-                                        Margin="0 20 0 0"
-                                        Click="Submit_Request_Button_Click">
-                                    <StackPanel Orientation="Horizontal">
-                                        <md:PackIcon Kind="HomeSearchOutline"
-                                                     Style="{StaticResource ButtonIcon}" />
-                                        <TextBlock Text="SUBMIT REQUEST" />
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </StackPanel>
+                                    </WrapPanel>
+                                    <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                                            Width="Auto"
+                                            HorizontalAlignment="Left"
+                                            Margin="0 20 0 0"
+                                            Click="Submit_Request_Button_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <md:PackIcon Kind="HomeSearchOutline"
+                                                         Style="{StaticResource ButtonIcon}" />
+                                            <TextBlock Text="SUBMIT REQUEST" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </ScrollViewer>
                         </md:Card>
                     </TabItem>
                     <TabItem x:Name="Tab2">
@@ -571,7 +564,7 @@
                                  Margin="16">
                             <StackPanel>
                                 <TextBlock Style="{StaticResource MainHeading}">
-							    Welcome, admin!
+							        Welcome, admin!
                                 </TextBlock>
                                 <Frame x:Name="AdminFrame"
                                        NavigationUIVisibility="Hidden" />
@@ -581,8 +574,8 @@
                 </dragablz:TabablzControl>
             </Grid>
             <md:Snackbar x:Name="MySnackbar"
-                         MessageQueue="{md:MessageQueue}" 
-                         Margin="0 0 0 10"/>
+                         MessageQueue="{md:MessageQueue}"
+                         Margin="0 0 0 10" />
         </Grid>
     </md:DialogHost>
 </Window>

@@ -16,12 +16,18 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Yellow.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <!-- Include Open Sans Font -->
+            <FontFamily x:Key="OpenSans">pack://application:,,,/Fonts/#Open Sans</FontFamily>
+            
+            <!-- Include Password Font -->
+            <FontFamily x:Key="Password">pack://application:,,,/Fonts/#password</FontFamily>
+
             <!-- Set Dragablz tab control to use the Material Design theme -->
             <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
             
             <!-- Custom heading styles -->
             <Style x:Key="MainHeading"
-                   TargetType="TextBlock">
+                   TargetType="{x:Type TextBlock}">
                 <Setter Property="FontFamily"
                         Value="{StaticResource OpenSans}" />
                 <Setter Property="FontWeight"
@@ -30,7 +36,7 @@
                         Value="22px" />
             </Style>
             <Style x:Key="SubHeading"
-                   TargetType="TextBlock">
+                   TargetType="{x:Type TextBlock}">
                 <Setter Property="FontFamily"
                         Value="{StaticResource OpenSans}" />
                 <Setter Property="FontWeight"
@@ -156,12 +162,6 @@
             <Style x:Key="MyMaterialDesignFilterChipListBox"
                    BasedOn="{StaticResource MaterialDesignFilterChipListBox}"
                    TargetType="{x:Type ListBox}" />
-
-            <!-- Include Open Sans Font -->
-            <FontFamily x:Key="OpenSans">pack://application:,,,/Fonts/#Open Sans</FontFamily>
-
-            <!-- Include Password Font -->
-            <FontFamily x:Key="Password">pack://application:,,,/Fonts/#password</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

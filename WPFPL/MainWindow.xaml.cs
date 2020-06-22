@@ -130,6 +130,7 @@ namespace WPFPL
 
         /// <summary>
         /// Select amenity listbox style based on window width
+        /// for responsive experience when the window is resized
         /// </summary>
         private void ChooseAmenityListBoxStyle(object sender, SizeChangedEventArgs e)
         {

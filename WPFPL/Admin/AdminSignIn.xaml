@@ -54,11 +54,13 @@
                                  Style="{StaticResource ButtonIconRight}" />
                 </StackPanel>
             </Button>
-            <TextBlock Text="Hint: Username is 'admin' and password is 'admin'." 
-                       Foreground="#333"
+            <TextBlock Foreground="#333"
                        Margin="0 20 0 0"
                        FontFamily="{StaticResource OpenSans}"
-                       FontWeight="Light"/>
+                       FontWeight="Normal"
+                       FontSize="14px">
+                    Hint: The username is "admin" and the password is "admin".
+            </TextBlock>
         </StackPanel>
     </Grid>
 </Page>
