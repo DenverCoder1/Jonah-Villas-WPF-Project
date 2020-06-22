@@ -121,7 +121,7 @@
                 <Setter Property="Height"
                         Value="16px" />
                 <Setter Property="Foreground"
-                        Value="#666" />
+                        Value="#767676" />
                 <Setter Property="Margin"
                         Value="0 0 10 0" />
             </Style>
