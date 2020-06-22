@@ -175,7 +175,7 @@ namespace WPFPL
             {
                 Util.Bl.ValidateHostSignUp(fname, lname, email, phone, bankBranch, routing);
             }
-            catch (InvalidDataException error)
+            catch (Exception error)
             {
                 MainWindow.Dialog(error.Message.ToString());
                 return;

@@ -250,7 +250,7 @@ namespace WPFPL
 
                 Dialog("Success! Your request has been submitted.");
             }
-            catch (InvalidDataException error)
+            catch (Exception error)
             {
                 Dialog(error.Message);
             }

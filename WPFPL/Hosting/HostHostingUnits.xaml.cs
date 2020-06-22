@@ -189,7 +189,7 @@ namespace WPFPL
                         if (Util.Bl.UpdateHostingUnit(hostingUnit))
                             mainWindow.MySnackbar.MessageQueue.Enqueue("Hosting unit was successfully updated.");
                     }
-                    catch (InvalidDataException error)
+                    catch (Exception error)
                     {
                         MainWindow.Dialog(error.Message.ToString());
                     }
@@ -294,7 +294,7 @@ namespace WPFPL
                 if (Util.Bl.CreateHostingUnit(hostingUnit))
                     mainWindow.MySnackbar.MessageQueue.Enqueue("Hosting unit was successfully added.");
             }
-            catch (InvalidDataException error)
+            catch (Exception error)
             {
                 MainWindow.Dialog(error.Message);
             }
