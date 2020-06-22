@@ -16,11 +16,9 @@ namespace BE
         public long PhoneNumber { get; set; }
         public BankAccount BankDetails { get; set; }
         public bool BankClearance { get; set; }
+        public float AmountCharged { get; set; }
 
-        public Host()
-        {
-            BankClearance = true;
-        }
+        public Host() { }
 
         public Host(
             string fname,
@@ -37,6 +35,7 @@ namespace BE
             PhoneNumber = phone;
             BankDetails = new BankAccount(branch, routing);
             BankClearance = true;
+            AmountCharged = 0;
         }
 
         public override string ToString()
@@ -45,7 +44,7 @@ namespace BE
             StringBuilder output = new StringBuilder();
             output.AppendLine($"#{HostKey} : {LastName}, {FirstName}");
             output.AppendLine($"Email: {Email}, Phone: {PhoneNumber}");
-            output.Append($"Bank Clearance: {BankClearance}");
+            output.Append($"Bank Clearance: {BankClearance} | Amount Charged: {AmountCharged} NIS");
             return output.ToString();
         }
 

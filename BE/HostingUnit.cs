@@ -20,6 +20,8 @@ namespace BE
         public District UnitDistrict { get; set; }
         public City UnitCity { get; set; }
 
+        public float TotalCommissionsNIS { get; set; }
+
         public HostingUnit()
         {
             Calendar = new List<DateRange>();
@@ -34,6 +36,24 @@ namespace BE
             UnitName = name;
             UnitDistrict = district;
             UnitCity = city;
+            TotalCommissionsNIS = 0;
+        }
+
+        public string FullDetails()
+        {
+            StringBuilder output = new StringBuilder();
+            output.AppendLine($"Hosting unit ID: {HostingUnitKey}");
+            output.AppendLine($"Hosting unit name: {UnitName}");
+            output.AppendLine($"Hosting unit location: {UnitCity}, {UnitDistrict}");
+            output.AppendLine($"Hosting unit total commissions: {TotalCommissionsNIS} NIS");
+            output.AppendLine($"Owner ID: {Owner.HostKey}\n");
+            if (Calendar.Count == 0)
+                output.AppendLine("No dates have been reserved.");
+            foreach (DateRange dr in Calendar)
+            {
+                output.AppendLine(dr.ToString());
+            }
+            return output.ToString();
         }
 
         // list all reserved date ranges
@@ -42,7 +62,7 @@ namespace BE
             StringBuilder output = new StringBuilder();
             // add serial number to output
             output.AppendLine($"#{HostingUnitKey} : \"{UnitName}\" in {UnitCity}, {UnitDistrict}");
-            output.Append($"Owner ID: {Owner.HostKey}");
+            output.Append($"Unit commissions: {TotalCommissionsNIS} NIS | Owner ID: {Owner.HostKey}");
             return output.ToString();
         }
     }

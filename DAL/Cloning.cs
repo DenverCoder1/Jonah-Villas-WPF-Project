@@ -63,7 +63,8 @@ namespace DAL
                 Email = original.Email,
                 PhoneNumber = original.PhoneNumber,
                 BankDetails = original.BankDetails,
-                BankClearance = original.BankClearance
+                BankClearance = original.BankClearance,
+                AmountCharged = original.AmountCharged
             };
             return clone;
         }
@@ -77,7 +78,8 @@ namespace DAL
                 Owner = original.Owner,
                 UnitName = original.UnitName,
                 UnitCity = original.UnitCity,
-                UnitDistrict = original.UnitDistrict
+                UnitDistrict = original.UnitDistrict,
+                TotalCommissionsNIS = original.TotalCommissionsNIS
             };
             foreach (DateRange d in original.Calendar)
             {

@@ -10,7 +10,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AdminSignIn">
 
-    <Grid>
+    <Grid x:Name="myGrid">
         <StackPanel>
             <TextBlock FontFamily="{StaticResource OpenSans}"
                        FontWeight="Light"
@@ -54,13 +54,22 @@
                                  Style="{StaticResource ButtonIconRight}" />
                 </StackPanel>
             </Button>
-            <TextBlock Foreground="#333"
-                       Margin="0 20 0 0"
-                       FontFamily="{StaticResource OpenSans}"
-                       FontWeight="Normal"
-                       FontSize="14px">
-                    Hint: The username is "admin" and the password is "admin".
-            </TextBlock>
+            <Canvas x:Name="myCanvas" Width="{Binding ElementName=myGrid, Path=ActualWidth}" Height="200">
+                <Rectangle Fill="{StaticResource SecondaryAccentBrush}"
+                           Canvas.Left="0"
+                           Canvas.Top="25"
+                           Width="400"
+                           Height="46"
+                           Opacity="0.6"/>
+                <TextBlock Foreground="#333"
+                           FontFamily="{StaticResource OpenSans}"
+                           FontWeight="Normal"
+                           FontSize="13px"
+                           Canvas.Left="16"
+                           Canvas.Top="38">
+                        Hint: The username is "admin" and the password is "admin".
+                </TextBlock>
+            </Canvas>
         </StackPanel>
     </Grid>
 </Page>

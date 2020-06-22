@@ -649,6 +649,20 @@ namespace BL
                         // reserve dates in the hosting unit
                         if (instance.CheckOrReserveDates(hostingUnit, guestRequest, true))
                         {
+                            // calculate transaction fee
+                            DateRange dateRange = new DateRange(guestRequest.EntryDate, guestRequest.ReleaseDate);
+                            // multiply number of accomodation nights by fee
+                            float transactionFeeNIS = (dateRange.Duration) * Config.TRANSACTION_FEE_NIS;
+
+                            // add transaction fee to hosting unit's charges
+                            hostingUnit.TotalCommissionsNIS += transactionFeeNIS;
+
+                            // add transaction fee to host's charges
+                            hostingUnit.Owner.AmountCharged += transactionFeeNIS;
+
+                            // update host
+                            instance.UpdateHost(hostingUnit.Owner);
+
                             // if successfully reserved
                             // update hosting unit calendar
                             instance.UpdateHostingUnit(hostingUnit);
@@ -657,23 +671,15 @@ namespace BL
                             guestRequest.Status = GuestStatus.Complete;
                             instance.UpdateGuestRequest(guestRequest);
 
-                            // change back status of other orders for this guest request
-                            IEnumerable<Order> matches = from Order item in instance.GetOrders()
-                                                         where item.GuestRequestKey == newOrder.GuestRequestKey
-                                                                && item.OrderKey != newOrder.OrderKey
-                                                         select item;
-                            foreach (Order item in matches)
+                            // change back status of all other orders for this guest request
+                            foreach (Order item in from Order item in instance.GetOrders()
+                                                   where item.GuestRequestKey == newOrder.GuestRequestKey
+                                                          && item.OrderKey != newOrder.OrderKey
+                                                   select item)
                             {
                                 item.Status = OrderStatus.NotYetHandled;
                                 instance.UpdateOrder(item);
                             }
-
-                            // calculate transaction fee
-                            DateRange dateRange = new DateRange(guestRequest.EntryDate, guestRequest.ReleaseDate);
-                            // multiply number of accomodation nights by fee
-                            float transactionFeeNIS = (dateRange.Duration - 1) * Config.TRANSACTION_FEE_NIS;
-
-                            // TODO: Charge transaction fee to bank account
                         }
                         else
                         {

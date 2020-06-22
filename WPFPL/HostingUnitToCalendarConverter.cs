@@ -27,19 +27,8 @@ namespace WPFPL
                 {
                     try
                     {
-                        List<DateRange> dateRanges = MainWindow.Bl.GetDateRanges(huKey);
                         HostingUnit hostingUnit = MainWindow.Bl.GetHostingUnit(huKey);
-                        StringBuilder converted = new StringBuilder();
-                        converted.AppendLine($"Hosting unit ID: {hostingUnit.HostingUnitKey}");
-                        converted.AppendLine($"Hosting unit name: {hostingUnit.UnitName}");
-                        converted.AppendLine($"Hosting unit location: {hostingUnit.UnitCity}, {hostingUnit.UnitDistrict}");
-                        converted.AppendLine($"Owner ID: {hostingUnit.Owner.HostKey}\n");
-                        if (dateRanges.Count == 0)
-                            converted.AppendLine("No dates have been reserved.");
-                        foreach (DateRange dr in dateRanges)
-                        {
-                            converted.AppendLine(dr.ToString());
-                        }
+                        string converted = hostingUnit.FullDetails();
                         return PascalCaseToText.Convert(converted.ToString());
                     }
                     catch

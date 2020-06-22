@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Timers;
 using BE;
 
@@ -26,12 +24,13 @@ namespace BL
         }
 
         /// <summary>
-        /// Get a list of orders that are expired and mark as closed
+        /// Get a list of orders and requests that are expired and mark as closed
         /// When the timer's Elapsed event fires it is called on a thread in the system thread-pool
         /// </summary>
         private static void ExpireOrders(object sender = null, ElapsedEventArgs e = null)
         {
             IBL Bl = FactoryBL.GetBL();
+
             // get orders that are more than the limit of days old
             List<Order> expiredOrders = Bl.GetOrdersCreatedOutsideNumDays(Config.ORDER_OPEN_LIMIT_DAYS);
             // iterate through expired orders
@@ -42,6 +41,19 @@ namespace BL
                     // update status
                     item.Status = OrderStatus.ClosedByNoCustomerResponse;
                     Bl.UpdateOrder(item);
+                }
+            }
+
+            // get guest requests that have entry date that have passed
+            List<GuestRequest> expiredRequests = Bl.GetGuestRequests(delegate (GuestRequest gr) { return gr.EntryDate.Date < DateTime.Today; });
+            // iterate through expired requests
+            foreach (GuestRequest item in expiredRequests)
+            {
+                if (item.Status == GuestStatus.Open || item.Status == GuestStatus.Pending)
+                {
+                    // update status
+                    item.Status = GuestStatus.Expired;
+                    Bl.UpdateGuestRequest(item);
                 }
             }
         }
