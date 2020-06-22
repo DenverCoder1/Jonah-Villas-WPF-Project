@@ -35,7 +35,7 @@ namespace WPFPL.Admin
         public AdminHostingUnits()
         {
             InitializeComponent();
-            mainWindow = Util.GetMainWindow();
+            mainWindow = (MainWindow)Application.Current.MainWindow;
             HostingUnitCollection = new ObservableCollection<string>();
             HostingUnits.ItemsSource = HostingUnitCollection;
             Refresh();
@@ -63,17 +63,17 @@ namespace WPFPL.Admin
                     {
                         // Oldest first
                         case -1:
-                        case 0: orderedHostingUnits = Util.Bl.GetHostingUnits().OrderBy(item => item.HostingUnitKey).ToList(); break;
+                        case 0: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.HostingUnitKey).ToList(); break;
                         // Newest first
-                        case 1: orderedHostingUnits = Util.Bl.GetHostingUnits().OrderByDescending(item => item.HostingUnitKey).ToList(); break;
+                        case 1: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderByDescending(item => item.HostingUnitKey).ToList(); break;
                         // Unit name A-Z
-                        case 2: orderedHostingUnits = Util.Bl.GetHostingUnits().OrderBy(item => item.UnitName).ToList(); break;
+                        case 2: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.UnitName).ToList(); break;
                         // Unit city A-Z
-                        case 3: orderedHostingUnits = Util.Bl.GetHostingUnits().OrderBy(item => item.UnitCity.ToString()).ToList(); break;
+                        case 3: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.UnitCity.ToString()).ToList(); break;
                         // Unit district A-Z
-                        case 4: orderedHostingUnits = Util.Bl.GetHostingUnits().OrderBy(item => item.UnitDistrict.ToString()).ToList(); break;
+                        case 4: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.UnitDistrict.ToString()).ToList(); break;
                         // Newest first
-                        default: orderedHostingUnits = Util.Bl.GetHostingUnits().OrderBy(item => item.HostingUnitKey).ToList(); break;
+                        default: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.HostingUnitKey).ToList(); break;
                     }
                     // add items to list and filter by search
                     foreach (HostingUnit item in orderedHostingUnits)
@@ -87,7 +87,7 @@ namespace WPFPL.Admin
                 }
                 catch (Exception error)
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }

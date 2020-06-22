@@ -36,7 +36,7 @@ namespace WPFPL.Admin
         public AdminRequests()
         {
             InitializeComponent();
-            mainWindow = Util.GetMainWindow();
+            mainWindow = (MainWindow)Application.Current.MainWindow;
             RequestCollection = new ObservableCollection<string>();
             Requests.ItemsSource = RequestCollection;
             Refresh();
@@ -64,30 +64,30 @@ namespace WPFPL.Admin
                     {
                         case -1:
                         // Oldest first
-                        case 0: orderedRequests = Util.Bl.GetGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
+                        case 0: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
                         // Newest first
-                        case 1: orderedRequests = Util.Bl.GetGuestRequests().OrderByDescending(item => item.GuestRequestKey).ToList(); break;
+                        case 1: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderByDescending(item => item.GuestRequestKey).ToList(); break;
                         // Last name A-Z
-                        case 2: orderedRequests = Util.Bl.GetGuestRequests().OrderBy(item => item.LastName).ToList(); break;
+                        case 2: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderBy(item => item.LastName).ToList(); break;
                         // First name A-Z
-                        case 3: orderedRequests = Util.Bl.GetGuestRequests().OrderBy(item => item.FirstName).ToList(); break;
+                        case 3: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderBy(item => item.FirstName).ToList(); break;
                         // Fewest guests first
-                        case 4: orderedRequests = Util.Bl.GetGuestRequests().OrderBy(item => item.NumAdults + item.NumChildren).ToList(); break;
+                        case 4: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderBy(item => item.NumAdults + item.NumChildren).ToList(); break;
                         // Most guests first
-                        case 5: orderedRequests = Util.Bl.GetGuestRequests().OrderByDescending(item => item.NumAdults + item.NumChildren).ToList(); break;
+                        case 5: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderByDescending(item => item.NumAdults + item.NumChildren).ToList(); break;
                         // Unit Type A-Z
-                        case 6: orderedRequests = Util.Bl.GetGuestRequests().OrderBy(item => item.PrefType.ToString()).ToList(); break;
+                        case 6: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderBy(item => item.PrefType.ToString()).ToList(); break;
                         // Unit City A-Z
-                        case 7: orderedRequests = Util.Bl.GetGuestRequests().OrderBy(item => item.PrefCity.ToString()).ToList(); break;
+                        case 7: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderBy(item => item.PrefCity.ToString()).ToList(); break;
                         // Unit District A-Z
-                        case 8: orderedRequests = Util.Bl.GetGuestRequests().OrderBy(item => item.PrefDistrict.ToString()).ToList(); break;
+                        case 8: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderBy(item => item.PrefDistrict.ToString()).ToList(); break;
                         // Entry date soonest first
-                        case 9: orderedRequests = Util.Bl.GetGuestRequests().OrderBy(item => item.EntryDate).ToList(); break;
+                        case 9: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderBy(item => item.EntryDate).ToList(); break;
                         // Entry date furthest first
-                        case 10: orderedRequests = Util.Bl.GetGuestRequests().OrderByDescending(item => item.EntryDate).ToList(); break;
+                        case 10: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderByDescending(item => item.EntryDate).ToList(); break;
                         // Request Status A-Z
-                        case 11: orderedRequests = Util.Bl.GetGuestRequests().OrderBy(item => item.Status.ToString()).ToList(); break;
-                        default: orderedRequests = Util.Bl.GetGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
+                        case 11: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderBy(item => item.Status.ToString()).ToList(); break;
+                        default: orderedRequests = MainWindow.Bl.GetGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
                     }
                     // add items to list and filter by search
                     foreach (GuestRequest item in orderedRequests)
@@ -101,7 +101,7 @@ namespace WPFPL.Admin
                 }
                 catch (Exception error)
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }

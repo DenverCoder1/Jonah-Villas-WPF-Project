@@ -34,6 +34,10 @@ namespace WPFPL
 
         public TabItem CurrentTab { get; set; }
 
+        public static Host LoggedInHost { get; set; }
+
+        public static IBL Bl = BL.FactoryBL.GetBL();
+
         /// <summary>
         /// Startup function
         /// </summary>
@@ -68,7 +72,7 @@ namespace WPFPL
         /// <param name="text">Text to insert into box</param>
         public static void Dialog(string text, string tag = "", object textBox = null, object combo1 = null, object combo2 = null, object checkbox = null)
         {
-            MainWindow mainWindow = Util.GetMainWindow();
+            MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
             // hide / show input boxes
             mainWindow.MyDialogTextBox.Height = (textBox == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
@@ -238,7 +242,7 @@ namespace WPFPL
                         amenities[amenity] = PrefLevel.NotInterested;
                 }
 
-                Util.Bl.ValidateGuestForm(fname, lname, email, entry.ToString(), release.ToString(), districtObj, cityObj, numAdults, numChildren, prefTypeObj);
+                MainWindow.Bl.ValidateGuestForm(fname, lname, email, entry.ToString(), release.ToString(), districtObj, cityObj, numAdults, numChildren, prefTypeObj);
 
                 Enum.TryParse(gPrefDistrict.SelectedItem.ToString().Replace(" ", ""), out District district);
                 Enum.TryParse(gPrefCity.SelectedItem.ToString().Replace(" ", ""), out City city);
@@ -246,7 +250,7 @@ namespace WPFPL
 
                 GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, district, city, prefType, numAdults, numChildren, amenities);
 
-                Util.Bl.CreateGuestRequest(guest);
+                MainWindow.Bl.CreateGuestRequest(guest);
 
                 Dialog("Success! Your request has been submitted.");
             }

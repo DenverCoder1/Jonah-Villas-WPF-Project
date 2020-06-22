@@ -36,7 +36,7 @@ namespace WPFPL.Admin
         public AdminOrders()
         {
             InitializeComponent();
-            mainWindow = Util.GetMainWindow();
+            mainWindow = (MainWindow)Application.Current.MainWindow;
             OrdersCollection = new ObservableCollection<string>();
             Orders.ItemsSource = OrdersCollection;
             Refresh();
@@ -64,24 +64,24 @@ namespace WPFPL.Admin
                     {
                         case -1:
                         // Oldest first
-                        case 0: sortedOrders = Util.Bl.GetOrders().OrderBy(item => item.OrderKey).ToList(); break;
+                        case 0: sortedOrders = MainWindow.Bl.GetOrders().OrderBy(item => item.OrderKey).ToList(); break;
                         // Newest first
-                        case 1: sortedOrders = Util.Bl.GetOrders().OrderByDescending(item => item.OrderKey).ToList(); break;
+                        case 1: sortedOrders = MainWindow.Bl.GetOrders().OrderByDescending(item => item.OrderKey).ToList(); break;
                         // Hosting Unit ID increasing
-                        case 2: sortedOrders = Util.Bl.GetOrders().OrderBy(item => item.HostingUnitKey).ToList(); break;
+                        case 2: sortedOrders = MainWindow.Bl.GetOrders().OrderBy(item => item.HostingUnitKey).ToList(); break;
                         // Hosting Unit ID decreasing
-                        case 3: sortedOrders = Util.Bl.GetOrders().OrderByDescending(item => item.HostingUnitKey).ToList(); break;
+                        case 3: sortedOrders = MainWindow.Bl.GetOrders().OrderByDescending(item => item.HostingUnitKey).ToList(); break;
                         // Guest Request ID increasing
-                        case 4: sortedOrders = Util.Bl.GetOrders().OrderBy(item => item.GuestRequestKey).ToList(); break;
+                        case 4: sortedOrders = MainWindow.Bl.GetOrders().OrderBy(item => item.GuestRequestKey).ToList(); break;
                         // Guest Request ID decreasing
-                        case 5: sortedOrders = Util.Bl.GetOrders().OrderByDescending(item => item.GuestRequestKey).ToList(); break;
+                        case 5: sortedOrders = MainWindow.Bl.GetOrders().OrderByDescending(item => item.GuestRequestKey).ToList(); break;
                         // Email date first to last
-                        case 6: sortedOrders = Util.Bl.GetOrders().OrderBy(item => item.EmailDeliveryDate).ToList(); break;
+                        case 6: sortedOrders = MainWindow.Bl.GetOrders().OrderBy(item => item.EmailDeliveryDate).ToList(); break;
                         // Email date last to first
-                        case 7: sortedOrders = Util.Bl.GetOrders().OrderByDescending(item => item.EmailDeliveryDate).ToList(); break;
+                        case 7: sortedOrders = MainWindow.Bl.GetOrders().OrderByDescending(item => item.EmailDeliveryDate).ToList(); break;
                         // Order Status A-Z
-                        case 8: sortedOrders = Util.Bl.GetOrders().OrderBy(item => item.Status.ToString()).ToList(); break;
-                        default: sortedOrders = Util.Bl.GetOrders().OrderBy(item => item.OrderKey).ToList(); break;
+                        case 8: sortedOrders = MainWindow.Bl.GetOrders().OrderBy(item => item.Status.ToString()).ToList(); break;
+                        default: sortedOrders = MainWindow.Bl.GetOrders().OrderBy(item => item.OrderKey).ToList(); break;
                     }
                     // add items to list and filter by search
                     foreach (Order item in sortedOrders)
@@ -95,7 +95,7 @@ namespace WPFPL.Admin
                 }
                 catch (Exception error)
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }
@@ -131,13 +131,13 @@ namespace WPFPL.Admin
                             StatusesCollection.Add(PascalCaseToText.Convert(status));
                         }
                         mainWindow.MyDialogComboBox1.ItemsSource = StatusesCollection;
-                        string oldStatus = PascalCaseToText.Convert(Util.Bl.GetOrder(orderKey).Status.ToString());
+                        string oldStatus = PascalCaseToText.Convert(MainWindow.Bl.GetOrder(orderKey).Status.ToString());
                         MainWindow.Dialog($"Select a new status for Order #{orderKey}.", "AdminUpdateOrder", null, oldStatus);
                     }
                 }
                 catch (Exception error)
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }
@@ -160,26 +160,26 @@ namespace WPFPL.Admin
                         {
                             if (Enum.TryParse(selection.ToString().Replace(" ", ""), out OrderStatus status))
                             {
-                                Order order = Util.Bl.GetOrder(orderKey);
+                                Order order = MainWindow.Bl.GetOrder(orderKey);
                                 if (order.Status == status)
                                     throw new Exception("Status was not changed.");
                                 order.Status = status;
-                                if (Util.Bl.UpdateOrder(order))
-                                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Order was successfully updated.");
+                                if (MainWindow.Bl.UpdateOrder(order))
+                                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Order was successfully updated.");
                                 Refresh();
                                 return;
                             }
                         }
                         catch (Exception error)
                         {
-                            Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                            ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                             return;
                         }
                     }
                 }
             }
 
-            Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+            ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
         }
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace WPFPL.Admin
         public AdminMenu()
         {
             InitializeComponent();
-            mainWindow = Util.GetMainWindow();
+            mainWindow = (MainWindow)Application.Current.MainWindow;
         }
 
         /// <summary>

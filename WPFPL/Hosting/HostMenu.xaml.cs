@@ -27,8 +27,8 @@ namespace WPFPL
         public HostMenu()
         {
             InitializeComponent();
-            mainWindow = Util.GetMainWindow();
-            YourHostID.Text = $"Your host ID is {Util.MyHost.HostKey}";
+            mainWindow = (MainWindow)Application.Current.MainWindow;
+            YourHostID.Text = $"Your host ID is {MainWindow.LoggedInHost.HostKey}";
         }
 
         /// <summary>

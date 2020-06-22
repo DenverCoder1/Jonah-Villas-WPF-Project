@@ -34,7 +34,7 @@ namespace WPFPL.Admin
         public AdminHosts()
         {
             InitializeComponent();
-            mainWindow = Util.GetMainWindow();
+            mainWindow = (MainWindow)Application.Current.MainWindow;
             HostCollection = new ObservableCollection<string>();
             Hosts.ItemsSource = HostCollection;
             Refresh();
@@ -62,14 +62,14 @@ namespace WPFPL.Admin
                     {
                         case -1:
                         // Oldest first
-                        case 0: sortedHosts = Util.Bl.GetHosts().OrderBy(item => item.HostKey).ToList(); break;
+                        case 0: sortedHosts = MainWindow.Bl.GetHosts().OrderBy(item => item.HostKey).ToList(); break;
                         // Newest first
-                        case 1: sortedHosts = Util.Bl.GetHosts().OrderByDescending(item => item.HostKey).ToList(); break;
+                        case 1: sortedHosts = MainWindow.Bl.GetHosts().OrderByDescending(item => item.HostKey).ToList(); break;
                         // Last name A-Z
-                        case 2: sortedHosts = Util.Bl.GetHosts().OrderBy(item => item.LastName).ToList(); break;
+                        case 2: sortedHosts = MainWindow.Bl.GetHosts().OrderBy(item => item.LastName).ToList(); break;
                         // First name A-Z
-                        case 3: sortedHosts = Util.Bl.GetHosts().OrderBy(item => item.FirstName).ToList(); break;
-                        default: sortedHosts = Util.Bl.GetHosts().OrderBy(item => item.HostKey).ToList(); break;
+                        case 3: sortedHosts = MainWindow.Bl.GetHosts().OrderBy(item => item.FirstName).ToList(); break;
+                        default: sortedHosts = MainWindow.Bl.GetHosts().OrderBy(item => item.HostKey).ToList(); break;
                     }
                     // add items to list and filter by search
                     foreach (Host item in sortedHosts)
@@ -83,7 +83,7 @@ namespace WPFPL.Admin
                 }
                 catch (Exception error)
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }

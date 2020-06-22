@@ -40,7 +40,7 @@ namespace WPFPL
         public HostRequests()
         {
             InitializeComponent();
-            mainWindow = Util.GetMainWindow();
+            mainWindow = (MainWindow)Application.Current.MainWindow;
             RequestCollection = new ObservableCollection<string>();
             HostingUnitCollection = new ObservableCollection<string>();
             Requests.ItemsSource = RequestCollection;
@@ -69,30 +69,30 @@ namespace WPFPL
                     {
                         case -1:
                         // Oldest first
-                        case 0: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
+                        case 0: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
                         // Newest first
-                        case 1: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderByDescending(item => item.GuestRequestKey).ToList(); break;
+                        case 1: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderByDescending(item => item.GuestRequestKey).ToList(); break;
                         // Last name A-Z
-                        case 2: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.LastName).ToList(); break;
+                        case 2: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.LastName).ToList(); break;
                         // First name A-Z
-                        case 3: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.FirstName).ToList(); break;
+                        case 3: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.FirstName).ToList(); break;
                         // Fewest guests first
-                        case 4: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.NumAdults + item.NumChildren).ToList(); break;
+                        case 4: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.NumAdults + item.NumChildren).ToList(); break;
                         // Most guests first
-                        case 5: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderByDescending(item => item.NumAdults + item.NumChildren).ToList(); break;
+                        case 5: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderByDescending(item => item.NumAdults + item.NumChildren).ToList(); break;
                         // Unit Type A-Z
-                        case 6: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.PrefType.ToString()).ToList(); break;
+                        case 6: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.PrefType.ToString()).ToList(); break;
                         // Unit City A-Z
-                        case 7: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.PrefCity.ToString()).ToList(); break;
+                        case 7: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.PrefCity.ToString()).ToList(); break;
                         // Unit District A-Z
-                        case 8: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.PrefDistrict.ToString()).ToList(); break;
+                        case 8: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.PrefDistrict.ToString()).ToList(); break;
                         // Entry date soonest first
-                        case 9: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.EntryDate).ToList(); break;
+                        case 9: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.EntryDate).ToList(); break;
                         // Entry date furthest first
-                        case 10: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderByDescending(item => item.EntryDate).ToList(); break;
+                        case 10: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderByDescending(item => item.EntryDate).ToList(); break;
                         // Request Status A-Z
-                        case 11: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.Status.ToString()).ToList(); break;
-                        default: orderedRequests = Util.Bl.GetOpenGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
+                        case 11: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.Status.ToString()).ToList(); break;
+                        default: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
                     }
                     // add items to list and filter by search
                     foreach (GuestRequest item in orderedRequests)
@@ -106,7 +106,7 @@ namespace WPFPL
                 }
                 catch (Exception error)
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }
@@ -122,7 +122,7 @@ namespace WPFPL
                 if (HostingUnitCollection != null)
                 {
                     HostingUnitCollection.Clear();
-                    foreach (HostingUnit item in Util.Bl.GetAvailableHostHostingUnits(Util.MyHost.HostKey, grKey))
+                    foreach (HostingUnit item in MainWindow.Bl.GetAvailableHostHostingUnits(MainWindow.LoggedInHost.HostKey, grKey))
                     {
                         HostingUnitCollection.Add(item.ToString());
                     }
@@ -189,8 +189,8 @@ namespace WPFPL
                                 if (long.TryParse(huKeyMatch.Groups[1].Value, out long huKey))
                                 {
                                     Order order = new Order(huKey, grKey);
-                                    Util.Bl.CreateOrder(order, EmailWorkerCompleted);
-                                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Success! An email will be sent to the customer.");
+                                    MainWindow.Bl.CreateOrder(order, EmailWorkerCompleted);
+                                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Success! An email will be sent to the customer.");
                                     Refresh();
                                     return;
                                 }
@@ -198,14 +198,14 @@ namespace WPFPL
                         }
                         catch (Exception error)
                         {
-                            Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                            ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                             return;
                         }
                     }
                 }
             }
 
-            Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+            ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace WPFPL
 
                 if (outcome is Exception error)
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message+$" Retrying in 3 seconds.");
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message+$" Retrying in 3 seconds.");
                     // wait a few seconds and retry sending email (delay happens in the background worker)
                     Mailing.StartEmailBackgroundWorker(order, EmailWorkerCompleted, delay: 3000);
                     return;
@@ -230,7 +230,7 @@ namespace WPFPL
                 else if (outcome is bool b && b == true)
                 {
                     // Success!
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Email was sent successfully.");
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Email was sent successfully.");
                     return;
                 }
             }

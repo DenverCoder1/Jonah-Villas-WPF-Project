@@ -44,7 +44,7 @@ namespace WPFPL
         public HostSignUp()
         {
             InitializeComponent();
-            mainWindow = Util.GetMainWindow();
+            mainWindow = (MainWindow)Application.Current.MainWindow;
             Loaded += Page_Loaded;
         }
 
@@ -68,10 +68,10 @@ namespace WPFPL
             {
                 try
                 {
-                    Util.Bl.GetBankBranches(GetBranchesCompleted);
+                    MainWindow.Bl.GetBankBranches(GetBranchesCompleted);
                 } catch (Exception error)
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }
@@ -173,7 +173,7 @@ namespace WPFPL
 
             try
             {
-                Util.Bl.ValidateHostSignUp(fname, lname, email, phone, bankBranch, routing);
+                MainWindow.Bl.ValidateHostSignUp(fname, lname, email, phone, bankBranch, routing);
             }
             catch (Exception error)
             {
@@ -189,9 +189,9 @@ namespace WPFPL
 
             try
             {
-                Util.MyHost = new BE.Host(fname, lname, email, phoneNum, bankBranch, routingNum);
-                Util.Bl.CreateHost(Util.MyHost);
-                MainWindow.Dialog($"Success! Your Host ID is {Util.MyHost.HostKey}. Use this number when you want to enter the hosting area.");
+                MainWindow.LoggedInHost = new BE.Host(fname, lname, email, phoneNum, bankBranch, routingNum);
+                MainWindow.Bl.CreateHost(MainWindow.LoggedInHost);
+                MainWindow.Dialog($"Success! Your Host ID is {MainWindow.LoggedInHost.HostKey}. Use this number when you want to enter the hosting area.");
             }
             catch (Exception error)
             {

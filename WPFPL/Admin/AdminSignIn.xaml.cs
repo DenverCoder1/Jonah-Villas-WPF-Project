@@ -26,7 +26,7 @@ namespace WPFPL.Admin
         public AdminSignIn()
         {
             InitializeComponent();
-            mainWindow = Util.GetMainWindow();
+            mainWindow = (MainWindow)Application.Current.MainWindow;
         }
 
         /// <summary>

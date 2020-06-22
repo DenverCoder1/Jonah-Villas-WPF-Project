@@ -27,8 +27,8 @@ namespace WPFPL
                 {
                     try
                     {
-                        List<DateRange> dateRanges = Util.Bl.GetDateRanges(huKey);
-                        HostingUnit hostingUnit = Util.Bl.GetHostingUnit(huKey);
+                        List<DateRange> dateRanges = MainWindow.Bl.GetDateRanges(huKey);
+                        HostingUnit hostingUnit = MainWindow.Bl.GetHostingUnit(huKey);
                         StringBuilder converted = new StringBuilder();
                         converted.AppendLine($"Hosting unit ID: {hostingUnit.HostingUnitKey}");
                         converted.AppendLine($"Hosting unit name: {hostingUnit.UnitName}");

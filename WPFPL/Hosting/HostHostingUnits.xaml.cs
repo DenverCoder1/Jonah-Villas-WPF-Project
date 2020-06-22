@@ -43,7 +43,7 @@ namespace WPFPL
         public HostHostingUnits()
         {
             InitializeComponent();
-            mainWindow = Util.GetMainWindow();
+            mainWindow = (MainWindow)Application.Current.MainWindow;
             HostingUnitCollection = new ObservableCollection<string>();
             HostingUnits.ItemsSource = HostingUnitCollection;
             Refresh();
@@ -71,17 +71,17 @@ namespace WPFPL
                     {
                         // Oldest first
                         case -1:
-                        case 0: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderBy(item => item.HostingUnitKey).ToList(); break;
+                        case 0: orderedHostingUnits = MainWindow.Bl.GetHostHostingUnits(MainWindow.LoggedInHost.HostKey).OrderBy(item => item.HostingUnitKey).ToList(); break;
                         // Newest first
-                        case 1: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderByDescending(item => item.HostingUnitKey).ToList(); break;   
+                        case 1: orderedHostingUnits = MainWindow.Bl.GetHostHostingUnits(MainWindow.LoggedInHost.HostKey).OrderByDescending(item => item.HostingUnitKey).ToList(); break;   
                         // Unit name A-Z
-                        case 2: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderBy(item => item.UnitName).ToList(); break;
+                        case 2: orderedHostingUnits = MainWindow.Bl.GetHostHostingUnits(MainWindow.LoggedInHost.HostKey).OrderBy(item => item.UnitName).ToList(); break;
                         // Unit city A-Z
-                        case 3: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderBy(item => item.UnitCity.ToString()).ToList(); break;
+                        case 3: orderedHostingUnits = MainWindow.Bl.GetHostHostingUnits(MainWindow.LoggedInHost.HostKey).OrderBy(item => item.UnitCity.ToString()).ToList(); break;
                         // Unit district A-Z
-                        case 4: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderBy(item => item.UnitDistrict.ToString()).ToList(); break;
+                        case 4: orderedHostingUnits = MainWindow.Bl.GetHostHostingUnits(MainWindow.LoggedInHost.HostKey).OrderBy(item => item.UnitDistrict.ToString()).ToList(); break;
                         // Newest first
-                        default: orderedHostingUnits = Util.Bl.GetHostHostingUnits(Util.MyHost.HostKey).OrderBy(item => item.HostingUnitKey).ToList(); break;
+                        default: orderedHostingUnits = MainWindow.Bl.GetHostHostingUnits(MainWindow.LoggedInHost.HostKey).OrderBy(item => item.HostingUnitKey).ToList(); break;
                     }
                     // add items to list and filter by search
                     foreach (HostingUnit item in orderedHostingUnits)
@@ -95,7 +95,7 @@ namespace WPFPL
                 }
                 catch (Exception error)
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }
@@ -130,7 +130,7 @@ namespace WPFPL
                         {
                             DistrictsCollection.Add(PascalCaseToText.Convert(district.ToString()));
                         }
-                        var oldHostingUnit = Util.Bl.GetHostingUnit(huKey);
+                        var oldHostingUnit = MainWindow.Bl.GetHostingUnit(huKey);
                         District oldDistrict = oldHostingUnit.UnitDistrict;
                         City oldCity = oldHostingUnit.UnitCity;
                         var citiesInOldDistrict = Config.GetCities[oldDistrict];
@@ -148,7 +148,7 @@ namespace WPFPL
                     }
                     catch (Exception error)
                     {
-                        Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                        ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                     }
                 }
             }
@@ -161,7 +161,7 @@ namespace WPFPL
         /// <param name="name">Inputted name</param>
         public static void Update_Hosting_Unit_Name(string dialogText, string name)
         {
-            MainWindow mainWindow = Util.GetMainWindow();
+            MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
             if (String.IsNullOrEmpty(name) ||
                 mainWindow.MyDialogComboBox1.SelectedItem == null ||
@@ -180,13 +180,13 @@ namespace WPFPL
                 {
                     try
                     {
-                        HostingUnit hostingUnit = Util.Bl.GetHostingUnit(huKey);
+                        HostingUnit hostingUnit = MainWindow.Bl.GetHostingUnit(huKey);
 
                         hostingUnit.UnitName = name;
                         hostingUnit.UnitDistrict = district;
                         hostingUnit.UnitCity = city;
 
-                        if (Util.Bl.UpdateHostingUnit(hostingUnit))
+                        if (MainWindow.Bl.UpdateHostingUnit(hostingUnit))
                             mainWindow.MySnackbar.MessageQueue.Enqueue("Hosting unit was successfully updated.");
                     }
                     catch (Exception error)
@@ -198,7 +198,7 @@ namespace WPFPL
                 }
                 else
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
                 }
             }
         }
@@ -235,20 +235,20 @@ namespace WPFPL
                 {
                     try
                     {
-                        if (Util.Bl.DeleteHostingUnit(huKey))
+                        if (MainWindow.Bl.DeleteHostingUnit(huKey))
                         {
-                            Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Success! The hosting unit was deleted.");
+                            ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Success! The hosting unit was deleted.");
                             Refresh();
                         }
                     }
                     catch (Exception error)
                     {
-                        Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                        ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                     }
                 }
                 else
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
                 }
             }
         }
@@ -275,7 +275,7 @@ namespace WPFPL
         /// <param name="name">Inputted name</param>
         public static void Add_Hosting_Unit_Named(string name)
         {
-            MainWindow mainWindow = Util.GetMainWindow();
+            MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
             if (String.IsNullOrEmpty(name) ||
                 mainWindow.MyDialogComboBox1.SelectedItem == null ||
@@ -287,11 +287,11 @@ namespace WPFPL
                 return;
             }
 
-            HostingUnit hostingUnit = new HostingUnit(Util.MyHost, name, district, city);
+            HostingUnit hostingUnit = new HostingUnit(MainWindow.LoggedInHost, name, district, city);
 
             try
             {
-                if (Util.Bl.CreateHostingUnit(hostingUnit))
+                if (MainWindow.Bl.CreateHostingUnit(hostingUnit))
                     mainWindow.MySnackbar.MessageQueue.Enqueue("Hosting unit was successfully added.");
             }
             catch (Exception error)

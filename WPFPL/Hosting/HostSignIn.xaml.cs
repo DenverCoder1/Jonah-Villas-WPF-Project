@@ -29,9 +29,9 @@ namespace WPFPL
         public HostSignIn()
         {
             InitializeComponent();
-            mainWindow = Util.GetMainWindow();
-            if (Util.MyHost != null && Util.MyHost.HostKey > 0)
-                HostID.Text = Util.MyHost.HostKey.ToString();
+            mainWindow = (MainWindow)Application.Current.MainWindow;
+            if (MainWindow.LoggedInHost != null && MainWindow.LoggedInHost.HostKey > 0)
+                HostID.Text = MainWindow.LoggedInHost.HostKey.ToString();
         }
 
         /// <summary>
@@ -47,18 +47,18 @@ namespace WPFPL
             {
                 try
                 {
-                    Host host = Util.Bl.GetHost(hKey);
+                    Host host = MainWindow.Bl.GetHost(hKey);
                     if (host == null)
                     {
                         MainWindow.Dialog("Host ID does not exist.");
                         return;
                     }
-                    Util.MyHost = host;
+                    MainWindow.LoggedInHost = host;
                     mainWindow.HostingFrame.Navigate(new HostMenu());
                 }
                 catch (Exception error)
                 {
-                    Util.GetMainWindow().MySnackbar.MessageQueue.Enqueue(error.Message);
+                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
                     return;
                 }
             }
