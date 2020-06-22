@@ -28,8 +28,7 @@ namespace WPFPL
     /// </summary>
     public partial class HostHostingUnits : Page
     {
-        private readonly MainWindow mainWindow;
-
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
         public static ObservableCollection<string> HostingUnitCollection { get; set; }
 
         public static ObservableCollection<string> DistrictsCollection { get; set; }
@@ -43,7 +42,6 @@ namespace WPFPL
         public HostHostingUnits()
         {
             InitializeComponent();
-            mainWindow = (MainWindow)Application.Current.MainWindow;
             HostingUnitCollection = new ObservableCollection<string>();
             HostingUnits.ItemsSource = HostingUnitCollection;
             Refresh();
@@ -95,7 +93,7 @@ namespace WPFPL
                 }
                 catch (Exception error)
                 {
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                    mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }
@@ -148,7 +146,7 @@ namespace WPFPL
                     }
                     catch (Exception error)
                     {
-                        ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                        mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                     }
                 }
             }
@@ -182,23 +180,30 @@ namespace WPFPL
                     {
                         HostingUnit hostingUnit = MainWindow.Bl.GetHostingUnit(huKey);
 
-                        hostingUnit.UnitName = name;
-                        hostingUnit.UnitDistrict = district;
-                        hostingUnit.UnitCity = city;
+                        if (hostingUnit.UnitName != name || hostingUnit.UnitDistrict != district || hostingUnit.UnitCity != city)
+                        {
+                            hostingUnit.UnitName = name;
+                            hostingUnit.UnitDistrict = district;
+                            hostingUnit.UnitCity = city;
 
-                        if (MainWindow.Bl.UpdateHostingUnit(hostingUnit))
-                            mainWindow.MySnackbar.MessageQueue.Enqueue("Hosting unit was successfully updated.");
+                            if (MainWindow.Bl.UpdateHostingUnit(hostingUnit))
+                                mainWindow.MySnackbar.MessageQueue.Enqueue("Hosting unit was successfully updated.");
+                        }
+                        else
+                        {
+                            throw new Exception("Hosting unit was not changed.");
+                        }
                     }
                     catch (Exception error)
                     {
-                        MainWindow.Dialog(error.Message.ToString());
+                        mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message.ToString());
                     }
 
                     Refresh();
                 }
                 else
                 {
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+                    mainWindow.MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
                 }
             }
         }
@@ -237,18 +242,18 @@ namespace WPFPL
                     {
                         if (MainWindow.Bl.DeleteHostingUnit(huKey))
                         {
-                            ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Success! The hosting unit was deleted.");
+                            mainWindow.MySnackbar.MessageQueue.Enqueue("Success! The hosting unit was deleted.");
                             Refresh();
                         }
                     }
                     catch (Exception error)
                     {
-                        ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                        mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                     }
                 }
                 else
                 {
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+                    mainWindow.MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
                 }
             }
         }

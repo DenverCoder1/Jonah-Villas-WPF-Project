@@ -25,7 +25,7 @@ namespace WPFPL.Admin
     /// </summary>
     public partial class AdminRequests : Page
     {
-        private readonly MainWindow mainWindow;
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
         public static ObservableCollection<string> RequestCollection { get; set; }
 
@@ -36,7 +36,6 @@ namespace WPFPL.Admin
         public AdminRequests()
         {
             InitializeComponent();
-            mainWindow = (MainWindow)Application.Current.MainWindow;
             RequestCollection = new ObservableCollection<string>();
             Requests.ItemsSource = RequestCollection;
             Refresh();
@@ -101,7 +100,7 @@ namespace WPFPL.Admin
                 }
                 catch (Exception error)
                 {
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                    mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xaml;
 using BE;
 using BL;
@@ -65,8 +67,7 @@ namespace WPFPL
             this.DataContext = this;
 
             // start thread for expiring orders daily
-            Thread thr = new Thread(BL.OrderExpiration.StartJob);
-            thr.Start();
+            BL.OrderExpiration.StartJob();
         }
 
         /// <summary>
@@ -236,7 +237,7 @@ namespace WPFPL
                 int numAdults = gNumAdults.SelectedIndex + 1; // No option for 0 adults
                 int numChildren = gNumChildren.SelectedIndex;
                 object prefTypeObj = gPrefType.SelectedItem;
-                System.Collections.IList selectedAmenities = gAmenities.SelectedItems;
+                IList selectedAmenities = gAmenities.SelectedItems;
                 SerializableDictionary<Amenity, PrefLevel> amenities = new SerializableDictionary<Amenity, PrefLevel>();
                 foreach (Amenity amenity in Enum.GetValues(typeof(Amenity)))
                 {

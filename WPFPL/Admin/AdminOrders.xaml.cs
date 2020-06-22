@@ -25,7 +25,7 @@ namespace WPFPL.Admin
     /// </summary>
     public partial class AdminOrders : Page
     {
-        private readonly MainWindow mainWindow;
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
         public static ObservableCollection<string> OrdersCollection { get; set; }
 
@@ -36,7 +36,6 @@ namespace WPFPL.Admin
         public AdminOrders()
         {
             InitializeComponent();
-            mainWindow = (MainWindow)Application.Current.MainWindow;
             OrdersCollection = new ObservableCollection<string>();
             Orders.ItemsSource = OrdersCollection;
             Refresh();
@@ -95,7 +94,7 @@ namespace WPFPL.Admin
                 }
                 catch (Exception error)
                 {
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                    mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }
@@ -137,7 +136,7 @@ namespace WPFPL.Admin
                 }
                 catch (Exception error)
                 {
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                    mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }
@@ -165,21 +164,21 @@ namespace WPFPL.Admin
                                     throw new Exception("Status was not changed.");
                                 order.Status = status;
                                 if (MainWindow.Bl.UpdateOrder(order))
-                                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Order was successfully updated.");
+                                    mainWindow.MySnackbar.MessageQueue.Enqueue("Order was successfully updated.");
                                 Refresh();
                                 return;
                             }
                         }
                         catch (Exception error)
                         {
-                            ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                            mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                             return;
                         }
                     }
                 }
             }
 
-            ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+            mainWindow.MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
         }
 
         /// <summary>

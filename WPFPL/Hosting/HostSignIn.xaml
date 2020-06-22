@@ -34,7 +34,7 @@
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Width="Auto"
                     HorizontalAlignment="Left"
-                    Margin="0 15 0 0"
+                    Margin="0 16 0 0"
                     Click="Host_Enter_Button_Click">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="ENTER HOSTING AREA" />

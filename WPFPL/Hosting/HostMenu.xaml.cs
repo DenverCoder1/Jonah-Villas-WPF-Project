@@ -22,12 +22,11 @@ namespace WPFPL
     public partial class HostMenu : Page
     {
 
-        private readonly MainWindow mainWindow;
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
         public HostMenu()
         {
             InitializeComponent();
-            mainWindow = (MainWindow)Application.Current.MainWindow;
             YourHostID.Text = $"Your host ID is {MainWindow.LoggedInHost.HostKey}";
         }
 

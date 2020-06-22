@@ -21,12 +21,11 @@ namespace WPFPL.Admin
     /// </summary>
     public partial class AdminMenu : Page
     {
-        private readonly MainWindow mainWindow;
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
         public AdminMenu()
         {
             InitializeComponent();
-            mainWindow = (MainWindow)Application.Current.MainWindow;
         }
 
         /// <summary>

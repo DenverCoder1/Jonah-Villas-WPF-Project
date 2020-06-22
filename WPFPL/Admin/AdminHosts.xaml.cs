@@ -23,7 +23,7 @@ namespace WPFPL.Admin
     /// </summary>
     public partial class AdminHosts : Page
     {
-        private readonly MainWindow mainWindow;
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
         public static ObservableCollection<string> HostCollection { get; set; }
 
@@ -34,7 +34,6 @@ namespace WPFPL.Admin
         public AdminHosts()
         {
             InitializeComponent();
-            mainWindow = (MainWindow)Application.Current.MainWindow;
             HostCollection = new ObservableCollection<string>();
             Hosts.ItemsSource = HostCollection;
             Refresh();
@@ -83,7 +82,7 @@ namespace WPFPL.Admin
                 }
                 catch (Exception error)
                 {
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                    mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }

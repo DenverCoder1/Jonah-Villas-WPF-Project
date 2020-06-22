@@ -29,7 +29,7 @@ namespace WPFPL
     /// </summary>
     public partial class HostSignUp : Page
     {
-        private readonly MainWindow mainWindow;
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
         private static XDocument BankBranchXML { get; set; }
 
@@ -44,7 +44,6 @@ namespace WPFPL
         public HostSignUp()
         {
             InitializeComponent();
-            mainWindow = (MainWindow)Application.Current.MainWindow;
             Loaded += Page_Loaded;
         }
 
@@ -71,7 +70,7 @@ namespace WPFPL
                     MainWindow.Bl.GetBankBranches(GetBranchesCompleted);
                 } catch (Exception error)
                 {
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                    mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }

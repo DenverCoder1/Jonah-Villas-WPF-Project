@@ -2,48 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Timers;
 using BE;
 
 namespace BL
 {
     public class OrderExpiration
     {
-        // file for detecting when job was run
-        private static readonly string lastRunFile = @"lastRun.txt";
-
         /// <summary>
         /// Job that runs the expire orders function once per day
         /// </summary>
         public static void StartJob()
         {
-            while (true)
-            {
-                // get the last time the file was written to
-                DateTime lastRunTime = new System.IO.FileInfo(lastRunFile).LastWriteTime;
-                // get time span since last run
-                TimeSpan sinceLastRunTime = DateTime.Today - lastRunTime.Date;
-                // if a day has passed
-                if (sinceLastRunTime.Days >= 1)
-                {
-                    // write anything to the file to update the lastWriteTime
-                    System.IO.File.WriteAllText(lastRunFile, DateTime.Now.ToString());
-                    // Do the job
-                    ExpireOrders();
-                }
-                else
-                {
-                    // Sleep for an hour
-                    Thread.Sleep(1000 * 60 * 60);
-                }
-            }
+            // Expire orders on first startup
+            ExpireOrders();
+            // create timer thread to run job once per day
+            // set time interval to 1 day in milliseconds
+            Timer timer = new Timer(TimeSpan.FromDays(1).TotalMilliseconds);
+            // attach the Elapsed event for the timer
+            timer.Elapsed += ExpireOrders;
+            // start the timer
+            timer.Enabled = true;
         }
 
         /// <summary>
         /// Get a list of orders that are expired and mark as closed
+        /// When the timer's Elapsed event fires it is called on a thread in the system thread-pool
         /// </summary>
-        private static void ExpireOrders()
+        private static void ExpireOrders(object sender = null, ElapsedEventArgs e = null)
         {
             IBL Bl = FactoryBL.GetBL();
             // get orders that are more than the limit of days old

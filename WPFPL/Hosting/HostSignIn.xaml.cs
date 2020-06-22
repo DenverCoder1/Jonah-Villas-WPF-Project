@@ -24,12 +24,11 @@ namespace WPFPL
     /// </summary>
     public partial class HostSignIn : Page
     {
-        private readonly MainWindow mainWindow;
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
         public HostSignIn()
         {
             InitializeComponent();
-            mainWindow = (MainWindow)Application.Current.MainWindow;
             if (MainWindow.LoggedInHost != null && MainWindow.LoggedInHost.HostKey > 0)
                 HostID.Text = MainWindow.LoggedInHost.HostKey.ToString();
         }
@@ -58,7 +57,7 @@ namespace WPFPL
                 }
                 catch (Exception error)
                 {
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                    mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                     return;
                 }
             }

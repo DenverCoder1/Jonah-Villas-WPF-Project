@@ -21,12 +21,11 @@ namespace WPFPL.Admin
     /// </summary>
     public partial class AdminSignIn : Page
     {
-        private readonly MainWindow mainWindow;
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
         public AdminSignIn()
         {
             InitializeComponent();
-            mainWindow = (MainWindow)Application.Current.MainWindow;
         }
 
         /// <summary>

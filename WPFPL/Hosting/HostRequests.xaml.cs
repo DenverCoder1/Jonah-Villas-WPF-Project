@@ -27,7 +27,7 @@ namespace WPFPL
     /// </summary>
     public partial class HostRequests : Page
     {
-        private readonly MainWindow mainWindow;
+        private static readonly MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
         public static ObservableCollection<string> RequestCollection { get; set; }
 
@@ -40,7 +40,6 @@ namespace WPFPL
         public HostRequests()
         {
             InitializeComponent();
-            mainWindow = (MainWindow)Application.Current.MainWindow;
             RequestCollection = new ObservableCollection<string>();
             HostingUnitCollection = new ObservableCollection<string>();
             Requests.ItemsSource = RequestCollection;
@@ -106,7 +105,7 @@ namespace WPFPL
                 }
                 catch (Exception error)
                 {
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                    mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
         }
@@ -190,7 +189,7 @@ namespace WPFPL
                                 {
                                     Order order = new Order(huKey, grKey);
                                     MainWindow.Bl.CreateOrder(order, EmailWorkerCompleted);
-                                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Success! An email will be sent to the customer.");
+                                    mainWindow.MySnackbar.MessageQueue.Enqueue("Success! An email will be sent to the customer.");
                                     Refresh();
                                     return;
                                 }
@@ -198,14 +197,14 @@ namespace WPFPL
                         }
                         catch (Exception error)
                         {
-                            ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message);
+                            mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                             return;
                         }
                     }
                 }
             }
 
-            ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+            mainWindow.MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
         }
 
         /// <summary>
@@ -222,7 +221,7 @@ namespace WPFPL
 
                 if (outcome is Exception error)
                 {
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue(error.Message+$" Retrying in 3 seconds.");
+                    mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message+$" Retrying in 3 seconds.");
                     // wait a few seconds and retry sending email (delay happens in the background worker)
                     Mailing.StartEmailBackgroundWorker(order, EmailWorkerCompleted, delay: 3000);
                     return;
@@ -230,7 +229,7 @@ namespace WPFPL
                 else if (outcome is bool b && b == true)
                 {
                     // Success!
-                    ((MainWindow)Application.Current.MainWindow).MySnackbar.MessageQueue.Enqueue("Email was sent successfully.");
+                    mainWindow.MySnackbar.MessageQueue.Enqueue("Email was sent successfully.");
                     return;
                 }
             }
