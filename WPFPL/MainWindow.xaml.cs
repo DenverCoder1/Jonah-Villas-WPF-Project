@@ -32,11 +32,14 @@ namespace WPFPL
     {
         public ObservableCollection<string> DynamicCityList { get; set; }
 
+        // current visible tab
         public TabItem CurrentTab { get; set; }
 
+        // Host which is currently logged in
         public static Host LoggedInHost { get; set; }
 
-        public static IBL Bl = BL.FactoryBL.GetBL();
+        // Get the instance of the BL
+        public static IBL Bl = FactoryBL.GetBL();
 
         /// <summary>
         /// Startup function

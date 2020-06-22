@@ -24,22 +24,22 @@ namespace BE
         // set to make sure no duplicate keys given
         public static long NextOrderKey
         {
-            get { if (_nextOrderKey < INITIAL_ORDER_KEY) { _nextOrderKey = INITIAL_ORDER_KEY + 1; } return _nextOrderKey; }
+            get => _nextOrderKey = (_nextOrderKey < INITIAL_ORDER_KEY) ? INITIAL_ORDER_KEY : _nextOrderKey;
             set => _nextOrderKey = value;
         }
         public static long NextHostKey
         {
-            get { if (_nextHostKey <= INITIAL_ORDER_KEY) { _nextHostKey = INITIAL_ORDER_KEY + 1; } return _nextHostKey; }
+            get => _nextHostKey = (_nextHostKey < INITIAL_HOST_KEY) ? INITIAL_HOST_KEY : _nextHostKey;
             set => _nextHostKey = value;
         }
         public static long NextHostingUnitKey
         {
-            get { if (_nextHostingUnitKey <= INITIAL_ORDER_KEY) { _nextHostingUnitKey = INITIAL_ORDER_KEY + 1; } return _nextHostingUnitKey; }
+            get => _nextHostingUnitKey = (_nextHostingUnitKey < INITIAL_HOSTING_UNIT_KEY) ? INITIAL_HOSTING_UNIT_KEY : _nextHostingUnitKey;
             set => _nextHostingUnitKey = value;
         }
         public static long NextGuestRequestKey
         {
-            get { if (_nextGuestRequestKey <= INITIAL_ORDER_KEY) { _nextGuestRequestKey = INITIAL_ORDER_KEY + 1; } return _nextGuestRequestKey; }
+            get => _nextGuestRequestKey = (_nextGuestRequestKey < INITIAL_GUEST_REQUEST_KEY) ? INITIAL_GUEST_REQUEST_KEY : _nextGuestRequestKey;
             set => _nextGuestRequestKey = value;
         }
 
