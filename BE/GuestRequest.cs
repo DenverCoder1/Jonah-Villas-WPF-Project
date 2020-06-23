@@ -68,11 +68,11 @@ namespace BE
         {
             StringBuilder output = new StringBuilder();
             output.Append($"#{GuestRequestKey} : {LastName}, {FirstName} | ");
-            output.Append($"{NumAdults} Adult {NumChildren} Children | ");
-            output.Append($"{PrefType} | {PrefCity}, {PrefDistrict} | ");
-            output.Append($"{EntryDate:dd.MM.yyyy}-{ReleaseDate:dd.MM.yyyy} | ");
             output.Append($"Inquiry: {InquiryDate:dd.MM.yyyy} | ");
             output.Append($"Status: {Status}\n");
+            output.Append($"{NumAdults} Adults {NumChildren} Children | ");
+            output.Append($"{PrefType} | {PrefCity}, {PrefDistrict} | ");
+            output.Append($"{EntryDate:dd.MM.yyyy}-{ReleaseDate:dd.MM.yyyy}\n");
             IEnumerable<Amenity> matches = from KeyValuePair<Amenity, PrefLevel> item in PrefAmenities
                                            where item.Value == PrefLevel.Required
                                            select item.Key;

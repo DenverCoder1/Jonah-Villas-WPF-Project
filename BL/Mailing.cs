@@ -36,7 +36,7 @@ namespace BL
         /// <returns>Subject line as string</returns>
         private static string MakeSubject(Host owner)
         {
-            return $"Jonah's Villas : You have a new offer from {owner.FirstName}!";
+            return $"Jonah's Rentals : You have a new offer from {owner.FirstName}!";
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace BL
         private static string MakeBody(Host owner, HostingUnit hostingUnit, GuestRequest request)
         {
             StringBuilder body = new StringBuilder();
-            body.AppendLine($"<h2>Jonah's Villas</h2>");
+            body.AppendLine($"<h2>Jonah's Rentals</h2>");
             body.AppendLine($"<p>Hi {request.FirstName},</p>");
             body.Append($"<p><span style='font-weight:bold;'>{owner.FirstName} {owner.LastName}</span> has an offer for you ");
             string unitCity = Regex.Replace(hostingUnit.UnitCity.ToString(), "([a-z])([A-Z])", "$1 $2");
@@ -58,7 +58,7 @@ namespace BL
             body.Append($"from <span style='font-weight:bold;'>{request.EntryDate:dd.MM.yyyy} through {request.ReleaseDate:dd.MM.yyyy}</span>.</p>");
             body.AppendLine($"<p>{owner.FirstName} can be contacted by email at <span style='font-weight:bold;'>{owner.Email}</span> or by phone at <span style='font-weight:bold;'>{owner.PhoneNumber}</span>.</p>");
             body.AppendLine($"<p>Have a great day!<br/>");
-            body.AppendLine($"- Jonah from Jonah's Villas</p>");
+            body.AppendLine($"- Jonah from Jonah's Rentals</p>");
             return body.ToString();
         }
 

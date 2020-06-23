@@ -89,15 +89,18 @@ namespace WPFPL
         /// </summary>
         private void Dialog_Closed(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
         {
-            switch (MyDialog.Tag.ToString())
+            if (MyDialog.Tag != null)
             {
-                case "HostAddHostingUnit": HostHostingUnits.Add_Hosting_Unit_Named(MyDialogTextBox.Text); break;
-                case "HostDeleteHostingUnit": HostHostingUnits.Confirm_Delete(MyDialogText.Text, MyDialogCheckbox.IsChecked); break;
-                case "HostUpdateHostingUnit": HostHostingUnits.Update_Hosting_Unit_Name(MyDialogText.Text, MyDialogTextBox.Text); break;
-                case "HostCreateOrder": HostRequests.Finish_Create_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
-                case "HostUpdateOrder": HostOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
-                case "AdminUpdateOrder": AdminOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
-                default: break;
+                switch (MyDialog.Tag.ToString())
+                {
+                    case "HostAddHostingUnit": HostHostingUnits.Add_Hosting_Unit_Named(MyDialogTextBox.Text); break;
+                    case "HostDeleteHostingUnit": HostHostingUnits.Confirm_Delete(MyDialogText.Text, MyDialogCheckbox.IsChecked); break;
+                    case "HostUpdateHostingUnit": HostHostingUnits.Update_Hosting_Unit_Name(MyDialogText.Text, MyDialogTextBox.Text); break;
+                    case "HostCreateOrder": HostRequests.Finish_Create_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
+                    case "HostUpdateOrder": HostOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
+                    case "AdminUpdateOrder": AdminOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
+                    default: break;
+                }
             }
         }
 

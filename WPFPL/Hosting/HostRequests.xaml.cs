@@ -19,6 +19,7 @@ using BE;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.ComponentModel;
+using MaterialDesignThemes.Wpf;
 
 namespace WPFPL
 {

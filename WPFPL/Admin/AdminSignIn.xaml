@@ -55,12 +55,24 @@
                 </StackPanel>
             </Button>
             <Canvas x:Name="myCanvas" Width="{Binding ElementName=myGrid, Path=ActualWidth}" Height="200">
-                <Rectangle Fill="{StaticResource SecondaryAccentBrush}"
-                           Canvas.Left="0"
-                           Canvas.Top="25"
-                           Width="400"
-                           Height="46"
-                           Opacity="0.6"/>
+                <Border BorderBrush="#00000000"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Width="400"
+                        Height="46"
+                        Canvas.Left="0"
+                        Canvas.Top="25"
+                        Background="#ffe560">
+                    <Border.Effect>
+                        <!-- Low Depth Material Design Drop Shadow -->
+                        <DropShadowEffect BlurRadius="5"
+                                          ShadowDepth="1"
+                                          Direction="270"
+                                          Color="{StaticResource MaterialDesignShadow}"
+                                          Opacity=".24"
+                                          RenderingBias="Performance"/>
+                    </Border.Effect>
+                </Border>
                 <TextBlock Foreground="#333"
                            FontFamily="{StaticResource OpenSans}"
                            FontWeight="Normal"

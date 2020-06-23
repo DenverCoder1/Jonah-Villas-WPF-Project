@@ -150,6 +150,7 @@
                                Margin="0 5 0 10"
                                MinWidth="200px"
                                Width="Auto"
+                               TextWrapping="Wrap"
                                Text="{Binding ElementName=HostingUnits, Path=SelectedItem, Converter={StaticResource HostingUnitToCalendarConverter}}">
                     </TextBlock>
                 </ScrollViewer>
