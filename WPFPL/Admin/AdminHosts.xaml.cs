@@ -37,21 +37,21 @@ namespace WPFPL.Admin
             HostCollection = new ObservableCollection<string>();
             Hosts.ItemsSource = HostCollection;
             Refresh();
+            PopulateFilterMenu();
         }
 
         /// <summary>
         /// Refresh items in list and apply search and filters
         /// </summary>
-        /// <param name="search">search to filter on</param>
-        public void Refresh(string search = "")
+        public void Refresh(object sender = null, RoutedEventArgs e = null)
         {
             if (HostCollection != null)
             {
                 try
                 {
                     // normalize search
-                    if (search != null) { search = Normalize.Convert(search); }
-                    else { search = ""; }
+                    if (Search == null) { Search = ""; }
+                    string search = Normalize.Convert(Search);
                     // clear collection
                     HostCollection.Clear();
                     // list of orders
@@ -70,13 +70,18 @@ namespace WPFPL.Admin
                         case 3: sortedHosts = MainWindow.Bl.GetHosts().OrderBy(item => item.FirstName).ToList(); break;
                         default: sortedHosts = MainWindow.Bl.GetHosts().OrderBy(item => item.HostKey).ToList(); break;
                     }
+                    MenuItem findName(string name) { return (MenuItem)FindName(name); }
                     // add items to list and filter by search
                     foreach (Host item in sortedHosts)
                     {
                         // search by all public fields
                         if (Normalize.Convert(item).Contains(search))
                         {
-                            HostCollection.Add(item.ToString());
+                            // apply advanced filters
+                            if (FilterMenus.FilterItemChecked(item.BankClearance.ToString(), "bankclearance", findName))
+                            {
+                                HostCollection.Add(item.ToString());
+                            }
                         }
                     }
                 }
@@ -85,6 +90,20 @@ namespace WPFPL.Admin
                     mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
+        }
+
+        /// <summary>
+        /// Populate the Advanced Filter menu with enums
+        /// </summary>
+        private void PopulateFilterMenu()
+        {
+            // Create sub-menus
+            void registerName(string name, object scopedElement) { RegisterName(name, scopedElement); }
+            MenuItem status = FilterMenus.AddMenuItem(FilterMenu, "Bank Clearance", false, "top", registerName, Refresh);
+
+            // Add bank clearance items
+            foreach (bool item in new List<bool> { true, false })
+                FilterMenus.AddMenuItem(status, item.ToString(), true, "bankclearance", registerName, Refresh);
         }
 
         /// <summary>

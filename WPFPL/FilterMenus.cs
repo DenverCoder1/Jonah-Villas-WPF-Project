@@ -17,8 +17,8 @@ namespace WPFPL
         public static MenuItem AddMenuItem(MenuItem parent, string header, bool checkable, string prefix, Action<string, object> RegisterName, RoutedEventHandler MenuItem_Checked)
         {
             if (parent == null) { return parent; }
-            // ex. TypeOfPlace => m_typeofplace
-            string name = $"m_{prefix}_{Regex.Replace(header, "[^a-zA-Z]", "").ToLower()}";
+            // ex. TypeOfPlace => m_TypeOfPlace
+            string name = Regex.Replace($"m_{prefix}_{header}", "[^a-zA-Z0-9_]", "");
             // create new menu item
             MenuItem menuItem = new MenuItem
             {
@@ -41,7 +41,7 @@ namespace WPFPL
         /// </summary>
         public static bool FilterItemChecked(string key, string prefix, Func<string, MenuItem> FindName)
         {
-            string name = $"m_{prefix}_{Regex.Replace(key, "[^a-zA-Z]", "").ToLower()}";
+            string name = Regex.Replace($"m_{prefix}_{key}", "[^a-zA-Z0-9_]", "");
             MenuItem item = FindName(name);
             if (item != null)
                 return item.IsChecked;

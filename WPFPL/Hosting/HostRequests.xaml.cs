@@ -59,8 +59,8 @@ namespace WPFPL
                 try
                 {
                     // normalize search
-                    if (Search != null) { Search = Normalize.Convert(Search); }
-                    else { Search = ""; }
+                    if (Search == null) { Search = ""; }
+                    string search = Normalize.Convert(Search);
                     // clear collection
                     RequestCollection.Clear();
                     // list of requests
@@ -101,7 +101,7 @@ namespace WPFPL
                     foreach (GuestRequest item in orderedRequests)
                     {
                         // search by all public fields
-                        if (Normalize.Convert(item).Contains(Search))
+                        if (Normalize.Convert(item).Contains(search))
                         {
                             // apply advanced filters
                             if (FilterMenus.FilterItemChecked(item.Status.ToString(), "status", findName) &&
@@ -133,20 +133,30 @@ namespace WPFPL
             MenuItem district = FilterMenus.AddMenuItem(FilterMenu, "District", false, "top", registerName, Refresh);
             MenuItem city = FilterMenus.AddMenuItem(FilterMenu, "City", false, "top", registerName, Refresh);
 
+            var matches = MainWindow.Bl.GetOpenGuestRequests();
+
             // Add status items
-            foreach (string item in Enum.GetNames(typeof(GuestStatus)).OrderBy(x => x))
+            foreach (string item in (from item in matches
+                                     orderby item.Status.ToString()
+                                     select item.Status.ToString()).Distinct().ToList())
                 FilterMenus.AddMenuItem(status, item, true, "status", registerName, Refresh);
 
             // Add type items
-            foreach (string item in Enum.GetNames(typeof(TypeOfPlace)).OrderBy(x => x))
+            foreach (string item in (from item in matches
+                                     orderby item.PrefType.ToString()
+                                     select item.PrefType.ToString()).Distinct().ToList())
                 FilterMenus.AddMenuItem(type, item, true, "type", registerName, Refresh);
 
             // Add district items
-            foreach (string item in Enum.GetNames(typeof(District)).OrderBy(x => x))
+            foreach (string item in (from item in matches
+                                     orderby item.PrefDistrict.ToString()
+                                     select item.PrefDistrict.ToString()).Distinct().ToList())
                 FilterMenus.AddMenuItem(district, item, true, "district", registerName, Refresh);
 
             // Add city items
-            foreach (string item in Enum.GetNames(typeof(City)).OrderBy(x => x))
+            foreach (string item in (from item in matches
+                                     orderby item.PrefCity.ToString()
+                                     select item.PrefCity.ToString()).Distinct().ToList())
                 FilterMenus.AddMenuItem(city, item, true, "city", registerName, Refresh);
         }
 
