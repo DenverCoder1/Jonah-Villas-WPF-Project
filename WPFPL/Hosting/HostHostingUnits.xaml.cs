@@ -51,7 +51,7 @@ namespace WPFPL
         /// Refresh items in list and apply search and filters
         /// </summary>
         /// <param name="search">search to filter on</param>
-        public static void Refresh(string search = "")
+        public void Refresh(string search = "")
         {
             if (HostingUnitCollection != null)
             {
@@ -157,7 +157,7 @@ namespace WPFPL
         /// </summary>
         /// <param name="dialogText">Text from the dialog prompt</param>
         /// <param name="name">Inputted name</param>
-        public static void Update_Hosting_Unit_Name(string dialogText, string name)
+        public void Update_Hosting_Unit_Name(string dialogText, string name)
         {
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
@@ -231,7 +231,7 @@ namespace WPFPL
         /// </summary>
         /// <param name="dialogText">Text from the dialog prompt</param>
         /// <param name="checkedBox">Bool whether checked box or not</param>
-        public static void Confirm_Delete(string dialogText, bool? checkedBox)
+        public void Confirm_Delete(string dialogText, bool? checkedBox)
         {
             Match match = new Regex(@".*Unit #(\d+).*").Match(dialogText);
             if (match.Success)
@@ -278,7 +278,7 @@ namespace WPFPL
         /// finish add unit when prompt closed
         /// </summary>
         /// <param name="name">Inputted name</param>
-        public static void Add_Hosting_Unit_Named(string name)
+        public void Add_Hosting_Unit_Named(string name)
         {
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 

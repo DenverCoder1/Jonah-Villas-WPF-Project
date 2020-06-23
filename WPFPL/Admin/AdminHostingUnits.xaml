@@ -65,7 +65,7 @@
                     <AdornerDecorator DockPanel.Dock="Left">
                         <TextBox x:Name="SearchBox"
                                  HorizontalAlignment="Left"
-                                 Width="110px"
+                                 Width="100"
                                  Height="26"
                                  VerticalAlignment="Top"
                                  KeyUp="Refresh_Event">
@@ -78,15 +78,15 @@
                             Width="Auto"
                             HorizontalAlignment="Left"
                             Click="Refresh_Event"
-                            Margin="2 0 0 0"
+                            Margin="1 0 0 0"
                             DockPanel.Dock="Left">
-                        FILTER
+                        SEARCH
                     </Button>
                     <Button Style="{DynamicResource MaterialDesignFlatButton}"
                             Width="Auto"
                             HorizontalAlignment="Left"
                             Click="Clear_Search"
-                            Margin="0 0 2 0"
+                            Margin="0 0 1 0"
                             DockPanel.Dock="Right">
                         CLEAR
                     </Button>
@@ -105,20 +105,29 @@
             </Button>
         </StackPanel>
         <StackPanel Grid.Column="1"
-                    Margin="20 0 0 0">
-            <TextBlock FontFamily="{StaticResource OpenSans}"
-                       FontSize="16px"
-                       Margin="0 5 0 10">
-                Hosting Unit Details
-            </TextBlock>
-            <Border BorderBrush="LightGray" BorderThickness="1px" Padding="10 0 0 0">
-                <ScrollViewer Height="278px"
+                    Margin="7 0 0 0">
+            <StackPanel Orientation="Horizontal">
+                <Menu Margin="8 4 8 5"
+                      VerticalAlignment="Center"
+                      FontSize="14">
+                    <MenuItem Height="28"
+                              Padding="10 0"
+                              Header="🝖 Advanced Filters"
+                              x:Name="FilterMenu">
+                    </MenuItem>
+                </Menu>
+            </StackPanel>
+            <Border BorderBrush="LightGray"
+                    BorderThickness="1px"
+                    Padding="10 0 0 0">
+                <ScrollViewer Height="278"
                               VerticalScrollBarVisibility="Auto">
                     <TextBlock FontFamily="{StaticResource OpenSans}"
                                FontSize="13"
                                Margin="0 5 0 10"
                                MinWidth="200px"
                                Width="Auto"
+                               TextWrapping="Wrap"
                                Text="{Binding ElementName=HostingUnits, Path=SelectedItem, Converter={StaticResource HostingUnitToCalendarConverter}}">
                     </TextBlock>
                 </ScrollViewer>

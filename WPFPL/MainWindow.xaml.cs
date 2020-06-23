@@ -93,12 +93,12 @@ namespace WPFPL
             {
                 switch (MyDialog.Tag.ToString())
                 {
-                    case "HostAddHostingUnit": HostHostingUnits.Add_Hosting_Unit_Named(MyDialogTextBox.Text); break;
-                    case "HostDeleteHostingUnit": HostHostingUnits.Confirm_Delete(MyDialogText.Text, MyDialogCheckbox.IsChecked); break;
-                    case "HostUpdateHostingUnit": HostHostingUnits.Update_Hosting_Unit_Name(MyDialogText.Text, MyDialogTextBox.Text); break;
-                    case "HostCreateOrder": HostRequests.Finish_Create_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
-                    case "HostUpdateOrder": HostOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
-                    case "AdminUpdateOrder": AdminOrders.Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
+                    case "HostAddHostingUnit": ((HostHostingUnits)HostingFrame.Content).Add_Hosting_Unit_Named(MyDialogTextBox.Text); break;
+                    case "HostDeleteHostingUnit": ((HostHostingUnits)HostingFrame.Content).Confirm_Delete(MyDialogText.Text, MyDialogCheckbox.IsChecked); break;
+                    case "HostUpdateHostingUnit": ((HostHostingUnits)HostingFrame.Content).Update_Hosting_Unit_Name(MyDialogText.Text, MyDialogTextBox.Text); break;
+                    case "HostCreateOrder": ((HostRequests)HostingFrame.Content).Finish_Create_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
+                    case "HostUpdateOrder": ((HostOrders)HostingFrame.Content).Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
+                    case "AdminUpdateOrder": ((AdminOrders)AdminFrame.Content).Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
                     default: break;
                 }
             }
@@ -162,19 +162,19 @@ namespace WPFPL
             {
                 CurrentTab = Tab2;
                 // refresh lists in case they have changed since last tab visit
-                HostRequests.Refresh();
-                HostOrders.Refresh();
-                HostHostingUnits.Refresh();
+                //HostRequests.Refresh();
+                //HostOrders.Refresh();
+                //HostHostingUnits.Refresh();
             }
             // Admin
             else if (CurrentTab != Tab3 && Tab3.IsSelected)
             {
                 CurrentTab = Tab3;
                 // refresh lists in case they have changed since last tab visit
-                AdminRequests.Refresh();
-                AdminOrders.Refresh();
-                AdminHostingUnits.Refresh();
-                AdminHosts.Refresh();
+                //AdminRequests.Refresh();
+                //AdminOrders.Refresh();
+                //AdminHostingUnits.Refresh();
+                //AdminHosts.Refresh();
             }
         }
 

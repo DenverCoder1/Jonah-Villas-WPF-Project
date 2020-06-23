@@ -45,7 +45,7 @@ namespace WPFPL.Admin
         /// Refresh items in list and apply search and filters
         /// </summary>
         /// <param name="search">search to filter on</param>
-        public static void Refresh(string search = "")
+        public void Refresh(string search = "")
         {
             if (OrdersCollection != null)
             {
@@ -146,7 +146,7 @@ namespace WPFPL.Admin
         /// </summary>
         /// <param name="dialogText">Text placed in the dialog box prompt</param>
         /// <param name="selection">Selected status in dialog</param>
-        public static void Finish_Update_Order(string dialogText, object selection)
+        public void Finish_Update_Order(string dialogText, object selection)
         {
             if (selection != null)
             {

@@ -43,7 +43,7 @@ namespace WPFPL.Admin
         /// Refresh items in list and apply search and filters
         /// </summary>
         /// <param name="search">search to filter on</param>
-        public static void Refresh(string search = "")
+        public void Refresh(string search = "")
         {
             if (HostCollection != null)
             {

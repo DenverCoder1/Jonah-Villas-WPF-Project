@@ -45,21 +45,22 @@ namespace WPFPL
             HostingUnitCollection = new ObservableCollection<string>();
             Requests.ItemsSource = RequestCollection;
             Refresh();
+            PopulateFilterMenu();
         }
 
         /// <summary>
         /// Refresh items in list and apply search and filters
         /// </summary>
         /// <param name="search">search to filter on</param>
-        public static void Refresh(string search = "")
+        public void Refresh(object sender = null, RoutedEventArgs e = null)
         {
             if (RequestCollection != null)
             {
                 try
                 {
                     // normalize search
-                    if (search != null) { search = Normalize.Convert(search); }
-                    else { search = ""; }
+                    if (Search != null) { Search = Normalize.Convert(Search); }
+                    else { Search = ""; }
                     // clear collection
                     RequestCollection.Clear();
                     // list of requests
@@ -92,15 +93,24 @@ namespace WPFPL
                         case 10: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderByDescending(item => item.EntryDate).ToList(); break;
                         // Request Status A-Z
                         case 11: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.Status.ToString()).ToList(); break;
+                        // default to oldest first
                         default: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
                     }
+                    MenuItem findName(string name) { return (MenuItem)FindName(name); }
                     // add items to list and filter by search
                     foreach (GuestRequest item in orderedRequests)
                     {
                         // search by all public fields
-                        if (Normalize.Convert(item).Contains(search))
+                        if (Normalize.Convert(item).Contains(Search))
                         {
-                            RequestCollection.Add(item.ToString());
+                            // apply advanced filters
+                            if (FilterMenus.FilterItemChecked(item.Status.ToString(), "status", findName) &&
+                                FilterMenus.FilterItemChecked(item.PrefType.ToString(), "type", findName) &&
+                                FilterMenus.FilterItemChecked(item.PrefDistrict.ToString(), "district", findName) &&
+                                FilterMenus.FilterItemChecked(item.PrefCity.ToString(), "city", findName))
+                            {
+                                RequestCollection.Add(item.ToString());
+                            }
                         }
                     }
                 }
@@ -109,6 +119,35 @@ namespace WPFPL
                     mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
+        }
+
+        /// <summary>
+        /// Populate the Advanced Filter menu with enums
+        /// </summary>
+        private void PopulateFilterMenu()
+        {
+            // Create sub-menus
+            void registerName(string name, object scopedElement) { RegisterName(name, scopedElement); }
+            MenuItem status = FilterMenus.AddMenuItem(FilterMenu, "Status", false, "top", registerName, Refresh);
+            MenuItem type = FilterMenus.AddMenuItem(FilterMenu, "Type of Place", false, "top", registerName, Refresh);
+            MenuItem district = FilterMenus.AddMenuItem(FilterMenu, "District", false, "top", registerName, Refresh);
+            MenuItem city = FilterMenus.AddMenuItem(FilterMenu, "City", false, "top", registerName, Refresh);
+
+            // Add status items
+            foreach (string item in Enum.GetNames(typeof(GuestStatus)).OrderBy(x => x))
+                FilterMenus.AddMenuItem(status, item, true, "status", registerName, Refresh);
+
+            // Add type items
+            foreach (string item in Enum.GetNames(typeof(TypeOfPlace)).OrderBy(x => x))
+                FilterMenus.AddMenuItem(type, item, true, "type", registerName, Refresh);
+
+            // Add district items
+            foreach (string item in Enum.GetNames(typeof(District)).OrderBy(x => x))
+                FilterMenus.AddMenuItem(district, item, true, "district", registerName, Refresh);
+
+            // Add city items
+            foreach (string item in Enum.GetNames(typeof(City)).OrderBy(x => x))
+                FilterMenus.AddMenuItem(city, item, true, "city", registerName, Refresh);
         }
 
         /// <summary>
@@ -172,7 +211,7 @@ namespace WPFPL
         /// </summary>
         /// <param name="dialogText">Text from dialog prompt</param>
         /// <param name="selection">Selected hosting unit</param>
-        public static void Finish_Create_Order(string dialogText, object selection)
+        public void Finish_Create_Order(string dialogText, object selection)
         {
             if (selection != null)
             {
@@ -242,7 +281,7 @@ namespace WPFPL
         private void Refresh_Event(object sender, RoutedEventArgs e)
         {
             Search = SearchBox.Text;
-            Refresh(Search);
+            Refresh();
         }
 
         /// <summary>
@@ -251,6 +290,7 @@ namespace WPFPL
         private void Clear_Search(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
+            Search = "";
             Refresh();
         }
 

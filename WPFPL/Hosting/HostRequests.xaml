@@ -6,10 +6,19 @@
       xmlns:local="clr-namespace:WPFPL"
       xmlns:p="clr-namespace:WPFPL"
       xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:BE="clr-namespace:BE;assembly=BE"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HostRequests">
     <Page.Resources>
+        <ObjectDataProvider MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}"
+                            x:Key="GuestStatus">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BE:GuestStatus" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
         <p:PascalCaseToText x:Key="PascalCaseToText" />
     </Page.Resources>
     <Grid>
@@ -45,6 +54,15 @@
                         <ComboBoxItem>Request Status A-Z</ComboBoxItem>
                     </ComboBox>
                 </AdornerDecorator>
+                <Menu Margin="8 0" 
+                      VerticalAlignment="Center" 
+                      FontSize="14">
+                    <MenuItem Height="28"
+                              Padding="10 0"
+                              Header="🝖 Advanced Filters"
+                              x:Name="FilterMenu">
+                    </MenuItem>
+                </Menu>
             </StackPanel>
             <ListBox x:Name="Requests"
                      Width="Auto"
@@ -68,7 +86,7 @@
                         <AdornerDecorator DockPanel.Dock="Left">
                             <TextBox x:Name="SearchBox"
                                      HorizontalAlignment="Left"
-                                     Width="110px"
+                                     Width="100"
                                      Height="26"
                                      VerticalAlignment="Top"
                                      KeyUp="Refresh_Event">
@@ -81,16 +99,16 @@
                                 Width="Auto"
                                 HorizontalAlignment="Left"
                                 Click="Refresh_Event"
-                                Margin="2 0 0 0"
+                                Margin="1 0 0 0"
                                 DockPanel.Dock="Left">
-                            FILTER
+                            SEARCH
                         </Button>
                         <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                 Width="Auto"
                                 HorizontalAlignment="Left"
                                 Click="Clear_Search"
-                                Margin="0 0 2 0"
-                                DockPanel.Dock="Right">
+                                Margin="0 0 1 0"
+                                DockPanel.Dock="Left">
                             CLEAR
                         </Button>
                     </DockPanel>

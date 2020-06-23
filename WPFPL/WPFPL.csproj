@@ -148,6 +148,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FilterMenus.cs" />
     <Compile Include="HostingUnitToCalendarConverter.cs" />
     <Compile Include="Normalize.cs" />
     <Compile Include="PascalCaseToText.cs" />
