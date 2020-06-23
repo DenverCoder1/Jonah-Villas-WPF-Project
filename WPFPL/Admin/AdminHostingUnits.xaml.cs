@@ -71,6 +71,8 @@ namespace WPFPL.Admin
                         case 3: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.UnitCity.ToString()).ToList(); break;
                         // Unit district A-Z
                         case 4: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.UnitDistrict.ToString()).ToList(); break;
+                        // Owner ID
+                        case 5: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.Owner.HostKey.ToString()).ToList(); break;
                         // Newest first
                         default: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.HostingUnitKey).ToList(); break;
                     }
@@ -84,7 +86,8 @@ namespace WPFPL.Admin
                             // apply advanced filters
                             if (FilterMenus.FilterItemChecked(item.UnitName.ToString(), "name", findName) &&
                                 FilterMenus.FilterItemChecked(item.UnitDistrict.ToString(), "district", findName) &&
-                                FilterMenus.FilterItemChecked(item.UnitCity.ToString(), "city", findName))
+                                FilterMenus.FilterItemChecked(item.UnitCity.ToString(), "city", findName) &&
+                                FilterMenus.FilterItemChecked(item.Owner.HostKey.ToString(), "hostkey", findName))
                             {
                                 HostingUnitCollection.Add(item.ToString());
                             }
@@ -108,6 +111,7 @@ namespace WPFPL.Admin
             MenuItem unitName = FilterMenus.AddMenuItem(FilterMenu, "Hosting unit name", false, "top", registerName, Refresh);
             MenuItem district = FilterMenus.AddMenuItem(FilterMenu, "District", false, "top", registerName, Refresh);
             MenuItem city = FilterMenus.AddMenuItem(FilterMenu, "City", false, "top", registerName, Refresh);
+            MenuItem hostkey = FilterMenus.AddMenuItem(FilterMenu, "Owner ID", false, "top", registerName, Refresh);
 
             var matches = MainWindow.Bl.GetHostingUnits();
 
@@ -128,6 +132,12 @@ namespace WPFPL.Admin
                                      orderby item.UnitCity.ToString()
                                      select item.UnitCity.ToString()).Distinct().ToList())
                 FilterMenus.AddMenuItem(city, item, true, "city", registerName, Refresh);
+
+            // Add host key items
+            foreach (string item in (from item in matches
+                                     orderby item.Owner.HostKey.ToString()
+                                     select item.Owner.HostKey.ToString()).Distinct().ToList())
+                FilterMenus.AddMenuItem(hostkey, item, true, "hostkey", registerName, Refresh);
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace BE
         public GuestStatus Status { get; set; }
         public int NumAdults { get; set; }
         public int NumChildren { get; set; }
-        public DateTime InquiryDate { get; set; }
+        public DateTime InquiryDate { get; set; } // Registration date
 
         // Guest info
         public string FirstName { get; set; }
@@ -23,8 +23,8 @@ namespace BE
         public string Email { get; set; }
 
         // preferences
-        public District PrefDistrict { get; set; }
-        public City PrefCity { get; set; }
+        public District PrefDistrict { get; set; } // Area
+        public City PrefCity { get; set; } // Sub-area
         public TypeOfPlace PrefType { get; set; }
         public SerializableDictionary<Amenity, PrefLevel> PrefAmenities { get; set; }
 

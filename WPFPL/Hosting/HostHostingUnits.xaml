@@ -133,10 +133,10 @@
                 </Button>
             </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Column="1"
-                    Margin="0 0 0 0">
+        <StackPanel Grid.Column="1">
+            <!-- Advanced filters menu -->
             <StackPanel Orientation="Horizontal">
-                <Menu Margin="8 4 8 5"
+                <Menu Margin="0 4 8 5"
                       VerticalAlignment="Center"
                       FontSize="14">
                     <MenuItem Height="28"
@@ -146,10 +146,22 @@
                     </MenuItem>
                 </Menu>
             </StackPanel>
+            <!-- Details box heading -->
+            <Border Height="32"
+                    Background="{StaticResource PrimaryHueMidBrush}">
+                <TextBlock Padding="12 0"
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                           FontFamily="{StaticResource OpenSans}"
+                           FontSize="13">
+                    Hosting unit details
+                </TextBlock>
+            </Border>
+            <!-- Details box text -->
             <Border BorderBrush="LightGray"
                     BorderThickness="1px"
                     Padding="10 0 0 0">
-                <ScrollViewer Height="238"
+                <ScrollViewer Height="206"
                               VerticalScrollBarVisibility="Auto">
                     <TextBlock FontFamily="{StaticResource OpenSans}"
                                FontSize="13"

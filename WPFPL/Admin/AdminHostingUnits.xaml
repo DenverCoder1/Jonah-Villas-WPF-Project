@@ -42,6 +42,7 @@
                         <ComboBoxItem>Unit name A-Z</ComboBoxItem>
                         <ComboBoxItem>Unit city A-Z</ComboBoxItem>
                         <ComboBoxItem>Unit district A-Z</ComboBoxItem>
+                        <ComboBoxItem>Owner ID</ComboBoxItem>
                     </ComboBox>
                 </AdornerDecorator>
             </StackPanel>
@@ -106,8 +107,9 @@
         </StackPanel>
         <StackPanel Grid.Column="1"
                     Margin="7 0 0 0">
+            <!-- Advanced filters menu -->
             <StackPanel Orientation="Horizontal">
-                <Menu Margin="8 4 8 5"
+                <Menu Margin="0 4 8 5"
                       VerticalAlignment="Center"
                       FontSize="14">
                     <MenuItem Height="28"
@@ -117,10 +119,22 @@
                     </MenuItem>
                 </Menu>
             </StackPanel>
+            <!-- Details box heading -->
+            <Border Height="32"
+                    Background="{StaticResource PrimaryHueMidBrush}">
+                <TextBlock Padding="12 0"
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                           FontFamily="{StaticResource OpenSans}"
+                           FontSize="13">
+                    Hosting unit details
+                </TextBlock>
+            </Border>
+            <!-- Details box text -->
             <Border BorderBrush="LightGray"
                     BorderThickness="1px"
                     Padding="10 0 0 0">
-                <ScrollViewer Height="278"
+                <ScrollViewer Height="246"
                               VerticalScrollBarVisibility="Auto">
                     <TextBlock FontFamily="{StaticResource OpenSans}"
                                FontSize="13"
