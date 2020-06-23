@@ -50,7 +50,7 @@
             </StackPanel>
             <ListBox x:Name="Hosts"
                      Width="Auto"
-                     Height="280"
+                     Height="240"
                      SelectionMode="Single"
                      Style="{StaticResource MyMaterialDesignListBox}">
             </ListBox>
@@ -91,6 +91,16 @@
                     </Button>
                 </DockPanel>
             </Border>
+            <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                    Width="Auto"
+                    HorizontalAlignment="Left"
+                    Margin="0 10 0 0"
+                    Click="UpdateBankClearance"
+                    IsEnabled="{Binding ElementName=Hosts, Path=SelectedItem, TargetNullValue=False}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="UPDATE CLEARANCE STATUS" />
+                </StackPanel>
+            </Button>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Width="Auto"
                     HorizontalAlignment="Left"

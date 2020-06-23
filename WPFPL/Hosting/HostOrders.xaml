@@ -9,10 +9,15 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HostOrders">
     <Page.Resources>
+        <p:OrderFullDetailsConverter x:Key="OrderFullDetailsConverter" />
         <p:PascalCaseToText x:Key="PascalCaseToText" />
     </Page.Resources>
     <Grid>
-        <StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
             <StackPanel Orientation="Horizontal">
                 <TextBlock FontFamily="{StaticResource OpenSans}"
                            FontSize="16px"
@@ -41,15 +46,6 @@
                         <ComboBoxItem>Order Status A-Z</ComboBoxItem>
                     </ComboBox>
                 </AdornerDecorator>
-                <Menu Margin="8 0"
-                      VerticalAlignment="Center"
-                      FontSize="14">
-                    <MenuItem Height="28"
-                              Padding="10 0"
-                              Header="🝖 Advanced Filters"
-                              x:Name="FilterMenu">
-                    </MenuItem>
-                </Menu>
             </StackPanel>
             <ListBox x:Name="Orders"
                      Width="Auto"
@@ -120,6 +116,48 @@
                     <TextBlock Text="RETURN TO MENU" />
                 </StackPanel>
             </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1"
+                    Margin="7 0 0 0">
+            <!-- Advanced filters menu -->
+            <StackPanel Orientation="Horizontal">
+                <Menu Margin="0 4 8 5"
+                      VerticalAlignment="Center"
+                      FontSize="14">
+                    <MenuItem Height="28"
+                              Padding="10 0"
+                              Header="🝖 Advanced Filters"
+                              x:Name="FilterMenu">
+                    </MenuItem>
+                </Menu>
+            </StackPanel>
+            <!-- Details box heading -->
+            <Border Height="32"
+                    Background="{StaticResource PrimaryHueMidBrush}">
+                <TextBlock Padding="12 0"
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                           FontFamily="{StaticResource OpenSans}"
+                           FontSize="13">
+                    Order details
+                </TextBlock>
+            </Border>
+            <!-- Details box text -->
+            <Border BorderBrush="LightGray"
+                    BorderThickness="1px"
+                    Padding="10 0 0 0">
+                <ScrollViewer Height="206"
+                              VerticalScrollBarVisibility="Auto">
+                    <TextBlock FontFamily="{StaticResource OpenSans}"
+                               FontSize="13"
+                               Margin="0 5 0 10"
+                               MinWidth="200px"
+                               Width="Auto"
+                               TextWrapping="Wrap"
+                               Text="{Binding ElementName=Orders, Path=SelectedItem, Converter={StaticResource OrderFullDetailsConverter}}">
+                    </TextBlock>
+                </ScrollViewer>
+            </Border>
         </StackPanel>
     </Grid>
 </Page>

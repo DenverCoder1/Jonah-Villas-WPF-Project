@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -99,11 +100,15 @@ namespace WPFPL.Admin
         {
             // Create sub-menus
             void registerName(string name, object scopedElement) { RegisterName(name, scopedElement); }
-            MenuItem status = FilterMenus.AddMenuItem(FilterMenu, "Bank Clearance", false, "top", registerName, Refresh);
+            MenuItem bankClearance = FilterMenus.AddMenuItem(FilterMenu, "Bank Clearance", false, "top", registerName, Refresh);
+
+            List<Host> matches = MainWindow.Bl.GetHosts();
 
             // Add bank clearance items
-            foreach (bool item in new List<bool> { true, false })
-                FilterMenus.AddMenuItem(status, item.ToString(), true, "bankclearance", registerName, Refresh);
+            foreach (string item in (from item in matches
+                                   orderby item.BankClearance.ToString()
+                                   select item.BankClearance.ToString()).Distinct().ToList())
+                FilterMenus.AddMenuItem(bankClearance, item, true, "bankclearance", registerName, Refresh);
         }
 
         /// <summary>
@@ -140,6 +145,79 @@ namespace WPFPL.Admin
         {
             SortIndex = sortBy.SelectedIndex;
             Refresh();
+        }
+
+        /// <summary>
+        /// Prompt for deleting hosting unit
+        /// </summary>
+        private void UpdateBankClearance(object sender, RoutedEventArgs e)
+        {
+            if (Hosts.SelectedItem == null)
+            {
+                MainWindow.Dialog("First select a host to update.");
+                return;
+            }
+            Match match = new Regex(@"^#(\d+) .*").Match(Hosts.SelectedItem.ToString());
+            if (match.Success)
+            {
+                if (long.TryParse(match.Groups[1].Value, out long huKey))
+                {
+                    var host = MainWindow.Bl.GetHost(huKey);
+                    var BankClearanceOptions = new ObservableCollection<string> { "True", "False" };
+                    mainWindow.MyDialogComboBox1.ItemsSource = BankClearanceOptions;
+                    MainWindow.Dialog($"Select the bank clearance status for Host #{huKey}.", "AdminUpdateBankClearance", null, host.BankClearance.ToString(), null, null);
+                }
+            }
+        }
+
+        /// <summary>
+        /// finish deletion when prompt closed
+        /// </summary>
+        /// <param name="dialogText">Text from the dialog prompt</param>
+        /// <param name="status">New bank clearance status</param>
+        public void FinishUpdateBankClearance(string dialogText, string status)
+        {
+            MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
+
+            if (string.IsNullOrEmpty(status))
+            {
+                mainWindow.MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+                return;
+            }
+
+            Match match = new Regex(@".*Host #(\d+).*").Match(dialogText);
+            if (match.Success)
+            {
+                if (long.TryParse(match.Groups[1].Value, out long hostKey))
+                {
+                    try
+                    {
+                        Host host = MainWindow.Bl.GetHost(hostKey);
+
+                        if (host.BankClearance.ToString() != status)
+                        {
+                            host.BankClearance = (status == "True");
+
+                            if (MainWindow.Bl.UpdateHost(host))
+                                mainWindow.MySnackbar.MessageQueue.Enqueue("Host was successfully updated.");
+                        }
+                        else
+                        {
+                            throw new Exception("Host was not changed.");
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message.ToString());
+                    }
+
+                    Refresh();
+                }
+                else
+                {
+                    mainWindow.MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
+                }
+            }
         }
     }
 }

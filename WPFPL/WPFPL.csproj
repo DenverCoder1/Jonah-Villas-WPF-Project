@@ -151,6 +151,7 @@
     <Compile Include="FilterMenus.cs" />
     <Compile Include="HostingUnitToCalendarConverter.cs" />
     <Compile Include="Normalize.cs" />
+    <Compile Include="OrderFullDetailsConverter.cs" />
     <Compile Include="PascalCaseToText.cs" />
     <Compile Include="ConvertToNextDay.cs" />
     <Compile Include="Hosting\HostMenu.xaml.cs">

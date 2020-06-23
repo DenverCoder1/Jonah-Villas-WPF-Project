@@ -564,7 +564,7 @@ namespace BL
 
                     if (host.BankClearance == false)
                     {
-                        throw new Exception("Cannot create order. The host does not have bank clearance.");
+                        throw new Exception("Cannot create order. You do not have bank clearance.");
                     }
 
                     if (guestRequest.Status != GuestStatus.Open &&
@@ -677,7 +677,7 @@ namespace BL
                                                           && item.OrderKey != newOrder.OrderKey
                                                    select item)
                             {
-                                item.Status = OrderStatus.NotYetHandled;
+                                item.Status = OrderStatus.Rejected;
                                 instance.UpdateOrder(item);
                             }
                         }

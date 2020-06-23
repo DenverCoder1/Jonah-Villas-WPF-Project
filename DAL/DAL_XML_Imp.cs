@@ -47,16 +47,20 @@ namespace DAL
         private DAL_XML_Imp()
         {
             // load or create guest requests file
-            DataSource.GuestRequests = LoadList<GuestRequest>(GuestRequestPath);
+            try { DataSource.GuestRequests = LoadList<GuestRequest>(GuestRequestPath); }
+            catch (Exception) { SaveList(DataSource.GuestRequests, GuestRequestPath); }
 
             // load or create hosting units file
-            DataSource.HostingUnits = LoadList<HostingUnit>(HostingUnitPath);
+            try { DataSource.HostingUnits = LoadList<HostingUnit>(HostingUnitPath); }
+            catch (Exception) { SaveList(DataSource.HostingUnits, HostingUnitPath); }
 
             // load or create orders file
-            DataSource.Orders = LoadList<Order>(OrderPath);
+            try { DataSource.Orders = LoadList<Order>(OrderPath); }
+            catch (Exception) { SaveList(DataSource.Orders, OrderPath); }
 
             // load or create hosts file
-            DataSource.Hosts = LoadList<Host>(HostPath);
+            try { DataSource.Hosts = LoadList<Host>(HostPath); }
+            catch (Exception) { SaveList(DataSource.Hosts, HostPath); }
 
             // check for config files
             if (!File.Exists(ConfigPath))
@@ -95,15 +99,10 @@ namespace DAL
         /// <returns>List of entities from file</returns>
         private static List<T> LoadList<T>(string xmlPath)
         {
-            List<T> result = new List<T>();
+            List<T> result;
             if (!File.Exists(xmlPath))
             {
-                // create document
-                XDocument newdoc = new XDocument();
-                // add root
-                newdoc.Add(new XElement(typeof(T).ToString() + "s"));
-                // save
-                newdoc.Save(xmlPath);
+                throw new FileNotFoundException("File not found.");
             }
             else
             {
@@ -207,9 +206,10 @@ namespace DAL
             {
                 return LoadList<GuestRequest>(GuestRequestPath);
             }
-            catch (Exception error)
+            catch (Exception)
             {
-                throw error;
+                SaveList(DataSource.GuestRequests, GuestRequestPath);
+                return LoadList<GuestRequest>(GuestRequestPath);
             }
         }
 
@@ -305,9 +305,10 @@ namespace DAL
             {
                 return LoadList<HostingUnit>(HostingUnitPath);
             }
-            catch (Exception error)
+            catch
             {
-                throw error;
+                SaveList(DataSource.HostingUnits, HostingUnitPath);
+                return LoadList<HostingUnit>(HostingUnitPath);
             }
         }
 
@@ -385,7 +386,8 @@ namespace DAL
             }
             catch (Exception error)
             {
-                throw error;
+                SaveList(DataSource.Orders, OrderPath);
+                return LoadList<Order>(OrderPath);
             }
         }
 
@@ -433,7 +435,7 @@ namespace DAL
                 throw new Exception("Host to update does not exist.");
 
             // find index of old order
-            int index = DataSource.Hosts.FindIndex(h => h.HostKey == h.HostKey);
+            int index = DataSource.Hosts.FindIndex(h => h.HostKey == newHost.HostKey);
 
             // replace with the new order
             DataSource.Hosts[index] = Cloning.Clone(newHost);
@@ -452,9 +454,10 @@ namespace DAL
             {
                 return LoadList<Host>(HostPath);
             }
-            catch (Exception error)
+            catch (Exception)
             {
-                throw error;
+                SaveList(DataSource.Hosts, HostPath);
+                return LoadList<Host>(HostPath);
             }
         }
 

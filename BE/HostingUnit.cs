@@ -39,23 +39,6 @@ namespace BE
             TotalCommissionsNIS = 0;
         }
 
-        public string FullDetails()
-        {
-            StringBuilder output = new StringBuilder();
-            output.AppendLine($"Hosting unit ID: {HostingUnitKey}");
-            output.AppendLine($"Hosting unit name: {UnitName}");
-            output.AppendLine($"Hosting unit location: {UnitCity}, {UnitDistrict}");
-            output.AppendLine($"Hosting unit total commissions: {TotalCommissionsNIS} NIS");
-            output.AppendLine($"Owner ID: {Owner.HostKey}\n");
-            if (Calendar.Count == 0)
-                output.AppendLine("No dates have been reserved.");
-            foreach (DateRange dr in Calendar)
-            {
-                output.AppendLine(dr.ToString());
-            }
-            return output.ToString();
-        }
-
         // list all reserved date ranges
         public override string ToString()
         {

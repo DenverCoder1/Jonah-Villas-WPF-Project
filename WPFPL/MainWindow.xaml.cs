@@ -96,6 +96,7 @@ namespace WPFPL
                     case "HostAddHostingUnit": ((HostHostingUnits)HostingFrame.Content).Add_Hosting_Unit_Named(MyDialogTextBox.Text); break;
                     case "HostDeleteHostingUnit": ((HostHostingUnits)HostingFrame.Content).Confirm_Delete(MyDialogText.Text, MyDialogCheckbox.IsChecked); break;
                     case "HostUpdateHostingUnit": ((HostHostingUnits)HostingFrame.Content).Update_Hosting_Unit_Name(MyDialogText.Text, MyDialogTextBox.Text); break;
+                    case "AdminUpdateBankClearance": ((AdminHosts)AdminFrame.Content).FinishUpdateBankClearance(MyDialogText.Text, MyDialogComboBox1.SelectedItem.ToString()); break;
                     case "HostCreateOrder": ((HostRequests)HostingFrame.Content).Finish_Create_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
                     case "HostUpdateOrder": ((HostOrders)HostingFrame.Content).Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
                     case "AdminUpdateOrder": ((AdminOrders)AdminFrame.Content).Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;

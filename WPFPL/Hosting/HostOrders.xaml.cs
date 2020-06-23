@@ -163,14 +163,21 @@ namespace WPFPL
                 {
                     if (long.TryParse(match.Groups[1].Value, out long orderKey))
                     {
-                        ObservableCollection<string> StatusesCollection = new ObservableCollection<string>();
-                        foreach (string status in Enum.GetNames(typeof(OrderStatus)))
+                        string oldStatus = MainWindow.Bl.GetOrder(orderKey).Status.ToString();
+                        if (oldStatus == OrderStatus.SentEmail.ToString() || oldStatus == OrderStatus.NotYetHandled.ToString())
                         {
-                            StatusesCollection.Add(PascalCaseToText.Convert(status));
+                            ObservableCollection<string> StatusesCollection = new ObservableCollection<string>();
+                            foreach (string status in (new List<string> { oldStatus, OrderStatus.SentEmail.ToString(), OrderStatus.ClosedByCustomerResponse.ToString() }).Distinct())
+                            {
+                                StatusesCollection.Add(PascalCaseToText.Convert(status));
+                            }
+                            mainWindow.MyDialogComboBox1.ItemsSource = StatusesCollection;
+                            MainWindow.Dialog($"Select the status for Order #{orderKey}.", "HostUpdateOrder", null, PascalCaseToText.Convert(oldStatus));
                         }
-                        mainWindow.MyDialogComboBox1.ItemsSource = StatusesCollection;
-                        string oldStatus = PascalCaseToText.Convert(MainWindow.Bl.GetOrder(orderKey).Status.ToString());
-                        MainWindow.Dialog($"Select a new status for Order #{orderKey}.", "HostUpdateOrder", null, oldStatus);
+                        else
+                        {
+                            mainWindow.MySnackbar.MessageQueue.Enqueue("Closed orders cannot be updated.");
+                        }
                     }
                 }
                 catch (Exception error)
