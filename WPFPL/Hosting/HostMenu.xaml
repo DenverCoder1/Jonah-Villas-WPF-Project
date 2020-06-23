@@ -55,7 +55,7 @@
                     Margin="0 15 0 0"
                     Click="Return_To_Sign_In">
                 <StackPanel Orientation="Horizontal">
-                    <md:PackIcon Kind="ExitRun"
+                    <md:PackIcon Kind="ExitToApp"
                                  Style="{StaticResource ButtonIcon}" />
                     <TextBlock Text="EXIT HOSTING AREA" />
                 </StackPanel>

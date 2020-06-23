@@ -68,7 +68,7 @@ namespace BE
         {
             StringBuilder output = new StringBuilder();
             output.Append($"#{GuestRequestKey} : {LastName}, {FirstName} | ");
-            output.Append($"Inquiry: {InquiryDate:dd.MM.yyyy} | ");
+            output.Append($"Inquiry date: {InquiryDate:dd.MM.yyyy} | ");
             output.Append($"Status: {Status}\n");
             output.Append($"{NumAdults} Adults {NumChildren} Children | ");
             output.Append($"{PrefType} | {PrefCity}, {PrefDistrict} | ");

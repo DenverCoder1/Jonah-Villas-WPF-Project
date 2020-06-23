@@ -61,7 +61,7 @@
                     Margin="0 15 0 0"
                     Click="Exit_Button_Click">
                 <StackPanel Orientation="Horizontal">
-                    <md:PackIcon Kind="ExitRun"
+                    <md:PackIcon Kind="ExitToApp"
                                  Style="{StaticResource ButtonIcon}" />
                     <TextBlock Text="EXIT ADMIN PANEL" />
                 </StackPanel>
