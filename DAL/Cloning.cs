@@ -79,11 +79,17 @@ namespace DAL
                 UnitName = original.UnitName,
                 UnitCity = original.UnitCity,
                 UnitDistrict = original.UnitDistrict,
-                TotalCommissionsNIS = original.TotalCommissionsNIS
+                TotalCommissionsNIS = original.TotalCommissionsNIS,
+                UnitType = original.UnitType,
+                Amenities = new List<Amenity>()
             };
             foreach (DateRange d in original.Calendar)
             {
                 clone.Calendar.Add(d);
+            }
+            foreach (Amenity a in original.Amenities)
+            {
+                clone.Amenities.Add(a);
             }
             return clone;
         }

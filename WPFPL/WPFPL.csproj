@@ -149,7 +149,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FilterMenus.cs" />
-    <Compile Include="HostingUnitToCalendarConverter.cs" />
+    <Compile Include="HostingUnitFullDetailsConverter.cs" />
     <Compile Include="Normalize.cs" />
     <Compile Include="OrderFullDetailsConverter.cs" />
     <Compile Include="PascalCaseToText.cs" />
@@ -206,7 +206,6 @@
     <Resource Include="Fonts\OpenSans-Light.ttf" />
     <Resource Include="Fonts\OpenSans-LightItalic.ttf" />
     <Resource Include="Fonts\OpenSans-Regular.ttf" />
-    <Resource Include="Fonts\password.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

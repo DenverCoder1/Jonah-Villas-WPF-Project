@@ -164,7 +164,7 @@ namespace WPFPL
         /// </summary>
         /// <param name="dialogText">Text from the dialog prompt</param>
         /// <param name="name">Inputted name</param>
-        public void Update_Hosting_Unit_Name(string dialogText, string name)
+        public void Finish_Update_Hosting_Unit(string dialogText, string name)
         {
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
@@ -276,30 +276,47 @@ namespace WPFPL
                 DistrictsCollection.Add(PascalCaseToText.Convert(district.ToString()));
             }
             CitiesCollection = new ObservableCollection<string> { "Select a city" };
+            ObservableCollection<string> Types = new ObservableCollection<string>();
+            foreach (TypeOfPlace type in Enum.GetValues(typeof(TypeOfPlace)))
+            {
+                Types.Add(PascalCaseToText.Convert(type.ToString()));
+            }
             mainWindow.MyDialogComboBox1.ItemsSource = DistrictsCollection;
             mainWindow.MyDialogComboBox2.ItemsSource = CitiesCollection;
-            MainWindow.Dialog("Enter the name, district and city of the new hosting unit.", "HostAddHostingUnit", "Name", "Select a district", "Select a city");
+            mainWindow.MyDialogComboBox3.ItemsSource = Types;
+            string defaultType = PascalCaseToText.Convert(TypeOfPlace.PrivateRoom.ToString());
+            MainWindow.Dialog("Enter the details for the new hosting unit.", "HostAddHostingUnit", "Name", "Select a district", "Select a city", null, defaultType, true);
         }
 
         /// <summary>
         /// finish add unit when prompt closed
         /// </summary>
         /// <param name="name">Inputted name</param>
-        public void Add_Hosting_Unit_Named(string name)
+        public void Finish_Add_Hosting_Unit()
         {
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
-            if (String.IsNullOrEmpty(name) ||
-                mainWindow.MyDialogComboBox1.SelectedItem == null ||
-                mainWindow.MyDialogComboBox2.SelectedItem == null ||
-                !Enum.TryParse(mainWindow.MyDialogComboBox1.SelectedItem.ToString().Replace(" ", ""), out District district) ||
-                !Enum.TryParse(mainWindow.MyDialogComboBox2.SelectedItem.ToString().Replace(" ", ""), out City city))
+            var name = mainWindow.MyDialogTextBox.Text;
+            var districtSelection = mainWindow.MyDialogComboBox1.SelectedItem;
+            var citySelection = mainWindow.MyDialogComboBox2.SelectedItem;
+            var typeSelection = mainWindow.MyDialogComboBox3.SelectedItem;
+
+            if (string.IsNullOrEmpty(name) ||
+                districtSelection == null ||
+                citySelection == null ||
+                typeSelection == null ||
+                !Enum.TryParse(districtSelection.ToString().Replace(" ", ""), out District district) ||
+                !Enum.TryParse(citySelection.ToString().Replace(" ", ""), out City city) ||
+                !Enum.TryParse(typeSelection.ToString().Replace(" ", ""), out TypeOfPlace type))
             {
                 mainWindow.MySnackbar.MessageQueue.Enqueue("Action was cancelled.");
                 return;
             }
 
-            HostingUnit hostingUnit = new HostingUnit(MainWindow.LoggedInHost, name, district, city);
+            List<Amenity> amenities = (from Amenity item in mainWindow.MyDialogListBox.SelectedItems
+                                       select item).ToList();
+
+            HostingUnit hostingUnit = new HostingUnit(MainWindow.LoggedInHost, name, district, city, type, amenities);
 
             try
             {

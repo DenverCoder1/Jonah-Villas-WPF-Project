@@ -29,17 +29,18 @@ namespace WPFPL
                     {
                         HostingUnit hostingUnit = MainWindow.Bl.GetHostingUnit(huKey);
                         Host owner = MainWindow.Bl.GetHost(hostingUnit.OwnerHostID);
+                        IEnumerable<string> amenities = from item in hostingUnit.Amenities select item.ToString();
                         StringBuilder output = new StringBuilder();
-                        output.AppendLine($"Hosting unit ID: {hostingUnit.HostingUnitKey}");
-                        output.AppendLine($"Hosting unit name: {hostingUnit.UnitName}");
-                        output.AppendLine($"Hosting unit location: {hostingUnit.UnitCity}, {hostingUnit.UnitDistrict}");
-                        output.AppendLine($"Hosting unit total commissions: {hostingUnit.TotalCommissionsNIS} NIS");
-                        output.AppendLine($"Owner ID: {hostingUnit.OwnerHostID}");
-                        output.AppendLine($"Owner name: {owner.LastName}, {owner.FirstName}\n");
+                        output.AppendLine($"Unit ID: {hostingUnit.HostingUnitKey}");
+                        output.AppendLine($"Unit name: {hostingUnit.UnitName}");
+                        output.AppendLine($"Location: {hostingUnit.UnitCity}, {hostingUnit.UnitDistrict}");
+                        output.AppendLine($"Unit type: {hostingUnit.UnitType}");
+                        output.AppendLine($"Total commissions: {hostingUnit.TotalCommissionsNIS} NIS");
+                        output.AppendLine($"Amenities: {(amenities.Count() > 0 ? string.Join(", ",amenities.ToArray()) : "None")}");
+                        output.AppendLine($"Owner ID: {hostingUnit.OwnerHostID}\n");
+                        output.AppendLine("Reserved dates:");
                         if (hostingUnit.Calendar.Count == 0)
                             output.AppendLine("No dates have been reserved.");
-                        else
-                            output.AppendLine("Reserved dates:");
                         foreach (DateRange dr in hostingUnit.Calendar)
                         {
                             output.AppendLine(dr.ToString());

@@ -19,6 +19,8 @@ namespace BE
         // Unit location
         public District UnitDistrict { get; set; }
         public City UnitCity { get; set; }
+        public TypeOfPlace UnitType { get; set; }
+        public List<Amenity> Amenities { get; set; }
 
         public float TotalCommissionsNIS { get; set; }
 
@@ -27,7 +29,7 @@ namespace BE
             Calendar = new List<DateRange>();
         }
 
-        public HostingUnit(Host owner, string name, District district, City city)
+        public HostingUnit(Host owner, string name, District district, City city, TypeOfPlace type, List<Amenity> amenities)
         {
             // get next available serial number
             HostingUnitKey = Config.NextHostingUnitKey++;
@@ -36,6 +38,8 @@ namespace BE
             UnitName = name;
             UnitDistrict = district;
             UnitCity = city;
+            UnitType = type;
+            Amenities = amenities;
             TotalCommissionsNIS = 0;
         }
 
@@ -45,7 +49,8 @@ namespace BE
             StringBuilder output = new StringBuilder();
             // add serial number to output
             output.AppendLine($"#{HostingUnitKey} : \"{UnitName}\" in {UnitCity}, {UnitDistrict}");
-            output.Append($"Unit commissions: {TotalCommissionsNIS} NIS | Owner ID: {OwnerHostID}");
+            output.AppendLine($"Unit commissions: {TotalCommissionsNIS} NIS | Owner ID: {OwnerHostID}");
+            output.Append($"Unit type: {UnitType}");
             return output.ToString();
         }
     }

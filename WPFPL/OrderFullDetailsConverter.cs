@@ -43,6 +43,7 @@ namespace WPFPL
                         output.AppendLine($"Request ID: {guestRequest.GuestRequestKey}");
                         output.AppendLine($"Request dates: {guestRequest.EntryDate:dd.MM.yyyy} - {guestRequest.ReleaseDate:dd.MM.yyyy}");
                         output.AppendLine($"Request location: {guestRequest.PrefCity}, {guestRequest.PrefDistrict}");
+                        output.AppendLine($"Request type: {guestRequest.PrefType}");
                         output.Append($"Name of guest: {guestRequest.LastName}, {guestRequest.FirstName}\n");
                         return PascalCaseToText.Convert(output.ToString());
                     }

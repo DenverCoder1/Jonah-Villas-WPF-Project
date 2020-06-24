@@ -59,7 +59,7 @@ namespace WPFPL
         /// Open custom dialog box with custom text
         /// </summary>
         /// <param name="text">Text to insert into box</param>
-        public static void Dialog(string text, string tag = "", object textBox = null, object combo1 = null, object combo2 = null, object checkbox = null)
+        public static void Dialog(string text, string tag = "", object textBox = null, object combo1 = null, object combo2 = null, object checkbox = null, object combo3 = null, object listbox = null)
         {
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
@@ -68,17 +68,24 @@ namespace WPFPL
             mainWindow.MyDialogComboBox1.Height = (combo1 == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
             mainWindow.MyDialogComboBox2.Height = (combo2 == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
             mainWindow.MyDialogCheckbox.Height = (checkbox == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
+            mainWindow.MyDialogComboBox3.Height = (combo3 == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
+            mainWindow.MyDialogListBox.Height = (listbox == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
 
             mainWindow.MyDialogTextBox.Margin = (textBox == null) ? new Thickness(0) : new Thickness(0,6,20,6);
             mainWindow.MyDialogComboBox1.Margin = (combo1 == null) ? new Thickness(0) : new Thickness(0, 6, 20, 6);
             mainWindow.MyDialogComboBox2.Margin = (combo2 == null) ? new Thickness(0) : new Thickness(0, 6, 20, 6);
             mainWindow.MyDialogCheckbox.Margin = (checkbox == null) ? new Thickness(0) : new Thickness(0, 10, 0, 0);
+            mainWindow.MyDialogComboBox3.Margin = (combo3 == null) ? new Thickness(0) : new Thickness(0, 6, 20, 6);
+            mainWindow.MyDialogContent.Width = (listbox == null) ? (220 /* normal size */) : (double.NaN /* Auto */);
+
 
             // set text and display
             if (textBox != null) { mainWindow.MyDialogTextBox.Text = textBox.ToString(); }
             if (combo1 != null) { mainWindow.MyDialogComboBox1.SelectedItem = ((string)combo1 != "") ? combo1.ToString() : null; }
             if (combo2 != null) { mainWindow.MyDialogComboBox2.SelectedItem = ((string)combo2 != "") ? combo2.ToString() : null; }
             if (checkbox != null) { mainWindow.MyDialogCheckbox.IsChecked = (bool)checkbox; }
+            if (combo3 != null) { mainWindow.MyDialogComboBox3.SelectedItem = ((string)combo3 != "") ? combo3.ToString() : null; }
+            if (listbox != null) { mainWindow.MyDialogListBox.SelectedItems.Clear(); }
             mainWindow.MyDialog.Tag = tag;
             mainWindow.MyDialogText.Text = text;
             mainWindow.MyDialog.IsOpen = true;
@@ -93,9 +100,9 @@ namespace WPFPL
             {
                 switch (MyDialog.Tag.ToString())
                 {
-                    case "HostAddHostingUnit": ((HostHostingUnits)HostingFrame.Content).Add_Hosting_Unit_Named(MyDialogTextBox.Text); break;
+                    case "HostAddHostingUnit": ((HostHostingUnits)HostingFrame.Content).Finish_Add_Hosting_Unit(); break;
                     case "HostDeleteHostingUnit": ((HostHostingUnits)HostingFrame.Content).Confirm_Delete(MyDialogText.Text, MyDialogCheckbox.IsChecked); break;
-                    case "HostUpdateHostingUnit": ((HostHostingUnits)HostingFrame.Content).Update_Hosting_Unit_Name(MyDialogText.Text, MyDialogTextBox.Text); break;
+                    case "HostUpdateHostingUnit": ((HostHostingUnits)HostingFrame.Content).Finish_Update_Hosting_Unit(MyDialogText.Text, MyDialogTextBox.Text); break;
                     case "AdminUpdateBankClearance": ((AdminHosts)AdminFrame.Content).FinishUpdateBankClearance(MyDialogText.Text, MyDialogComboBox1.SelectedItem.ToString()); break;
                     case "HostCreateOrder": ((HostRequests)HostingFrame.Content).Finish_Create_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
                     case "HostUpdateOrder": ((HostOrders)HostingFrame.Content).Finish_Update_Order(MyDialogText.Text, MyDialogComboBox1.SelectedItem); break;
@@ -107,7 +114,7 @@ namespace WPFPL
 
         private void MyDialogComboBox1_Changed(object sender, SelectionChangedEventArgs e)
         {
-            if (this.MyDialog.Tag != null)
+            if (MyDialog.Tag != null)
             {
                 switch (MyDialog.Tag.ToString())
                 {
