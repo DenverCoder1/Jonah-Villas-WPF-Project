@@ -18,9 +18,6 @@
 
             <!-- Include Open Sans Font -->
             <FontFamily x:Key="OpenSans">pack://application:,,,/Fonts/#Open Sans</FontFamily>
-            
-            <!-- Include Password Font -->
-            <FontFamily x:Key="Password">pack://application:,,,/Fonts/#password</FontFamily>
 
             <!-- Set Dragablz tab control to use the Material Design theme -->
             <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />

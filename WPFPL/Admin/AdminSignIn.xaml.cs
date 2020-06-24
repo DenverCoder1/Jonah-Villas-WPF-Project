@@ -39,13 +39,13 @@ namespace WPFPL.Admin
                 MainWindow.Dialog("You have not entered your username.");
                 return;
             }
-            else if(string.IsNullOrEmpty(AdminPassword.Text))
+            else if(string.IsNullOrEmpty(AdminPassword.Password))
             {
                 MainWindow.Dialog("You have not entered your password.");
                 return;
             }
             else if (AdminUsername.Text == ConfigurationManager.AppSettings["ADMIN_USERNAME"]
-                && AdminPassword.Text == ConfigurationManager.AppSettings["ADMIN_PASSWORD"])
+                && AdminPassword.Password == ConfigurationManager.AppSettings["ADMIN_PASSWORD"])
             {
                 mainWindow.AdminFrame.Navigate(new AdminMenu());
                 return;

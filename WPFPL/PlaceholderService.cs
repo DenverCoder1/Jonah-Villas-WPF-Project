@@ -74,6 +74,12 @@ namespace WPFPL
                 control.LostKeyboardFocus += Control_Loaded;
                 ((TextBox)control).TextChanged += Control_GotKeyboardFocus;
             }
+            else if (d is PasswordBox)
+            {
+                control.GotKeyboardFocus += Control_GotKeyboardFocus;
+                control.LostKeyboardFocus += Control_Loaded;
+                ((PasswordBox)control).PasswordChanged += Control_GotKeyboardFocus;
+            }
 
             DependencyObject d1 = d;
             if (d1 is ItemsControl && !(d is ComboBox))
@@ -198,8 +204,10 @@ namespace WPFPL
         {
             if (c is ComboBox)
                 return (c as ComboBox).Text == string.Empty;
-            else if (c is TextBoxBase)
+            else if (c is TextBox)
                 return (c as TextBox).Text == string.Empty;
+            else if (c is PasswordBox)
+                return (c as PasswordBox).Password == string.Empty;
             else if (c is ItemsControl)
                 return (c as ItemsControl).Items.Count == 0;
             else
