@@ -15,7 +15,7 @@ namespace BE
         public string Email { get; set; }
         public long PhoneNumber { get; set; }
         public BankAccount BankDetails { get; set; }
-        public bool BankClearance { get; set; }
+        public ClearanceStatus BankClearance { get; set; }
         public float AmountCharged { get; set; }
 
         public Host() { }
@@ -34,7 +34,7 @@ namespace BE
             Email = email;
             PhoneNumber = phone;
             BankDetails = new BankAccount(branch, routing);
-            BankClearance = true;
+            BankClearance = ClearanceStatus.Clear;
             AmountCharged = 0;
         }
 

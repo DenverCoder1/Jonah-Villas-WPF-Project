@@ -271,8 +271,6 @@ namespace WPFPL
                 {
                     if (selectedAmenities.IndexOf(amenity) > -1)
                         amenities[amenity] = PrefLevel.Required;
-                    else
-                        amenities[amenity] = PrefLevel.NotInterested;
                 }
 
                 Bl.ValidateGuestForm(fname, lname, email, entry.ToString(), release.ToString(), districtObj, cityObj, numAdults, numChildren, prefTypeObj);

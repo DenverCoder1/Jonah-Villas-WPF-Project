@@ -612,7 +612,7 @@ namespace BL
                     }
 
 
-                    if (host.BankClearance == false)
+                    if (host.BankClearance == ClearanceStatus.Denied)
                     {
                         throw new Exception("Cannot create order. You do not have bank clearance.");
                     }
@@ -979,8 +979,8 @@ namespace BL
             try
             {
                 Host oldHost = instance.GetHost(newHost.HostKey);
-                // Billing clearance cannot be revoked when there is an open orders
-                if (oldHost.BankClearance == true && newHost.BankClearance == false)
+                // Billing clearance cannot be revoked when there is an open order
+                if (oldHost.BankClearance == ClearanceStatus.Clear && newHost.BankClearance == ClearanceStatus.Denied)
                     if (instance.GetOrders().Exists(o =>
                         (o.Status == OrderStatus.NotYetHandled || o.Status == OrderStatus.SentEmail) &&
                         instance.GetHostingUnit(o.HostingUnitKey).OwnerHostID == newHost.HostKey))

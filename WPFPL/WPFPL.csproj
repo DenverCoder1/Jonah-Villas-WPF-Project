@@ -206,6 +206,7 @@
     <Resource Include="Fonts\OpenSans-Light.ttf" />
     <Resource Include="Fonts\OpenSans-LightItalic.ttf" />
     <Resource Include="Fonts\OpenSans-Regular.ttf" />
+    <None Include="App.example.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

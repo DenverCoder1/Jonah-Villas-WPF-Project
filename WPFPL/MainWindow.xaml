@@ -309,7 +309,7 @@
                                     <WrapPanel>
                                         <Grid x:Name="guestForm"
                                               HorizontalAlignment="Left"
-                                              Margin="0 20 0 0"
+                                              Margin="0 10 0 0"
                                               VerticalAlignment="Top"
                                               Width="320">
                                             <Grid.ColumnDefinitions>
@@ -540,10 +540,10 @@
                                         </Grid>
                                         <StackPanel Margin="20 0 0 0">
                                             <Label Content="Which amenities are important to you?"
-                                                   Margin="0 24 0 8" />
+                                                   Margin="0 28 0 12" />
                                             <ListBox x:Name="gAmenities"
                                                      MaxWidth="420"
-                                                     Height="292"
+                                                     Height="298"
                                                      SelectionMode="Multiple"
                                                      ItemsSource="{Binding Source={StaticResource Amenity }}"
                                                      Style="{StaticResource MyMaterialDesignFilterChipListBox}"
@@ -560,7 +560,7 @@
                                         <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                                                 Width="Auto"
                                                 HorizontalAlignment="Left"
-                                                Margin="0 20 0 0"
+                                                Margin="0 10 0 10"
                                                 Click="Submit_Request_Button_Click">
                                             <StackPanel Orientation="Horizontal">
                                                 <md:PackIcon Kind="HomeSearchOutline"
@@ -568,7 +568,7 @@
                                                 <TextBlock Text="SUBMIT REQUEST" />
                                             </StackPanel>
                                         </Button>
-                                        <TextBlock Margin="12 25 0 0"
+                                        <TextBlock Margin="12 15 0 0"
                                                    FontFamily="{StaticResource OpenSans}"
                                                    FontSize="14"
                                                    Foreground="DarkGreen"

@@ -147,7 +147,11 @@ namespace WPFPL.Admin
                 if (long.TryParse(match.Groups[1].Value, out long huKey))
                 {
                     var host = MainWindow.Bl.GetHost(huKey);
-                    var BankClearanceOptions = new ObservableCollection<string> { "True", "False" };
+                    var BankClearanceOptions = new ObservableCollection<string>();
+                    foreach (string c in Enum.GetNames(typeof(ClearanceStatus)))
+                    {
+                        BankClearanceOptions.Add(PascalCaseToText.Convert(c));
+                    }
                     mainWindow.MyDialogComboBox1.ItemsSource = BankClearanceOptions;
                     MainWindow.Dialog($"Select the bank clearance status for Host #{huKey}.", "AdminUpdateBankClearance", null, host.BankClearance.ToString(), null, null);
                 }
@@ -180,7 +184,7 @@ namespace WPFPL.Admin
 
                         if (host.BankClearance.ToString() != status)
                         {
-                            host.BankClearance = (status == "True");
+                            host.BankClearance = (status == ClearanceStatus.Clear.ToString()) ? ClearanceStatus.Clear : ClearanceStatus.Denied;
 
                             if (MainWindow.Bl.UpdateHost(host))
                                 mainWindow.MySnackbar.MessageQueue.Enqueue("Host was successfully updated.");

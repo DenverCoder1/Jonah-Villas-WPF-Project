@@ -45,6 +45,7 @@
     <Compile Include="BankAccount.cs" />
     <Compile Include="BankBranch.cs" />
     <Compile Include="City.cs" />
+    <Compile Include="ClearanceStatus.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="DateRange.cs" />
     <Compile Include="GuestRequest.cs" />

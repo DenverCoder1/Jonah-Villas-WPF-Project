@@ -12,7 +12,7 @@ namespace BE
         public long HostingUnitKey { get; set; }
         // Calendar of reserved dates - This method of storing reserved dates was approved by the professor
         public List<DateRange> Calendar { get; set; }
-        // Owner
+        // Owner - storing hosts separately and linking unit to host with key
         public long OwnerHostID { get; set; }
         // Unit name
         public string UnitName { get; set; }
@@ -21,7 +21,6 @@ namespace BE
         public City UnitCity { get; set; }
         public TypeOfPlace UnitType { get; set; }
         public List<Amenity> Amenities { get; set; }
-
         public float TotalCommissionsNIS { get; set; }
 
         public HostingUnit()
