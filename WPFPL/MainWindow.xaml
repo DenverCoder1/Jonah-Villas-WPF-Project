@@ -69,81 +69,92 @@
                                  Foreground="Black" />
                 </Button>
                 <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
                         <TextBlock x:Name="MyDialogText"
-                           Margin="0 10 0 0"
-                           Width="200px"
-                           HorizontalAlignment="Left"
-                           TextWrapping="Wrap"
-                           LineHeight="20px" />
-                <TextBox x:Name="MyDialogTextBox"
-                         Margin="0 5 20 6"
-                         Height="0" />
-                <AdornerDecorator>
-                    <ComboBox x:Name="MyDialogComboBox1"
-                              Margin="0 5 20 6"
-                              Height="0"
-                              SelectionChanged="MyDialogComboBox1_Changed">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </AdornerDecorator>
-                <AdornerDecorator>
-                    <ComboBox x:Name="MyDialogComboBox2"
-                              Margin="0 5 20 6"
-                              Height="0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </AdornerDecorator>
-                <AdornerDecorator>
-                    <ComboBox x:Name="MyDialogComboBox3"
-                              Margin="0 5 20 6"
-                              Height="0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </AdornerDecorator>
-                <CheckBox x:Name="MyDialogCheckbox"
-                          Content="Confirm deletion"
-                          Margin="0 10 0 0"
-                          Height="0" />
+                                   Margin="0 10 0 0"
+                                   Width="200px"
+                                   HorizontalAlignment="Left"
+                                   TextWrapping="Wrap"
+                                   LineHeight="20px" />
+                        <TextBox x:Name="MyDialogTextBox"
+                                 Margin="0 5 20 6"
+                                 Height="0" />
+                        <AdornerDecorator>
+                            <ComboBox x:Name="MyDialogComboBox1"
+                                      Margin="0 5 20 6"
+                                      Height="0"
+                                      SelectionChanged="MyDialogComboBox1_Changed">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </AdornerDecorator>
+                        <AdornerDecorator>
+                            <ComboBox x:Name="MyDialogComboBox2"
+                                      Margin="0 5 20 6"
+                                      Height="0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </AdornerDecorator>
+                        <AdornerDecorator>
+                            <ComboBox x:Name="MyDialogComboBox3"
+                                      Margin="0 5 20 6"
+                                      Height="0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </AdornerDecorator>
+                        <CheckBox x:Name="MyDialogCheckbox"
+                                  Content="Confirm deletion"
+                                  Margin="0 10 0 0"
+                                  Height="0" />
                     </StackPanel>
                     <StackPanel Grid.Column="1">
                         <ListBox x:Name="MyDialogListBox"
-                             Width="420"
-                             Height="0"
-                             SelectionMode="Multiple"
-                             ItemsSource="{Binding Source={StaticResource Amenity }}"
-                             Style="{StaticResource MyMaterialDesignFilterChipListBox}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                                 Width="420"
+                                 Height="0"
+                                 SelectionMode="Multiple"
+                                 ItemsSource="{Binding Source={StaticResource Amenity }}"
+                                 Style="{StaticResource MyMaterialDesignFilterChipListBox}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </StackPanel>
                 </Grid>
-            <Button x:Name="DialogOKButton"
-                    Content="OK"
-                    Command="{x:Static md:DialogHost.CloseDialogCommand}"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Width="80px"
-                    HorizontalAlignment="Right"
-                    Margin="0 20 20 0" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="DialogOKButton"
+                            Content="OK"
+                            Command="{x:Static md:DialogHost.CloseDialogCommand}"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Width="86px"
+                            HorizontalAlignment="Right"
+                            Margin="0 20 5 0"
+                            Click="DialogButton_Click"/>
+                    <Button x:Name="DialogCancelButton"
+                            Content="CANCEL"
+                            Command="{x:Static md:DialogHost.CloseDialogCommand}"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Width="0"
+                            HorizontalAlignment="Right"
+                            Margin="0 20 15 0"
+                            Click="DialogButton_Click"/>
+                </StackPanel>
             </StackPanel>
         </md:DialogHost.DialogContent>
         <Grid>
@@ -382,7 +393,8 @@
                                                 <DatePicker x:Name="gEntryDate"
                                                             Style="{StaticResource FormDatePicker}"
                                                             DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                                                            DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
+                                                            DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}"
+                                                            SelectedDateChanged="CountAvailableHostingUnits" />
                                             </AdornerDecorator>
                                             <Label Grid.Row="4"
                                                    Grid.Column="0"
@@ -400,7 +412,8 @@
                                                 <DatePicker x:Name="gReleaseDate"
                                                             Style="{StaticResource FormDatePicker}"
                                                             DisplayDateStart="{Binding ElementName=gEntryDate, Path=SelectedDate, Converter={StaticResource ConvertToNextDay}}"
-                                                            DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}" />
+                                                            DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}, Converter={StaticResource AddMonthsConverter}}"
+                                                            SelectedDateChanged="CountAvailableHostingUnits" />
                                             </AdornerDecorator>
                                             <Label Grid.Row="5"
                                                    Grid.Column="0"
@@ -440,7 +453,8 @@
                                             <AdornerDecorator Grid.Row="6"
                                                               Grid.Column="1">
                                                 <ComboBox x:Name="gPrefCity"
-                                                          Style="{StaticResource FormComboBox}">
+                                                          Style="{StaticResource FormComboBox}"
+                                                          SelectionChanged="CountAvailableHostingUnits">
                                                     <ComboBox.ItemTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
@@ -514,7 +528,8 @@
                                                               Grid.Column="1">
                                                 <ComboBox x:Name="gPrefType"
                                                           ItemsSource="{Binding Source={StaticResource TypeOfPlace }}"
-                                                          Style="{StaticResource FormComboBox}">
+                                                          Style="{StaticResource FormComboBox}"
+                                                          SelectionChanged="CountAvailableHostingUnits">
                                                     <ComboBox.ItemTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
@@ -524,14 +539,15 @@
                                             </AdornerDecorator>
                                         </Grid>
                                         <StackPanel Margin="20 0 0 0">
-                                            <Label Content="Which amenities are most important to you?"
+                                            <Label Content="Which amenities are important to you?"
                                                    Margin="0 24 0 8" />
                                             <ListBox x:Name="gAmenities"
                                                      MaxWidth="420"
                                                      Height="292"
                                                      SelectionMode="Multiple"
                                                      ItemsSource="{Binding Source={StaticResource Amenity }}"
-                                                     Style="{StaticResource MyMaterialDesignFilterChipListBox}">
+                                                     Style="{StaticResource MyMaterialDesignFilterChipListBox}"
+                                                     SelectionChanged="CountAvailableHostingUnits">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <TextBlock Text="{Binding Converter={StaticResource PascalCaseToText}}" />
@@ -540,17 +556,25 @@
                                             </ListBox>
                                         </StackPanel>
                                     </WrapPanel>
-                                    <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
-                                            Width="Auto"
-                                            HorizontalAlignment="Left"
-                                            Margin="0 20 0 0"
-                                            Click="Submit_Request_Button_Click">
-                                        <StackPanel Orientation="Horizontal">
-                                            <md:PackIcon Kind="HomeSearchOutline"
-                                                         Style="{StaticResource ButtonIcon}" />
-                                            <TextBlock Text="SUBMIT REQUEST" />
-                                        </StackPanel>
-                                    </Button>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                                                Width="Auto"
+                                                HorizontalAlignment="Left"
+                                                Margin="0 20 0 0"
+                                                Click="Submit_Request_Button_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <md:PackIcon Kind="HomeSearchOutline"
+                                                             Style="{StaticResource ButtonIcon}" />
+                                                <TextBlock Text="SUBMIT REQUEST" />
+                                            </StackPanel>
+                                        </Button>
+                                        <TextBlock Margin="12 25 0 0"
+                                                   FontFamily="{StaticResource OpenSans}"
+                                                   FontSize="14"
+                                                   Foreground="DarkGreen"
+                                                   Text="{Binding UnitsAvailable, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                                   x:Name="UnitsAvailableLabel" />
+                                    </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
                         </md:Card>

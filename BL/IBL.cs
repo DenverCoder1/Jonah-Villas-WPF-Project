@@ -22,6 +22,8 @@ namespace BL
         IEnumerable<IGrouping<City, HostingUnit>> GetHostingUnitsByCity();
         List<DateRange> GetDateRanges(long huKey);
         HostingUnit GetHostingUnit(long huKey);
+        bool IsHostingUnitAvailable(HostingUnit hostingUnit, GuestRequest request);
+        List<HostingUnit> GetAvailableHostingUnits(DateTime entry, DateTime release, District? district, City? city, TypeOfPlace? prefType, List<Amenity> amenities);
 
         // guest requests
         bool CreateGuestRequest(GuestRequest guestRequest);

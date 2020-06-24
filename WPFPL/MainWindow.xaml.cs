@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 using BE;
 using BL;
@@ -17,16 +19,26 @@ namespace WPFPL
     /// </summary>
     public partial class MainWindow : Window
     {
-        public ObservableCollection<string> DynamicCityList { get; set; }
-
-        // current visible tab
-        public TabItem CurrentTab { get; set; }
+        // Get the instance of the BL
+        public static IBL Bl = FactoryBL.GetBL();
 
         // Host which is currently logged in
         public static Host LoggedInHost { get; set; }
 
-        // Get the instance of the BL
-        public static IBL Bl = FactoryBL.GetBL();
+        // current visible tab
+        private TabItem CurrentTab { get; set; }
+
+        // Number of units available for current guest request
+        private int UnitsAvailable { get; set; }
+
+        // Current guest request
+        private GuestRequest Guest { get; set; }
+
+        // list of cities in selected district
+        private ObservableCollection<string> DynamicCityList { get; set; }
+
+        // Selected button from dialog host
+        private string MyDialogResult { get; set; }
 
         /// <summary>
         /// Startup function
@@ -59,7 +71,7 @@ namespace WPFPL
         /// Open custom dialog box with custom text
         /// </summary>
         /// <param name="text">Text to insert into box</param>
-        public static void Dialog(string text, string tag = "", object textBox = null, object combo1 = null, object combo2 = null, object checkbox = null, object combo3 = null, object listbox = null)
+        public static void Dialog(string text, string tag = "", object textBox = null, object combo1 = null, object combo2 = null, object checkbox = null, object combo3 = null, object listbox = null, bool cancelButton = false)
         {
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
 
@@ -70,14 +82,16 @@ namespace WPFPL
             mainWindow.MyDialogCheckbox.Height = (checkbox == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
             mainWindow.MyDialogComboBox3.Height = (combo3 == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
             mainWindow.MyDialogListBox.Height = (listbox == null) ? (0 /* hidden */) : (double.NaN /* Auto */);
+            mainWindow.DialogCancelButton.Width = (cancelButton == false) ? (0 /* hidden */) : (double.NaN /* Auto */);
 
-            mainWindow.MyDialogTextBox.Margin = (textBox == null) ? new Thickness(0) : new Thickness(0,6,20,6);
+            mainWindow.MyDialogTextBox.Margin = (textBox == null) ? new Thickness(0) : new Thickness(0, 6, 20, 6);
             mainWindow.MyDialogComboBox1.Margin = (combo1 == null) ? new Thickness(0) : new Thickness(0, 6, 20, 6);
             mainWindow.MyDialogComboBox2.Margin = (combo2 == null) ? new Thickness(0) : new Thickness(0, 6, 20, 6);
             mainWindow.MyDialogCheckbox.Margin = (checkbox == null) ? new Thickness(0) : new Thickness(0, 10, 0, 0);
             mainWindow.MyDialogComboBox3.Margin = (combo3 == null) ? new Thickness(0) : new Thickness(0, 6, 20, 6);
-            mainWindow.MyDialogContent.Width = (listbox == null) ? (220 /* normal size */) : (double.NaN /* Auto */);
 
+            // switch to full size box if list box is shown
+            mainWindow.MyDialogContent.Width = (listbox == null) ? (250 /* normal size */) : (double.NaN /* Auto */);
 
             // set text and display
             if (textBox != null) { mainWindow.MyDialogTextBox.Text = textBox.ToString(); }
@@ -110,6 +124,14 @@ namespace WPFPL
                     default: break;
                 }
             }
+        }
+
+        private void DialogButton_Click(object sender, RoutedEventArgs e)
+        {
+            MyDialogResult = ((Button)sender).Content.ToString();
+
+            if (MyDialogResult == "OK" && MyDialog.Tag != null && MyDialog.Tag.ToString() == "GuestConfirmation")
+                SubmitGuestRequest();
         }
 
         private void MyDialogComboBox1_Changed(object sender, SelectionChangedEventArgs e)
@@ -164,6 +186,8 @@ namespace WPFPL
             else if (CurrentTab != Tab1 && Tab1.IsSelected)
             {
                 CurrentTab = Tab1;
+                // Update count
+                CountAvailableHostingUnits();
             }
             // Hosting
             else if (CurrentTab != Tab2 && Tab2.IsSelected)
@@ -221,6 +245,7 @@ namespace WPFPL
         private void DistrictComboBox_Changed(object sender, SelectionChangedEventArgs e)
         {
             UpdateCityList(sender, DynamicCityList);
+            CountAvailableHostingUnits();
         }
 
         /// <summary>
@@ -250,22 +275,88 @@ namespace WPFPL
                         amenities[amenity] = PrefLevel.NotInterested;
                 }
 
-                MainWindow.Bl.ValidateGuestForm(fname, lname, email, entry.ToString(), release.ToString(), districtObj, cityObj, numAdults, numChildren, prefTypeObj);
+                Bl.ValidateGuestForm(fname, lname, email, entry.ToString(), release.ToString(), districtObj, cityObj, numAdults, numChildren, prefTypeObj);
 
                 Enum.TryParse(gPrefDistrict.SelectedItem.ToString().Replace(" ", ""), out District district);
                 Enum.TryParse(gPrefCity.SelectedItem.ToString().Replace(" ", ""), out City city);
                 Enum.TryParse(gPrefType.SelectedItem.ToString().Replace(" ", ""), out TypeOfPlace prefType);
 
-                GuestRequest guest = new GuestRequest(entry, release, fname, lname, email, district, city, prefType, numAdults, numChildren, amenities);
+                Guest = new GuestRequest
+                {
+                    EntryDate = entry, 
+                    ReleaseDate = release,
+                    FirstName = fname,
+                    LastName = lname,
+                    Email = email,
+                    PrefDistrict = district,
+                    PrefCity = city,
+                    PrefType = prefType,
+                    NumAdults = numAdults,
+                    NumChildren = numChildren,
+                    PrefAmenities = amenities
+                };
 
-                MainWindow.Bl.CreateGuestRequest(guest);
-
-                Dialog("Success! Your request has been submitted.");
+                if (UnitsAvailable == 0)
+                    Dialog("No existing properties match your request. Do you want to submit your request anyway?", "GuestConfirmation", cancelButton: true);
+                else
+                    SubmitGuestRequest();
             }
             catch (Exception error)
             {
                 Dialog(error.Message);
             }
+        }
+
+        private void SubmitGuestRequest()
+        {
+            try
+            {
+                Bl.CreateGuestRequest(new GuestRequest(Guest.EntryDate, Guest.ReleaseDate, Guest.FirstName, Guest.LastName, Guest.Email, Guest.PrefDistrict, Guest.PrefCity, Guest.PrefType, Guest.NumAdults, Guest.NumChildren, Guest.PrefAmenities));
+                MySnackbar.MessageQueue.Enqueue("Success! Your request has been submitted.");
+            }
+            catch (Exception error)
+            {
+                MySnackbar.MessageQueue.Enqueue(error.Message);
+            }
+        }
+
+        private void CountAvailableHostingUnits(object sender = null, SelectionChangedEventArgs e = null)
+        {
+            DateTime.TryParse(gEntryDate.SelectedDate.ToString(), out DateTime entry);
+            DateTime.TryParse(gReleaseDate.SelectedDate.ToString(), out DateTime release);
+
+            District? district = null;
+            City? city = null;
+            TypeOfPlace? prefType = null;
+            if (gPrefDistrict.SelectedItem != null)
+            {
+                Enum.TryParse(gPrefDistrict.SelectedItem.ToString().Replace(" ", ""), out District d);
+                district = (District?)d;
+            }
+            if (gPrefCity.SelectedItem != null)
+            {
+                Enum.TryParse(gPrefCity.SelectedItem.ToString().Replace(" ", ""), out City c);
+                city = (City?)c;
+            }
+            if (gPrefType.SelectedItem != null)
+            {
+                Enum.TryParse(gPrefType.SelectedItem.ToString().Replace(" ", ""), out TypeOfPlace t);
+                prefType = (TypeOfPlace?)t;
+            }
+
+            List<Amenity> amenities = (from Amenity item in gAmenities.SelectedItems select item).ToList();
+
+            try
+            {
+                UnitsAvailable = Bl.GetAvailableHostingUnits(entry, release, district, city, prefType, amenities).Count();
+            }
+            catch
+            {
+                UnitsAvailable = 0;
+            }
+
+            UnitsAvailableLabel.Text = $"{UnitsAvailable} {(UnitsAvailable == 1 ? "Unit" : "Units")} Available";
+            UnitsAvailableLabel.Foreground = (UnitsAvailable > 0) ? Brushes.DarkGreen : Brushes.DarkRed;
         }
     }
 }

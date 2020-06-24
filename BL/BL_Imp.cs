@@ -161,7 +161,7 @@ namespace BL
                                                    where item.OwnerHostID == hostKey
                                                     && item.UnitDistrict == guestRequest.PrefDistrict
                                                     && item.UnitCity == guestRequest.PrefCity
-                                                    && instance.CheckOrReserveDates(item, guestRequest, false)
+                                                    && instance.IsHostingUnitAvailable(item, guestRequest)
                                                    select item;
                 return matches.ToList();
             }
@@ -233,6 +233,56 @@ namespace BL
             {
                 HostingUnit hostingUnit = instance.GetHostingUnits().FirstOrDefault(hu => hu.HostingUnitKey == huKey);
                 return hostingUnit;
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
+        }
+
+        /// <summary>
+        /// Return whether a hosting unit is available for a guest request
+        /// based on dates, location, type, and amenities
+        /// </summary>
+        /// <param name="hostingUnit">Hosting unit to check</param>
+        /// <param name="request">Request to check</param>
+        /// <returns>Boolean value of whether unit is available</returns>
+        bool IBL.IsHostingUnitAvailable(HostingUnit hostingUnit, GuestRequest request)
+        {
+            try
+            {
+                var requiredAmenities = (from item in request.PrefAmenities.Keys
+                                         where request.PrefAmenities[item] == PrefLevel.Required
+                                         select item).ToList();
+                return (hostingUnit.UnitCity == request.PrefCity) &&
+                    (hostingUnit.UnitDistrict == request.PrefDistrict) &&
+                    (hostingUnit.UnitType == request.PrefType) &&
+                    (requiredAmenities.All(amenity => hostingUnit.Amenities.Contains(amenity))) &&
+                    (instance.CheckOrReserveDates(hostingUnit, request, false));
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
+        }
+
+        /// <summary>
+        /// Return a list of hosting units that can accept request details
+        /// based on dates, location, type, and amenities
+        /// </summary>
+        /// <returns>List of hosting units</returns>
+        List<HostingUnit> IBL.GetAvailableHostingUnits(DateTime entry, DateTime release, District? prefDistrict, City? prefCity, TypeOfPlace? prefType, List<Amenity> prefAmenities)
+        {
+            try
+            {
+                var matches = from item in instance.GetHostingUnits()
+                              where (prefCity == null || item.UnitCity == prefCity) &&
+                                    (prefDistrict == null || item.UnitDistrict == prefDistrict) &&
+                                    (prefType == null || item.UnitType == prefType) &&
+                                    (prefAmenities.All(amenity => item.Amenities.Contains(amenity))) &&
+                                    (entry == default || release == default || instance.CheckOrReserveDates(item, new GuestRequest { EntryDate = entry, ReleaseDate = release }, false))
+                              select item;
+                return matches.ToList();
             }
             catch (Exception error)
             {
@@ -579,8 +629,8 @@ namespace BL
                     }
 
 
-                    // Check if dates can go into the hosting unit
-                    if (instance.CheckOrReserveDates(hostingUnit, guestRequest, false))
+                    // Check if all details of unit match request and dates can go in
+                    if (instance.IsHostingUnitAvailable(hostingUnit, guestRequest))
                     {
                         // if possible to reserve
                         guestRequest.Status = GuestStatus.Pending;
