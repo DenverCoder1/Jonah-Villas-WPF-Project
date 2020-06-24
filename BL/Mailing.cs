@@ -73,7 +73,7 @@ namespace BL
             // Get order details
             GuestRequest request = Bl.GetGuestRequest(order.GuestRequestKey);
             HostingUnit hostingUnit = Bl.GetHostingUnit(order.HostingUnitKey);
-            Host owner = Bl.GetHost(hostingUnit.Owner.HostKey);
+            Host owner = Bl.GetHost(hostingUnit.OwnerHostID);
 
             // Get details from configuration file
             Configuration oConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);

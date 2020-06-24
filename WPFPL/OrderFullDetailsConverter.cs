@@ -30,6 +30,7 @@ namespace WPFPL
                         Order order = MainWindow.Bl.GetOrder(orderKey);
                         HostingUnit hostingUnit = MainWindow.Bl.GetHostingUnit(order.HostingUnitKey);
                         GuestRequest guestRequest = MainWindow.Bl.GetGuestRequest(order.GuestRequestKey);
+                        Host owner = MainWindow.Bl.GetHost(hostingUnit.OwnerHostID);
                         StringBuilder output = new StringBuilder();
                         output.AppendLine($"Order ID: {order.OrderKey}");
                         output.AppendLine($"Order creation date: {order.CreationDate:dd.MM.yyyy}");
@@ -37,8 +38,8 @@ namespace WPFPL
                         output.AppendLine($"Order status: {order.Status}\n");
                         output.AppendLine($"Hosting unit ID: {hostingUnit.HostingUnitKey}");
                         output.AppendLine($"Hosting unit Name: {hostingUnit.UnitName}");
-                        output.AppendLine($"Hosting unit owner ID: {hostingUnit.Owner.HostKey}");
-                        output.AppendLine($"Hosting unit owner: {hostingUnit.Owner.LastName}, {hostingUnit.Owner.FirstName}\n");
+                        output.AppendLine($"Hosting unit owner ID: {hostingUnit.OwnerHostID}");
+                        output.AppendLine($"Hosting unit owner: {owner.LastName}, {owner.FirstName}\n");
                         output.AppendLine($"Request ID: {guestRequest.GuestRequestKey}");
                         output.AppendLine($"Request dates: {guestRequest.EntryDate:dd.MM.yyyy} - {guestRequest.ReleaseDate:dd.MM.yyyy}");
                         output.AppendLine($"Request location: {guestRequest.PrefCity}, {guestRequest.PrefDistrict}");

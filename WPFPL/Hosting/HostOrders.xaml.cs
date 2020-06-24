@@ -39,7 +39,6 @@ namespace WPFPL
             OrdersCollection = new ObservableCollection<string>();
             Orders.ItemsSource = OrdersCollection;
             Refresh();
-            PopulateFilterMenu();
         }
 
         /// <summary>
@@ -82,6 +81,7 @@ namespace WPFPL
                         case 8: sortedOrders = MainWindow.Bl.GetHostOrders(MainWindow.LoggedInHost.HostKey).OrderBy(item => item.Status.ToString()).ToList(); break;
                         default: sortedOrders = MainWindow.Bl.GetHostOrders(MainWindow.LoggedInHost.HostKey).OrderBy(item => item.OrderKey).ToList(); break;
                     }
+                    void registerName(string name, object scopedElement) { if (FindName(name) == null) RegisterName(name, scopedElement); }
                     MenuItem findName(string name) { return (MenuItem)FindName(name); }
                     // add items to list and filter by search
                     foreach (Order item in sortedOrders)
@@ -90,9 +90,9 @@ namespace WPFPL
                         if (Normalize.Convert(item).Contains(search))
                         {
                             // apply advanced filters
-                            if (FilterMenus.FilterItemChecked(item.Status.ToString(), "status", findName) &&
-                                FilterMenus.FilterItemChecked(item.HostingUnitKey.ToString(), "unit", findName) &&
-                                FilterMenus.FilterItemChecked(item.GuestRequestKey.ToString(), "request", findName))
+                            if (FilterMenus.FilterItemChecked(item.Status.ToString(), "Status", findName, registerName, Refresh) &&
+                                FilterMenus.FilterItemChecked(item.HostingUnitKey.ToString(), "Hosting Unit ID", findName, registerName, Refresh) &&
+                                FilterMenus.FilterItemChecked(item.GuestRequestKey.ToString(), "Guest Request ID", findName, registerName, Refresh))
                             {
                                 OrdersCollection.Add(item.ToString());
                             }
@@ -104,38 +104,6 @@ namespace WPFPL
                     mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
-        }
-
-        /// <summary>
-        /// Populate the Advanced Filter menu
-        /// </summary>
-        private void PopulateFilterMenu()
-        {
-            // Create sub-menus
-            void registerName(string name, object scopedElement) { RegisterName(name, scopedElement); }
-            MenuItem status = FilterMenus.AddMenuItem(FilterMenu, "Status", false, "top", registerName, Refresh);
-            MenuItem unit = FilterMenus.AddMenuItem(FilterMenu, "Hosting Unit ID", false, "top", registerName, Refresh);
-            MenuItem request = FilterMenus.AddMenuItem(FilterMenu, "Guest Request ID", false, "top", registerName, Refresh);
-
-            var matches = MainWindow.Bl.GetHostOrders(MainWindow.LoggedInHost.HostKey);
-
-            // Add status items
-            foreach (string item in (from item in matches
-                                     orderby item.Status.ToString()
-                                     select item.Status.ToString()).Distinct().ToList())
-                FilterMenus.AddMenuItem(status, item, true, "status", registerName, Refresh);
-
-            // Add hosting unit id items
-            foreach (string item in (from item in matches
-                                     orderby item.HostingUnitKey.ToString()
-                                     select item.HostingUnitKey.ToString()).Distinct().ToList())
-                FilterMenus.AddMenuItem(unit, item, true, "unit", registerName, Refresh);
-
-            // Add guest request id items
-            foreach (string item in (from item in matches
-                                     orderby item.GuestRequestKey.ToString()
-                                     select item.GuestRequestKey.ToString()).Distinct().ToList())
-                FilterMenus.AddMenuItem(request, item, true, "request", registerName, Refresh);
         }
 
         /// <summary>

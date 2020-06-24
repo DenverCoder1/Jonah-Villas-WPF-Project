@@ -14,11 +14,11 @@ namespace WPFPL
         /// <summary>
         /// Create a menu item given details, return reference to MenuItem
         /// </summary>
-        public static MenuItem AddMenuItem(MenuItem parent, string header, bool checkable, string prefix, Action<string, object> RegisterName, RoutedEventHandler MenuItem_Checked)
+        public static MenuItem AddMenuItem(MenuItem parent, string header, bool checkable, string parentHeader, Action<string, object> registerName, RoutedEventHandler MenuItem_Checked)
         {
             if (parent == null) { return parent; }
             // ex. TypeOfPlace => m_TypeOfPlace
-            string name = Regex.Replace($"m_{prefix}_{header}", "[^a-zA-Z0-9_]", "");
+            string name = Regex.Replace($"m_{parentHeader}_{header}", "[^a-zA-Z0-9_]", "");
             // create new menu item
             MenuItem menuItem = new MenuItem
             {
@@ -29,23 +29,27 @@ namespace WPFPL
             };
             menuItem.Checked += MenuItem_Checked;
             menuItem.Unchecked += MenuItem_Checked;
+            // register name
+            registerName(name, menuItem);
             // add item to parent
             parent.Items.Add(menuItem);
-            // register name
-            RegisterName(name, menuItem);
             return menuItem;
         }
 
         /// <summary>
         /// Return whether an item is checked based on header
         /// </summary>
-        public static bool FilterItemChecked(string key, string prefix, Func<string, MenuItem> FindName)
+        public static bool FilterItemChecked(string header, string parentHeader, Func<string, MenuItem> findName, Action<string, object> registerName, RoutedEventHandler MenuItem_Checked)
         {
-            string name = Regex.Replace($"m_{prefix}_{key}", "[^a-zA-Z0-9_]", "");
-            MenuItem item = FindName(name);
-            if (item != null)
-                return item.IsChecked;
-            return true;
+            string name = Regex.Replace($"m_{parentHeader}_{header}", "[^a-zA-Z0-9_]", "");
+            MenuItem item = findName(name);
+            if (item == null)
+            {
+                MenuItem parent = findName(Regex.Replace($"m_top_{parentHeader}", "[^a-zA-Z0-9_]", ""));
+                AddMenuItem(parent, header, true, parentHeader, registerName, MenuItem_Checked);
+                return true;
+            }
+            return item.IsChecked;
         }
     }
 }

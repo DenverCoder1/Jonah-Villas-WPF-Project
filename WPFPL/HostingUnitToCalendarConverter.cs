@@ -28,12 +28,14 @@ namespace WPFPL
                     try
                     {
                         HostingUnit hostingUnit = MainWindow.Bl.GetHostingUnit(huKey);
+                        Host owner = MainWindow.Bl.GetHost(hostingUnit.OwnerHostID);
                         StringBuilder output = new StringBuilder();
                         output.AppendLine($"Hosting unit ID: {hostingUnit.HostingUnitKey}");
                         output.AppendLine($"Hosting unit name: {hostingUnit.UnitName}");
                         output.AppendLine($"Hosting unit location: {hostingUnit.UnitCity}, {hostingUnit.UnitDistrict}");
                         output.AppendLine($"Hosting unit total commissions: {hostingUnit.TotalCommissionsNIS} NIS");
-                        output.AppendLine($"Owner ID: {hostingUnit.Owner.HostKey}\n");
+                        output.AppendLine($"Owner ID: {hostingUnit.OwnerHostID}");
+                        output.AppendLine($"Owner name: {owner.LastName}, {owner.FirstName}\n");
                         if (hostingUnit.Calendar.Count == 0)
                             output.AppendLine("No dates have been reserved.");
                         else

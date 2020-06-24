@@ -75,7 +75,7 @@ namespace DAL
             {
                 HostingUnitKey = original.HostingUnitKey,
                 Calendar = new List<DateRange>(),
-                Owner = original.Owner,
+                OwnerHostID = original.OwnerHostID,
                 UnitName = original.UnitName,
                 UnitCity = original.UnitCity,
                 UnitDistrict = original.UnitDistrict,

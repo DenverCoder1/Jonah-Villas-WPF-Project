@@ -135,7 +135,7 @@ namespace BL
             {
                 List<HostingUnit> hostingUnits = instance.GetHostingUnits().ConvertAll(x => Cloning.Clone(x));
                 IEnumerable<HostingUnit> matches = from HostingUnit item in hostingUnits
-                                                   where item.Owner.HostKey == hostKey
+                                                   where item.OwnerHostID == hostKey
                                                    select item;
                 return matches.ToList();
             }
@@ -158,7 +158,7 @@ namespace BL
                 List<HostingUnit> hostingUnits = instance.GetHostingUnits().ConvertAll(x => Cloning.Clone(x));
                 GuestRequest guestRequest = instance.GetGuestRequest(guestRequestKey);
                 IEnumerable<HostingUnit> matches = from HostingUnit item in hostingUnits
-                                                   where item.Owner.HostKey == hostKey
+                                                   where item.OwnerHostID == hostKey
                                                     && item.UnitDistrict == guestRequest.PrefDistrict
                                                     && item.UnitCity == guestRequest.PrefCity
                                                     && instance.CheckOrReserveDates(item, guestRequest, false)
@@ -535,7 +535,7 @@ namespace BL
                     if (guestRequest == null)
                         throw new Exception("Could not find a request matching the guest request ID.");
 
-                    Host host = instance.GetHost(hostingUnit.Owner.HostKey);
+                    Host host = instance.GetHost(hostingUnit.OwnerHostID);
 
                     if (host == null)
                         throw new Exception("Could not find a host matching the hosting unit's owner ID.");
@@ -549,7 +549,7 @@ namespace BL
                     // Make sure Host has not already created the order for this guest request
                     if (instance.GetOrders().Exists((Order o) =>
                         o.GuestRequestKey == order.GuestRequestKey &&
-                        instance.GetHostingUnit(o.HostingUnitKey).Owner.HostKey == hostingUnit.Owner.HostKey))
+                        instance.GetHostingUnit(o.HostingUnitKey).OwnerHostID == hostingUnit.OwnerHostID))
                     {
                         throw new ArgumentException($"You have already created an order for this request.");
                     }
@@ -657,11 +657,13 @@ namespace BL
                             // add transaction fee to hosting unit's charges
                             hostingUnit.TotalCommissionsNIS += transactionFeeNIS;
 
+                            Host owner = instance.GetHost(hostingUnit.OwnerHostID);
+
                             // add transaction fee to host's charges
-                            hostingUnit.Owner.AmountCharged += transactionFeeNIS;
+                            owner.AmountCharged += transactionFeeNIS;
 
                             // update host
-                            instance.UpdateHost(hostingUnit.Owner);
+                            instance.UpdateHost(owner);
 
                             // if successfully reserved
                             // update hosting unit calendar
@@ -931,7 +933,7 @@ namespace BL
                 if (oldHost.BankClearance == true && newHost.BankClearance == false)
                     if (instance.GetOrders().Exists(o =>
                         (o.Status == OrderStatus.NotYetHandled || o.Status == OrderStatus.SentEmail) &&
-                        instance.GetHostingUnit(o.HostingUnitKey).Owner.HostKey == newHost.HostKey))
+                        instance.GetHostingUnit(o.HostingUnitKey).OwnerHostID == newHost.HostKey))
                     {
                         throw new Exception("Billing clearance can not be revoked while there are open orders.");
                     }

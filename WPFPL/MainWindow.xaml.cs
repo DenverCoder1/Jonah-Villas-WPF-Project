@@ -163,19 +163,26 @@ namespace WPFPL
             {
                 CurrentTab = Tab2;
                 // refresh lists in case they have changed since last tab visit
-                //HostRequests.Refresh();
-                //HostOrders.Refresh();
-                //HostHostingUnits.Refresh();
+                if (HostingFrame.Content is HostRequests hostRequests)
+                    hostRequests.Refresh();
+                else if (HostingFrame.Content is HostOrders hostOrders)
+                    hostOrders.Refresh();
+                else if (HostingFrame.Content is HostHostingUnits hostHostingUnits)
+                    hostHostingUnits.Refresh();
             }
             // Admin
             else if (CurrentTab != Tab3 && Tab3.IsSelected)
             {
                 CurrentTab = Tab3;
                 // refresh lists in case they have changed since last tab visit
-                //AdminRequests.Refresh();
-                //AdminOrders.Refresh();
-                //AdminHostingUnits.Refresh();
-                //AdminHosts.Refresh();
+                if (AdminFrame.Content is AdminRequests adminRequests)
+                    adminRequests.Refresh();
+                else if (AdminFrame.Content is AdminOrders adminOrders)
+                    adminOrders.Refresh();
+                else if (AdminFrame.Content is AdminHostingUnits adminHostingUnits)
+                    adminHostingUnits.Refresh();
+                else if (AdminFrame.Content is AdminHosts adminHosts)
+                    adminHosts.Refresh();
             }
         }
 

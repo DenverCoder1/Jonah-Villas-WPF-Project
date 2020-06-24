@@ -45,6 +45,8 @@
                               Padding="10 0"
                               Header="🝖 Advanced Filters"
                               x:Name="FilterMenu">
+                        <MenuItem Header="Bank Clearance"
+                                  x:Name="m_top_BankClearance" />
                     </MenuItem>
                 </Menu>
             </StackPanel>

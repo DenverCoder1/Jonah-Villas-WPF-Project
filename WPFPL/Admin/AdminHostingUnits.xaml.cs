@@ -38,7 +38,6 @@ namespace WPFPL.Admin
             HostingUnitCollection = new ObservableCollection<string>();
             HostingUnits.ItemsSource = HostingUnitCollection;
             Refresh();
-            PopulateFilterMenu();
         }
 
         /// <summary>
@@ -72,10 +71,11 @@ namespace WPFPL.Admin
                         // Unit district A-Z
                         case 4: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.UnitDistrict.ToString()).ToList(); break;
                         // Owner ID
-                        case 5: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.Owner.HostKey.ToString()).ToList(); break;
+                        case 5: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.OwnerHostID.ToString()).ToList(); break;
                         // Newest first
                         default: orderedHostingUnits = MainWindow.Bl.GetHostingUnits().OrderBy(item => item.HostingUnitKey).ToList(); break;
                     }
+                    void registerName(string name, object scopedElement) { if (FindName(name) == null) RegisterName(name, scopedElement); }
                     MenuItem findName(string name) { return (MenuItem)FindName(name); }
                     // add items to list and filter by search
                     foreach (HostingUnit item in orderedHostingUnits)
@@ -84,10 +84,10 @@ namespace WPFPL.Admin
                         if (Normalize.Convert(item).Contains(search))
                         {
                             // apply advanced filters
-                            if (FilterMenus.FilterItemChecked(item.UnitName.ToString(), "name", findName) &&
-                                FilterMenus.FilterItemChecked(item.UnitDistrict.ToString(), "district", findName) &&
-                                FilterMenus.FilterItemChecked(item.UnitCity.ToString(), "city", findName) &&
-                                FilterMenus.FilterItemChecked(item.Owner.HostKey.ToString(), "hostkey", findName))
+                            if (FilterMenus.FilterItemChecked(item.UnitName.ToString(), "Hosting unit name", findName, registerName, Refresh) &&
+                                FilterMenus.FilterItemChecked(item.UnitDistrict.ToString(), "District", findName, registerName, Refresh) &&
+                                FilterMenus.FilterItemChecked(item.UnitCity.ToString(), "City", findName, registerName, Refresh) &&
+                                FilterMenus.FilterItemChecked(item.OwnerHostID.ToString(), "Owner ID", findName, registerName, Refresh))
                             {
                                 HostingUnitCollection.Add(item.ToString());
                             }
@@ -99,45 +99,6 @@ namespace WPFPL.Admin
                     mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
-        }
-
-        /// <summary>
-        /// Populate the Advanced Filter menu
-        /// </summary>
-        private void PopulateFilterMenu()
-        {
-            // Create sub-menus
-            void registerName(string name, object scopedElement) { RegisterName(name, scopedElement); }
-            MenuItem unitName = FilterMenus.AddMenuItem(FilterMenu, "Hosting unit name", false, "top", registerName, Refresh);
-            MenuItem district = FilterMenus.AddMenuItem(FilterMenu, "District", false, "top", registerName, Refresh);
-            MenuItem city = FilterMenus.AddMenuItem(FilterMenu, "City", false, "top", registerName, Refresh);
-            MenuItem hostkey = FilterMenus.AddMenuItem(FilterMenu, "Owner ID", false, "top", registerName, Refresh);
-
-            var matches = MainWindow.Bl.GetHostingUnits();
-
-            // Add unit name items
-            foreach (string item in (from item in matches
-                                     orderby item.UnitName
-                                     select item.UnitName).Distinct().ToList())
-                FilterMenus.AddMenuItem(unitName, item, true, "name", registerName, Refresh);
-
-            // Add district items
-            foreach (string item in (from item in matches
-                                     orderby item.UnitDistrict.ToString()
-                                     select item.UnitDistrict.ToString()).Distinct().ToList())
-                FilterMenus.AddMenuItem(district, item, true, "district", registerName, Refresh);
-
-            // Add city items
-            foreach (string item in (from item in matches
-                                     orderby item.UnitCity.ToString()
-                                     select item.UnitCity.ToString()).Distinct().ToList())
-                FilterMenus.AddMenuItem(city, item, true, "city", registerName, Refresh);
-
-            // Add host key items
-            foreach (string item in (from item in matches
-                                     orderby item.Owner.HostKey.ToString()
-                                     select item.Owner.HostKey.ToString()).Distinct().ToList())
-                FilterMenus.AddMenuItem(hostkey, item, true, "hostkey", registerName, Refresh);
         }
 
         /// <summary>

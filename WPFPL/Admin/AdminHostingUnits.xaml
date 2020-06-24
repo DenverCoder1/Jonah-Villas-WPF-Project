@@ -116,6 +116,14 @@
                               Padding="10 0"
                               Header="🝖 Advanced Filters"
                               x:Name="FilterMenu">
+                        <MenuItem Header="Hosting unit name"
+                                  x:Name="m_top_Hostingunitname" />
+                        <MenuItem Header="District"
+                                  x:Name="m_top_District" />
+                        <MenuItem Header="City"
+                                  x:Name="m_top_City" />
+                        <MenuItem Header="Owner ID"
+                                  x:Name="m_top_OwnerID" />
                     </MenuItem>
                 </Menu>
             </StackPanel>

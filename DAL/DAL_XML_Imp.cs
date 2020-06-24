@@ -384,7 +384,7 @@ namespace DAL
             {
                 return LoadList<Order>(OrderPath);
             }
-            catch (Exception error)
+            catch
             {
                 SaveList(DataSource.Orders, OrderPath);
                 return LoadList<Order>(OrderPath);

@@ -45,7 +45,6 @@ namespace WPFPL
             HostingUnitCollection = new ObservableCollection<string>();
             Requests.ItemsSource = RequestCollection;
             Refresh();
-            PopulateFilterMenu();
         }
 
         /// <summary>
@@ -97,6 +96,7 @@ namespace WPFPL
                         default: orderedRequests = MainWindow.Bl.GetOpenGuestRequests().OrderBy(item => item.GuestRequestKey).ToList(); break;
                     }
                     MenuItem findName(string name) { return (MenuItem)FindName(name); }
+                    void registerName(string name, object scopedElement) { if (FindName(name) == null) RegisterName(name, scopedElement); }
                     // add items to list and filter by search
                     foreach (GuestRequest item in orderedRequests)
                     {
@@ -104,10 +104,10 @@ namespace WPFPL
                         if (Normalize.Convert(item).Contains(search))
                         {
                             // apply advanced filters
-                            if (FilterMenus.FilterItemChecked(item.Status.ToString(), "status", findName) &&
-                                FilterMenus.FilterItemChecked(item.PrefType.ToString(), "type", findName) &&
-                                FilterMenus.FilterItemChecked(item.PrefDistrict.ToString(), "district", findName) &&
-                                FilterMenus.FilterItemChecked(item.PrefCity.ToString(), "city", findName))
+                            if (FilterMenus.FilterItemChecked(item.Status.ToString(), "Status", findName, registerName, Refresh) &&
+                                FilterMenus.FilterItemChecked(item.PrefType.ToString(), "Type of Place", findName, registerName, Refresh) &&
+                                FilterMenus.FilterItemChecked(item.PrefDistrict.ToString(), "District", findName, registerName, Refresh) &&
+                                FilterMenus.FilterItemChecked(item.PrefCity.ToString(), "City", findName, registerName, Refresh))
                             {
                                 RequestCollection.Add(item.ToString());
                             }
@@ -119,45 +119,6 @@ namespace WPFPL
                     mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
-        }
-
-        /// <summary>
-        /// Populate the Advanced Filter menu with enums
-        /// </summary>
-        private void PopulateFilterMenu()
-        {
-            // Create sub-menus
-            void registerName(string name, object scopedElement) { RegisterName(name, scopedElement); }
-            MenuItem status = FilterMenus.AddMenuItem(FilterMenu, "Status", false, "top", registerName, Refresh);
-            MenuItem type = FilterMenus.AddMenuItem(FilterMenu, "Type of Place", false, "top", registerName, Refresh);
-            MenuItem district = FilterMenus.AddMenuItem(FilterMenu, "District", false, "top", registerName, Refresh);
-            MenuItem city = FilterMenus.AddMenuItem(FilterMenu, "City", false, "top", registerName, Refresh);
-
-            var matches = MainWindow.Bl.GetOpenGuestRequests();
-
-            // Add status items
-            foreach (string item in (from item in matches
-                                     orderby item.Status.ToString()
-                                     select item.Status.ToString()).Distinct().ToList())
-                FilterMenus.AddMenuItem(status, item, true, "status", registerName, Refresh);
-
-            // Add type items
-            foreach (string item in (from item in matches
-                                     orderby item.PrefType.ToString()
-                                     select item.PrefType.ToString()).Distinct().ToList())
-                FilterMenus.AddMenuItem(type, item, true, "type", registerName, Refresh);
-
-            // Add district items
-            foreach (string item in (from item in matches
-                                     orderby item.PrefDistrict.ToString()
-                                     select item.PrefDistrict.ToString()).Distinct().ToList())
-                FilterMenus.AddMenuItem(district, item, true, "district", registerName, Refresh);
-
-            // Add city items
-            foreach (string item in (from item in matches
-                                     orderby item.PrefCity.ToString()
-                                     select item.PrefCity.ToString()).Distinct().ToList())
-                FilterMenus.AddMenuItem(city, item, true, "city", registerName, Refresh);
         }
 
         /// <summary>

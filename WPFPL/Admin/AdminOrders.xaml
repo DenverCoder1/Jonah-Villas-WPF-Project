@@ -105,7 +105,7 @@
                         VerticalAlignment="Center"
                         Click="Update_Order"
                         IsEnabled="{Binding ElementName=Orders, Path=SelectedItem, TargetNullValue=False}">
-                    UPDATE ORDER
+                    UPDATE STATUS
                 </Button>
             </StackPanel>
             <Button Style="{DynamicResource MaterialDesignRaisedDarkButton}"
@@ -131,6 +131,12 @@
                               Padding="10 0"
                               Header="🝖 Advanced Filters"
                               x:Name="FilterMenu">
+                        <MenuItem Header="Status"
+                                  x:Name="m_top_Status" />
+                        <MenuItem Header="Hosting Unit ID"
+                                  x:Name="m_top_HostingUnitID" />
+                        <MenuItem Header="Guest Request ID"
+                                  x:Name="m_top_GuestRequestID" />
                     </MenuItem>
                 </Menu>
             </StackPanel>

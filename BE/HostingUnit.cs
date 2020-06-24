@@ -13,7 +13,7 @@ namespace BE
         // Calendar of reserved dates - This method of storing reserved dates was approved by the professor
         public List<DateRange> Calendar { get; set; }
         // Owner
-        public Host Owner { get; set; }
+        public long OwnerHostID { get; set; }
         // Unit name
         public string UnitName { get; set; }
         // Unit location
@@ -32,7 +32,7 @@ namespace BE
             // get next available serial number
             HostingUnitKey = Config.NextHostingUnitKey++;
             Calendar = new List<DateRange>();
-            Owner = owner;
+            OwnerHostID = owner.HostKey;
             UnitName = name;
             UnitDistrict = district;
             UnitCity = city;
@@ -45,7 +45,7 @@ namespace BE
             StringBuilder output = new StringBuilder();
             // add serial number to output
             output.AppendLine($"#{HostingUnitKey} : \"{UnitName}\" in {UnitCity}, {UnitDistrict}");
-            output.Append($"Unit commissions: {TotalCommissionsNIS} NIS | Owner ID: {Owner.HostKey}");
+            output.Append($"Unit commissions: {TotalCommissionsNIS} NIS | Owner ID: {OwnerHostID}");
             return output.ToString();
         }
     }

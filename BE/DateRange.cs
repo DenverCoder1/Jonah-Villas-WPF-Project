@@ -3,24 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace BE
 {
+    [Serializable]
     public class DateRange
     {
-        public DateTime _start;
-        public DateTime _end;
+        [XmlIgnore] public DateTime _start;
+        [XmlIgnore] public DateTime _end;
 
         public DateTime Start
         {
             get { return _start; }
             set { _start = value; UpdateDuration(); }
         }
+
         public DateTime End
         {
             get { return _end; }
             set { _end = value; UpdateDuration(); }
         }
+
         public int Duration { get; set; }
 
         public DateRange()

@@ -61,6 +61,14 @@
                               Padding="10 0"
                               Header="🝖 Advanced Filters"
                               x:Name="FilterMenu">
+                        <MenuItem Header="Status"
+                                  x:Name="m_top_Status" />
+                        <MenuItem Header="Type of Place"
+                                  x:Name="m_top_TypeofPlace" />
+                        <MenuItem Header="District"
+                                  x:Name="m_top_District" />
+                        <MenuItem Header="City"
+                                  x:Name="m_top_City" />
                     </MenuItem>
                 </Menu>
             </StackPanel>

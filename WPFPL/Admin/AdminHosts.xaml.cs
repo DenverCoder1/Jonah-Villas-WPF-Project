@@ -3,6 +3,7 @@ using BL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -38,7 +39,6 @@ namespace WPFPL.Admin
             HostCollection = new ObservableCollection<string>();
             Hosts.ItemsSource = HostCollection;
             Refresh();
-            PopulateFilterMenu();
         }
 
         /// <summary>
@@ -71,7 +71,9 @@ namespace WPFPL.Admin
                         case 3: sortedHosts = MainWindow.Bl.GetHosts().OrderBy(item => item.FirstName).ToList(); break;
                         default: sortedHosts = MainWindow.Bl.GetHosts().OrderBy(item => item.HostKey).ToList(); break;
                     }
+                    // define delegate actions for finding and creating filter items
                     MenuItem findName(string name) { return (MenuItem)FindName(name); }
+                    void registerName(string name, object scopedElement) { if (FindName(name) == null) RegisterName(name, scopedElement); }
                     // add items to list and filter by search
                     foreach (Host item in sortedHosts)
                     {
@@ -79,7 +81,7 @@ namespace WPFPL.Admin
                         if (Normalize.Convert(item).Contains(search))
                         {
                             // apply advanced filters
-                            if (FilterMenus.FilterItemChecked(item.BankClearance.ToString(), "bankclearance", findName))
+                            if (FilterMenus.FilterItemChecked(item.BankClearance.ToString(), "Bank Clearance", findName, registerName, Refresh))
                             {
                                 HostCollection.Add(item.ToString());
                             }
@@ -91,24 +93,6 @@ namespace WPFPL.Admin
                     mainWindow.MySnackbar.MessageQueue.Enqueue(error.Message);
                 }
             }
-        }
-
-        /// <summary>
-        /// Populate the Advanced Filter menu with enums
-        /// </summary>
-        private void PopulateFilterMenu()
-        {
-            // Create sub-menus
-            void registerName(string name, object scopedElement) { RegisterName(name, scopedElement); }
-            MenuItem bankClearance = FilterMenus.AddMenuItem(FilterMenu, "Bank Clearance", false, "top", registerName, Refresh);
-
-            List<Host> matches = MainWindow.Bl.GetHosts();
-
-            // Add bank clearance items
-            foreach (string item in (from item in matches
-                                   orderby item.BankClearance.ToString()
-                                   select item.BankClearance.ToString()).Distinct().ToList())
-                FilterMenus.AddMenuItem(bankClearance, item, true, "bankclearance", registerName, Refresh);
         }
 
         /// <summary>

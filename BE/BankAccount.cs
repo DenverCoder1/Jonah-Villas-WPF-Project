@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace BE
 {
+    [Serializable]
     public class BankAccount
     {
-        BankBranch Branch { get; set; }
+        public BankBranch Branch { get; set; }
         public long RoutingNumber { get; set; }
 
         public BankAccount() { }

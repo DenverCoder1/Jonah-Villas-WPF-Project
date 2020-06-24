@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BE
 {
+    [Serializable]
     public class BankBranch
     {
         public string BankCode { get; set; }
