@@ -272,17 +272,24 @@ namespace DAL
         /// <returns>True if successful</returns>
         bool IDAL.UpdateHost(Host newHost)
         {
-            // find order in list
-            Host oldHost = instance.GetHosts().FirstOrDefault(h => h.HostKey == newHost.HostKey);
+            // find host in list
+            IEnumerable<Host> matches =
+                from Host item in instance.GetHosts()
+                where item.HostKey == newHost.HostKey
+                select item;
 
-            // if not in list, throw exception
-            if (oldHost == null)
+            // if not in list, add it to list
+            if (matches.ToList().Count == 0)
                 throw new Exception("Host to update does not exist.");
 
-            // find index of old order
-            int index = DataSource.Hosts.FindIndex(h => h.HostKey == h.HostKey);
+            Host oldHost = matches.ToList()[0];
 
-            // replace with the new order
+            // find index of old host
+            int index = DataSource.Hosts.FindIndex(h =>
+                h.HostKey == oldHost.HostKey
+            );
+
+            // replace with the new host
             DataSource.Hosts[index] = Cloning.Clone(newHost);
             return true;
         }

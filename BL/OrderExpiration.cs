@@ -13,12 +13,12 @@ namespace BL
         public static void StartJob()
         {
             // Expire orders on first startup
-            ExpireOrders();
+            ExpireOrdersAndRequests();
             // create timer thread to run job once per day
             // set time interval to 1 day in milliseconds
             Timer timer = new Timer(TimeSpan.FromDays(1).TotalMilliseconds);
             // attach the Elapsed event for the timer
-            timer.Elapsed += ExpireOrders;
+            timer.Elapsed += ExpireOrdersAndRequests;
             // start the timer
             timer.Enabled = true;
         }
@@ -27,7 +27,7 @@ namespace BL
         /// Get a list of orders and requests that are expired and mark as closed
         /// When the timer's Elapsed event fires it is called on a thread in the system thread-pool
         /// </summary>
-        private static void ExpireOrders(object sender = null, ElapsedEventArgs e = null)
+        private static void ExpireOrdersAndRequests(object sender = null, ElapsedEventArgs e = null)
         {
             IBL Bl = FactoryBL.GetBL();
 

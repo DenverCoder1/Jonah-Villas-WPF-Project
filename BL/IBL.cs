@@ -20,7 +20,6 @@ namespace BL
         List<HostingUnit> GetAvailableHostHostingUnits(long hostKey, long guestRequestKey);
         IEnumerable<IGrouping<District, HostingUnit>> GetHostingUnitsByDistrict();
         IEnumerable<IGrouping<City, HostingUnit>> GetHostingUnitsByCity();
-        List<DateRange> GetDateRanges(long huKey);
         HostingUnit GetHostingUnit(long huKey);
         bool IsHostingUnitAvailable(HostingUnit hostingUnit, GuestRequest request);
         List<HostingUnit> GetAvailableHostingUnits(DateTime entry, DateTime release, District? district, City? city, TypeOfPlace? prefType, List<Amenity> amenities);
@@ -36,7 +35,6 @@ namespace BL
         IEnumerable<IGrouping<int, GuestRequest>> GetGuestRequestsByPersonCount();
         GuestRequest GetGuestRequest(long grKey);
         bool CheckOrReserveDates(HostingUnit hostingUnit, GuestRequest guestRequest, bool reserve = false);
-        void CancelDateRange(HostingUnit hostingUnit, DateRange dateRange);
 
         // orders
         bool CreateOrder(Order order, RunWorkerCompletedEventHandler RunWorkerCompleted = null);
@@ -46,8 +44,8 @@ namespace BL
         List<Order> GetHostOrders(long hostKey);
         Order GetOrder(long orderKey);
         List<Order> GetOrdersCreatedOutsideNumDays(int numDays);
-        int GetNumOrders(GuestRequest guestRequest);
-        int GetNumOrders(HostingUnit hostingUnit);
+        int GetRequestNumOrders(GuestRequest guestRequest);
+        int GetHostingUnitNumOrders(HostingUnit hostingUnit);
 
         // bank branches
         void GetBankBranches(RunWorkerCompletedEventHandler RunWorkerCompleted = null);
@@ -69,7 +67,6 @@ namespace BL
         bool IsValidRoutingNumber(string routing);
 
         // Helper Methods
-
         int Duration(DateTime start, DateTime end = default);
     }
 }

@@ -205,26 +205,6 @@ namespace BL
         }
 
         /// <summary>
-        /// Return a list of reserved date ranges for a hosting unit key
-        /// </summary>
-        /// <param name="huKey">hosting unit key</param>
-        /// <returns>Calendar</returns>
-        List<DateRange> IBL.GetDateRanges(long huKey)
-        {
-            try
-            {
-                HostingUnit hostingUnit = instance.GetHostingUnit(huKey);
-                if (hostingUnit == null)
-                    throw new Exception($"Hosting unit with ID {huKey} was not found.");
-                return hostingUnit.Calendar;
-            }
-            catch (Exception error)
-            {
-                throw error;
-            }
-        }
-
-        /// <summary>
         /// Return hosting unit given hosting unit key, returns null if not found
         /// </summary>
         HostingUnit IBL.GetHostingUnit(long huKey)
@@ -397,7 +377,6 @@ namespace BL
             {
                 throw error;
             }
-
         }
 
         /// <summary>
@@ -526,28 +505,6 @@ namespace BL
             if (reserve)
                 hostingUnit.Calendar.Add(new DateRange(guestRequest.EntryDate, guestRequest.ReleaseDate));
             return true;
-        }
-
-        void IBL.CancelDateRange(HostingUnit hostingUnit, DateRange dateRange)
-        {
-            // check if unit is legal
-            if (hostingUnit == null)
-                throw new ArgumentException("Hosting unit cannot be null.");
-            // dates not set
-            if (dateRange.Start == default || dateRange.End == default)
-                throw new ArgumentException("Date range is missing a date.");
-
-            // go through calendar until found
-            for (int i = 0; i < hostingUnit.Calendar.Count; ++i)
-            {
-                // If start and end match current date range
-                if (dateRange.Start == hostingUnit.Calendar[i].Start
-                    && dateRange.End == hostingUnit.Calendar[i].End)
-                {
-                    // remove date range
-                    hostingUnit.Calendar.RemoveAt(i);
-                }
-            }
         }
 
         #endregion
@@ -853,7 +810,7 @@ namespace BL
         /// <summary>
         /// Get the number of orders corresponding to a given guest request
         /// </summary>
-        int IBL.GetNumOrders(GuestRequest guestRequest)
+        int IBL.GetRequestNumOrders(GuestRequest guestRequest)
         {
             try
             {
@@ -871,7 +828,7 @@ namespace BL
         /// <summary>
         /// Get the number of orders corresponding to a given hosting unit
         /// </summary>
-        int IBL.GetNumOrders(HostingUnit hostingUnit)
+        int IBL.GetHostingUnitNumOrders(HostingUnit hostingUnit)
         {
             try
             {
@@ -1003,17 +960,7 @@ namespace BL
         /// Validate the information inputted to the guest request form
         /// </summary>
         /// <returns>True if valid, false if invalid.</returns>
-        bool IBL.ValidateGuestForm(
-            string fname,
-            string lname,
-            string email,
-            string entryDate,
-            string releaseDate,
-            object district,
-            object city,
-            int numAdults,
-            int numChildren,
-            object prefType)
+        bool IBL.ValidateGuestForm(string fname, string lname, string email, string entryDate, string releaseDate, object district, object city, int numAdults, int numChildren, object prefType)
         {
             if (!instance.IsValidName(fname))
             {
@@ -1122,13 +1069,7 @@ namespace BL
         /// <summary>
         /// Validate details from host sign up form
         /// </summary>
-        bool IBL.ValidateHostSignUp(
-            string fname,
-            string lname,
-            string email,
-            string phone,
-            object bankBranch,
-            string routingNum)
+        bool IBL.ValidateHostSignUp(string fname, string lname, string email, string phone, object bankBranch, string routingNum)
         {
             if (!instance.IsValidName(fname))
             {

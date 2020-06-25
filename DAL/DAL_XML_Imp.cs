@@ -100,12 +100,14 @@ namespace DAL
         private static List<T> LoadList<T>(string xmlPath)
         {
             List<T> result;
+            // check if file exists
             if (!File.Exists(xmlPath))
             {
                 throw new FileNotFoundException("File not found.");
             }
             else
             {
+                // open file
                 FileStream file = new FileStream(xmlPath, FileMode.OpenOrCreate);
                 try
                 {
@@ -120,6 +122,7 @@ namespace DAL
                     throw error;
                 }
             }
+            // return list
             return result;
         }
 
@@ -130,7 +133,14 @@ namespace DAL
         /// <param name="xmlPath">path of xml file</param>
         private static void SaveList<T>(List<T> list, string xmlPath)
         {
+            // create a backup of the file before overwriting it in case it needs to be restored
+            if (File.Exists(xmlPath))
+            {
+                File.Copy(xmlPath, $"{xmlPath}.backup", true);
+            }
+            // Create or overwrite file
             FileStream file = new FileStream(xmlPath, FileMode.Create);
+            // serialize list and save in file
             (new XmlSerializer(typeof(List<T>))).Serialize(file, list);
             file.Close();
         }

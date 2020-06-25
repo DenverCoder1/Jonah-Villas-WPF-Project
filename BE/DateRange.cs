@@ -25,7 +25,7 @@ namespace BE
             set { _end = value; UpdateDuration(); }
         }
 
-        public int Duration { get; set; }
+        [XmlIgnore] public int Duration { get; private set; }
 
         public DateRange()
         {

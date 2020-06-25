@@ -6,8 +6,7 @@ using System.Xml.Serialization;
 namespace BE
 {
     [XmlRoot("dictionary")]
-    public class SerializableDictionary<TKey, TValue>
-        : Dictionary<TKey, TValue>, IXmlSerializable
+    public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable
     {
         public SerializableDictionary() { }
         public SerializableDictionary(IDictionary<TKey, TValue> dictionary) : base(dictionary) { }
